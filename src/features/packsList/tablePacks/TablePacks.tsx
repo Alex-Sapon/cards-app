@@ -2,7 +2,7 @@ import * as React from 'react';
 import {ChangeEvent, useEffect, useState} from 'react';
 import {PaginationGroup} from '../paginationGroup/PaginationGroup';
 import {AppStateType, useAppDispatch, useAppSelector} from '../../../app/store';
-import useDebounce from './utils/useDebounce';
+import useDebounce from '../../../assets/utils/useDebounce';
 import {PackType} from '../packsList-api';
 import {RequestStatusType} from '../../../app/reducer/app-reducer';
 import {TableRowPack} from './tableRowPack/TableRowPack';
@@ -19,13 +19,11 @@ import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import {TextField} from '@mui/material';
 import {setCardsPageCount, setPage, setSearchPackName, setSortPackName} from './tablePacksReducer';
-import {DeletePackModal} from '../../../components/Modals/packModals/DeletePackModal';
-import {AddPackModal} from '../../../components/Modals/packModals/AddPackModal';
-import {EditPackModal} from '../../../components/Modals/packModals/EditPackModal';
-import {handleOpenModal} from '../../../components/Modals/utilsModal';
-
+import {DeletePackModal} from '../../../components/Modals/customModals/DeletePackModal';
+import {AddPackModal} from '../../../components/Modals/customModals/AddPackModal';
+import {EditPackModal} from '../../../components/Modals/customModals/EditPackModal';
 import {TableCell} from '@mui/material';
-import {createNewCardsPack} from './tablePacksReducer';
+import {ModalType} from '../../../components/Modals/BasicModal';
 
 const selectCardPacks = (state: AppStateType): PackType[] => state.packList.cardPacks;
 const selectCardPacksTotalCount = (state: AppStateType): number => state.packList.cardPacksTotalCount;
@@ -36,6 +34,7 @@ const selectStatus = (state: AppStateType): RequestStatusType => state.app.statu
 
 export const TablePacks = () => {
 	const [value, setValue] = useState('');
+    const [isOpen, setIsOpen] = useState<ModalType>('close');
 
 	const [name, setName] = useState<'0name' | '1name'>('0name');
 	const [cardsCount, setCardsCount] = useState<'0cardsCount' | '1cardsCount'>('0cardsCount');
@@ -54,22 +53,24 @@ export const TablePacks = () => {
 
 	const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
 		setValue(e.currentTarget.value);
-	};
+	}
+
+    const closeModal = () => setIsOpen('close');
 
     useEffect(() => {
         dispatch(setSearchPackName(debouncedValue));
         dispatch(setPage(1));
-    }, [debouncedValue]);
+    }, [debouncedValue])
 
-    const handleNewCardsPack = () => handleOpenModal(dispatch, 'addPack')
+    const handleAddNewPack = () => setIsOpen('add');
 
     const handleChangePage = (page: number) => {
         dispatch(setPage(page));
-    };
+    }
 
     const handleChangeValueSelect = (value: number) => {
         dispatch(setCardsPageCount(value));
-    };
+    }
 
     const handleNameSort = () => {
         setName(name === '0name' ? '1name' : '0name');
@@ -95,9 +96,6 @@ export const TablePacks = () => {
         <div className={styles.table_wrapper}>
             <h3 className={styles.table_title}>Packs list</h3>
             <div className={styles.text_field_group}>
-                <AddPackModal/>
-                <DeletePackModal />
-                <EditPackModal/>
                 <TextField
                     fullWidth
                     sx={{backgroundColor: '#ECECF9', mr: '2rem'}}
@@ -108,7 +106,7 @@ export const TablePacks = () => {
                     onChange={handleChangeValue}
                     InputProps={{startAdornment: <InputAdornment position="start"><SearchIcon/></InputAdornment>}}
                 />
-                <Button disabled={status === 'loading'} onClick={handleNewCardsPack}>Add new pack</Button>
+                <Button disabled={status === 'loading'} onClick={handleAddNewPack}>Add new pack</Button>
             </div>
             <TableContainer className={styles.table_container}>
                 <Table>
@@ -186,6 +184,7 @@ export const TablePacks = () => {
                 onChangePage={handleChangePage}
                 onChangeValue={handleChangeValueSelect}
             />
+            <AddPackModal isOpen={isOpen === 'add'} onClose={closeModal}/>
         </div>
     )
 };

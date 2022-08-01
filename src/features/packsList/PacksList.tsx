@@ -23,6 +23,7 @@ export const PacksList = () => {
     useEffect(() => {
         dispatch(fetchCardPacks());
     }, [page, pageCount, sortPackName, searchPackName, commonUserId, commonMin, commonMax]);
+
     if (!isLoggedIn) {
         return <Navigate to={PATH.LOGIN}/>
     }

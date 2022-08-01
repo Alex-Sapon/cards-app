@@ -1,22 +1,21 @@
 import {AxiosResponse} from 'axios';
-import {instance} from '../../../api/instance-api';
+import {instance} from '../../../api/instance';
 
 export const cardNameAPI = {
 	getCard(data: CardParamsType) {
 		return instance.get<any, AxiosResponse<CardsTypeResponseType>, CardParamsType>('cards/card', {params: data});
 	},
 	createCard(data: CreateCardType) {
-		return instance.post<any, AxiosResponse<CardsTypeResponseType>, { card: CreateCardType }>(`cards/card`, {card: data});
+		return instance.post<any, AxiosResponse<CardsTypeResponseType>, { card: CreateCardType }>('cards/card', {card: data});
 	},
 	deleteCard(_id: string) {
-		return instance.delete<any, AxiosResponse<CardsTypeResponseType>, { _id: string }>(`cards/card`, {params: {id: _id}});
+		return instance.delete<any, AxiosResponse<CardsTypeResponseType>, { _id: string }>('cards/card', {params: {id: _id}});
 	},
 	updateCard(data: PutParamsType) {
-		return instance.put<any, AxiosResponse<CardsTypeResponseType>, { card: PutParamsType }>(`cards/card`, {card: data});
+		return instance.put<any, AxiosResponse<CardsTypeResponseType>, { card: PutParamsType }>('cards/card', {card: data});
 	},
 }
 
-//types
 export type CardParamsType = {
 	cardAnswer?: string
 	cardQuestion?: string

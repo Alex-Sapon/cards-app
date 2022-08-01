@@ -12,35 +12,35 @@ import {useEffect} from 'react';
 import {AppStateType, useAppDispatch, useAppSelector} from './store';
 import {initializeApp} from './reducer/app-reducer';
 import {Navbar} from '../components/navbar/Navbar';
-import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar';
+import {ErrorSnackbar} from '../components/errorSnackbar/ErrorSnackbar';
 import {Navigate, Route, Routes, Outlet} from 'react-router-dom';
 import {PacksList} from '../features/packsList/PacksList';
 import {TableCardName} from '../features/packName/tableCardName/tableCardName';
-import { LearnPack } from '../features/packsList/tablePacks/learnPack/LearnPack';
+import {LearnPack} from '../features/packsList/tablePacks/learnPack/LearnPack';
 
 const selectIsInitialized = (state: AppStateType): boolean => state.app.isInitialized;
 const selectIsLoggedIn = (state: AppStateType): boolean => state.login.isLoggedIn;
 
 export const App = () => {
-	const dispatch = useAppDispatch();
+    const dispatch = useAppDispatch();
 
-	const isLoggedIn = useAppSelector(selectIsLoggedIn);
-	const isInitialized = useAppSelector(selectIsInitialized);
+    const isLoggedIn = useAppSelector(selectIsLoggedIn);
+    const isInitialized = useAppSelector(selectIsInitialized);
 
-	useEffect(() => {
-		dispatch(initializeApp());
-	}, [dispatch]);
+    useEffect(() => {
+        dispatch(initializeApp());
+    }, [dispatch]);
 
-	if (!isInitialized) {
-		return (
-			<Box sx={{display: 'flex', justifyContent: 'center', marginTop: '30%'}}>
-				<CircularProgress/>
-			</Box>
-		)
-	}
+    if (!isInitialized) {
+        return (
+            <Box sx={{display: 'flex', justifyContent: 'center', marginTop: '30%'}}>
+                <CircularProgress/>
+            </Box>
+        )
+    }
 
     return (
-        <div>
+        <>
             {isLoggedIn && <Navbar/>}
             <div className={styles.app_container}>
                 <ErrorSnackbar/>
@@ -60,6 +60,6 @@ export const App = () => {
                     <Route path={PATH.PAGE_NOT_FOUND} element={<Error404/>}/>
                 </Routes>
             </div>
-        </div>
+        </>
     )
 };

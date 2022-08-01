@@ -1,10 +1,9 @@
-import axios, {AxiosResponse} from 'axios';
-import {instance} from './instance-api';
+import {AxiosResponse} from 'axios';
+import {instance} from './instance';
 
-//api
 export const authAPI = {
     me() {
-        return instance.post<UserResponseType>(`auth/me`);
+        return instance.post<UserResponseType>('auth/me');
     },
     registration(data: RegistrationPayloadType) {
         return instance.post<any, AxiosResponse<RegistrationResponseType>, RegistrationPayloadType>('auth/register', data);
@@ -19,18 +18,18 @@ export const authAPI = {
         return instance.put<any, AxiosResponse<UpdateProfileResponseType>, UpdateProfilePayloadType>('auth/me', data);
     },
     forgotPassword(data: ForgotPasswordPayloadType) {
-        return instance.post<any, AxiosResponse<ResponseType>, ForgotPasswordPayloadType>(`auth/forgot`, data);
+        return instance.post<any, AxiosResponse<ResponseType>, ForgotPasswordPayloadType>('auth/forgot', data);
     },
     updatePassword(data: UpdatePasswordPayloadType) {
-        return instance.post<any, AxiosResponse<ResponseType>, UpdatePasswordPayloadType>(`auth/set-new-password`, data);
+        return instance.post<any, AxiosResponse<ResponseType>, UpdatePasswordPayloadType>('auth/set-new-password', data);
     },
 };
 
-//types
 type ResponseType = {
     info: string
     error: string
 }
+
 type RegistrationResponseType = {
     addedUser: {
         _id: string,
@@ -46,15 +45,18 @@ type RegistrationResponseType = {
     },
     error?: string,
 }
+
 type RegistrationPayloadType = {
     email: string,
     password: string
 }
+
 export type LoginPayloadType = {
     email: string
     password: string
     rememberMe: boolean
 }
+
 export type UserResponseType = {
     _id: string,
     email: string,
@@ -71,20 +73,24 @@ export type UserResponseType = {
     avatar: string
     error?: string
 }
+
 export type UpdateProfileResponseType = {
     updatedUser: UserResponseType,
     token: string,
     tokenDeathTime: number
 }
+
 export type UpdateProfilePayloadType = {
     name: string,
     avatar: string
 }
+
 export type ForgotPasswordPayloadType = {
     email: string
     from: string
     message: string
 }
+
 export type UpdatePasswordPayloadType = {
     password: string
     resetPasswordToken: string

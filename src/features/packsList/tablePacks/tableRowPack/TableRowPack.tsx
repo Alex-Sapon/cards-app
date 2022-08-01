@@ -1,7 +1,7 @@
-import {memo} from 'react';
+import {memo, useState} from 'react';
 import {AppStateType, useAppDispatch, useAppSelector} from '../../../../app/store';
 import {StyledTableCell, StyledTableRow} from './styledTablePack';
-import {shortWord} from '../utils/shortWord';
+import {shortWord} from '../../../../assets/utils/shortWord';
 import {PATH} from '../../../../enums/path';
 import {useNavigate} from 'react-router-dom';
 import Button from '../../../../common/button/Button';
@@ -10,11 +10,11 @@ import styles from './TableRowPack.module.css';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import IconButton from '@mui/material/IconButton';
 import {setUserCardId, setUserCardName} from '../../../packName/reducer/packCardReducer';
-import {handleOpenModal} from '../../../../components/Modals/utilsModal';
 import {setPackId, setPackName} from '../tablePacksReducer';
-
-import {deleteUpdateCardsPack} from '../tablePacksReducer';
-import {fetchCardsTC} from '../../../packName/reducer/packCardReducer';
+import {DeletePackModal} from '../../../../components/Modals/customModals/DeletePackModal';
+import {EditPackModal} from '../../../../components/Modals/customModals/EditPackModal';
+import * as React from 'react';
+import {ModalType} from '../../../../components/Modals/BasicModal';
 
 type TableRowPackType = {
     _id: string
@@ -33,20 +33,24 @@ export const TableRowPack = memo((props: TableRowPackType) => {
 
     const dispatch = useAppDispatch();
 
+    const [isOpen, setIsOpen] = useState<ModalType>('close');
+
     const navigate = useNavigate();
 
     const userId = useAppSelector(selectLoginUserId);
 
+    const closeModal = () => setIsOpen('close');
+
     const handleDeletePack = () => {
-        handleOpenModal(dispatch, 'deletePack')
-        dispatch(setPackName(name))
-        dispatch(setPackId(_id))
+        setIsOpen('delete');
+        // dispatch(setPackName(name))
+        // dispatch(setPackId(_id))
     }
 
-    const handleUpdatePack = () => {
-        handleOpenModal(dispatch, 'editPack')
-        dispatch(setPackName(name))
-        dispatch(setPackId(_id))
+    const handleEditPack = () => {
+        setIsOpen('edit');
+        // dispatch(setPackName(name))
+        // dispatch(setPackId(_id))
     };
 
     const handleLearnPack = () => {
@@ -60,71 +64,41 @@ export const TableRowPack = memo((props: TableRowPackType) => {
     };
 
     return (
+        <>
             <StyledTableRow sx={{display: 'grid', gridTemplateColumns: '25% 8% 24% 15% 28%'}}>
-            <StyledTableCell component="th" scope="row" className={styles.sell}>
-                <span style={{display: 'inline-block', flex: '1 1 auto'}}>{shortWord(name, 12)}</span>
-                <IconButton
-                    disabled={status === 'loading'}
-                    aria-label="expand row"
-                    size="small"
-                    onClick={handleSendPackId}
-                >
-                    <DriveFolderUploadIcon/>
-                </IconButton>
-            </StyledTableCell>
-            <StyledTableCell className={styles.sell}>{cardsCount}</StyledTableCell>
-            <StyledTableCell className={styles.sell}>
-                {new Date(updated).toLocaleDateString()}
-            </StyledTableCell>
-            <StyledTableCell className={styles.sell}>
-                {shortWord(user_name, 8)}
-            </StyledTableCell>
-            <StyledTableCell align="center" className={styles.table_button_group}>
-                {userId === user_id
-                    ? <>
-                        <Button id="btn_delete" disabled={status === 'loading'} onClick={handleDeletePack}>
-                            Delete
-                        </Button>
-                        <Button disabled={status === 'loading'} onClick={handleUpdatePack}>
-                            Edit
-                        </Button>
-                    </> : null}
-                <Button disabled={!cardsCount || status === 'loading'} onClick={handleLearnPack}>Learn</Button>
-            </StyledTableCell>
-        </StyledTableRow>
+                <StyledTableCell component="th" scope="row" className={styles.sell}>
+                    <span style={{display: 'inline-block', flex: '1 1 auto'}}>{shortWord(name, 12)}</span>
+                    <IconButton
+                        disabled={status === 'loading'}
+                        aria-label="expand row"
+                        size="small"
+                        onClick={handleSendPackId}
+                    >
+                        <DriveFolderUploadIcon/>
+                    </IconButton>
+                </StyledTableCell>
+                <StyledTableCell className={styles.sell}>{cardsCount}</StyledTableCell>
+                <StyledTableCell className={styles.sell}>
+                    {new Date(updated).toLocaleDateString()}
+                </StyledTableCell>
+                <StyledTableCell className={styles.sell}>
+                    {shortWord(user_name, 8)}
+                </StyledTableCell>
+                <StyledTableCell align="center" className={styles.table_button_group}>
+                    {userId === user_id
+                        ? <>
+                            <Button id="btn_delete" disabled={status === 'loading'} onClick={handleDeletePack}>
+                                Delete
+                            </Button>
+                            <Button disabled={status === 'loading'} onClick={handleEditPack}>
+                                Edit
+                            </Button>
+                        </> : null}
+                    <Button disabled={!cardsCount || status === 'loading'} onClick={handleLearnPack}>Learn</Button>
+                </StyledTableCell>
+            </StyledTableRow>
+            <DeletePackModal isOpen={isOpen === 'delete'} onClose={closeModal}/>
+            <EditPackModal isOpen={isOpen === 'edit'} onClose={closeModal}/>
+        </>
     )
-	return (
-		<StyledTableRow sx={{display: 'grid', gridTemplateColumns: '25% 8% 24% 15% 28%'}}>
-			<StyledTableCell component="th" scope="row" className={styles.sell}>
-				<span style={{display: 'inline-block', flex: '1 1 auto'}}>{shortWord(name, 12)}</span>
-				<IconButton
-					disabled={status === 'loading'}
-					aria-label="expand row"
-					size="small"
-					onClick={handleSendPackId}
-				>
-					<DriveFolderUploadIcon/>
-				</IconButton>
-			</StyledTableCell>
-			<StyledTableCell className={styles.sell}>{cardsCount}</StyledTableCell>
-			<StyledTableCell className={styles.sell}>
-				{new Date(updated).toLocaleDateString()}
-			</StyledTableCell>
-			<StyledTableCell className={styles.sell}>
-				{shortWord(user_name, 8)}
-			</StyledTableCell>
-			<StyledTableCell align="center" className={styles.table_button_group}>
-				{userId === user_id
-					? <>
-						<Button id="btn_delete" disabled={status === 'loading'} onClick={handleDeletePack}>
-							Delete
-						</Button>
-						<Button disabled={status === 'loading'} onClick={handleUpdatePack}>
-							Edit
-						</Button>
-					</> : null}
-				<Button disabled={!cardsCount || status === 'loading'} onClick={handleLearnPack}>Learn</Button>
-			</StyledTableCell>
-		</StyledTableRow>
-	)
 });

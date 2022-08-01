@@ -1,0 +1,17 @@
+.wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    min-height: 200px;
+    background-color: white;
+    padding: 10px 20px 30px 20px;
+    border-radius: 2px;
+}
+
+.close_btn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}

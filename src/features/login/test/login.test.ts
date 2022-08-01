@@ -2,7 +2,6 @@ import {LoginDataUserType, loginReducer, setLoginData} from '../reducer/loginRed
 
 let startState: LoginDataUserType;
 
-
 beforeEach( () => {
     startState = {
         _id: '',
@@ -23,7 +22,6 @@ beforeEach( () => {
     }
 } )
 
-//test for LOGIN/SET-LOGIN-DATA-USER
 test('correct data should be set', () => {
 
     const action = setLoginData({
@@ -48,7 +46,6 @@ test('correct data should be set', () => {
     expect(endState._id).toBe('123');
 })
 
-//test for LOGIN/SET-IS-LOGGED-IN
 test('correct login data should be set', () => {
 
     const action = setLoginData({

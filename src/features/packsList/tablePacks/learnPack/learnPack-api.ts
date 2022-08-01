@@ -1,4 +1,4 @@
-import {instance} from '../../../../api/instance-api';
+import {instance} from '../../../../api/instance';
 import {AxiosResponse} from 'axios';
 
 export const learnPackAPI = {

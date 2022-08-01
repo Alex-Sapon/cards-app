@@ -16,9 +16,10 @@
     padding-left: 10px;
 }
 
-.arrowBackSharpIcon {
+.arrow_back {
     display: flex;
     justify-content: flex-start;
+    align-items: center;
 }
 
 .inputContainer {

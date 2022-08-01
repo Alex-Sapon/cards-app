@@ -1,5 +1,6 @@
 {
   "name": "cards-app",
+  "homepage": "https://alex-sapon.github.io/cards-app/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

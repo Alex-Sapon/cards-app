@@ -1,10 +1,9 @@
-import {useSelector} from 'react-redux';
-import {AppStateType} from '../../../app/store';
+import {useAppSelector} from '../../../app/store';
 import styles from './SendEmail.module.css';
 import Mail from '../../../assets/images/mail.svg';
 
 export const SendEmail = () => {
-    const email = useSelector<AppStateType, string>(state => state.recoveryPassword.email);
+    const email = useAppSelector(state => state.recoveryPassword.email);
 
     return (
         <div className={styles.wrapper}>

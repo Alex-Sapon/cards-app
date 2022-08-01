@@ -1,0 +1,43 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.divider {
+    position: absolute;
+    top: 56px;
+    left: 0;
+    width: 400px;
+    height: 1px;
+    background-color: #EDF0F6;
+}
+
+.description {
+    font-size: 14px;
+    line-height: 24px;
+    color: #000000;
+    margin-bottom: 2rem;
+}
+
+.header h3 {
+    font-size: 18px;
+    color: #2D2E46;
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.buttons button:first-child {
+    margin-right: 2rem;
+}
+
+.field,
+.checkbox {
+    margin-bottom: 2rem!important;
+}

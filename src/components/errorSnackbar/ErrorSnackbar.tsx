@@ -5,18 +5,15 @@ import {setRegisterMessageAC} from '../../features/registration/reducer/registra
 import {useAppDispatch, useAppSelector } from '../../app/store';
 import { setAppErrorAC } from '../../app/reducer/app-reducer';
 
-
-
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-    props, ref) {
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
 export const ErrorSnackbar = () => {
+    const dispatch = useAppDispatch();
 
-    const error = useAppSelector(state => state.app.error)
-    const message = useAppSelector(state => state.registration.message)
-    const dispatch = useAppDispatch()
+    const error = useAppSelector(state => state.app.error);
+    const message = useAppSelector(state => state.registration.message);
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {

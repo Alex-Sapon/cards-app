@@ -1,5 +1,5 @@
 import {AxiosResponse} from 'axios';
-import {instance} from '../../api/instance-api';
+import {instance} from '../../api/instance';
 
 export const packsListApi = {
     getPacks(data: PacksParamsType) {
