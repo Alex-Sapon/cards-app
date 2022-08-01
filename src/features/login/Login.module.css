@@ -1,0 +1,52 @@
+.button {
+    width: 166px;
+    height: 36px;
+    margin-bottom: 2rem;
+}
+
+.input {
+    width: 100%;
+}
+
+.forgot_pass {
+    color: #21268F;
+    display: block;
+    font-weight: var(--fw-normal);
+    justify-content: flex-end;
+    margin-left: 12rem;
+    margin-bottom: 4rem;
+    text-decoration: none;
+}
+
+.text {
+    color: rgba(45, 46, 70, 0.5);
+    margin-bottom: 1rem;
+}
+
+.link {
+    color: #21268F;
+    font-size: var(--fs-md);
+    font-weight: var(--fw-normal);
+    text-align: center;
+    text-decoration: none;
+}
+
+.view {
+    padding-bottom: 5px;
+}
+
+@media (max-width: 991.98px) {}
+
+@media (max-width: 767.98px) {
+    .forgot_pass {
+        margin-bottom: 2rem;
+        margin-left: 8rem;
+    }
+}
+
+@media (max-width: 479.98px) {
+    .forgot_pass {
+        margin-bottom: 2rem;
+        margin-left: 4rem;
+    }
+}

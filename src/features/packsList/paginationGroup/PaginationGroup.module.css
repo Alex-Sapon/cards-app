@@ -1,0 +1,10 @@
+.pagination_group {
+    display: flex;
+    align-items: center;
+}
+
+.select_wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,0 +1,59 @@
+.button {
+    padding: 0 25px;
+    height: 36px;
+    margin-bottom: 9rem;
+}
+
+.wrapper {
+    margin-bottom: 3rem;
+}
+
+.title {
+    margin-bottom: 4rem;
+    width: 300px;
+}
+
+.title,
+.subtitle {
+    color: rgba(45, 46, 70, 0.5);
+}
+
+.subtitle {
+    margin-bottom: 1rem;
+}
+
+.link {
+    color: #21268F;
+    font-size: var(--fs-md);
+    font-weight: var(--fw-normal);
+    text-align: center;
+    text-decoration: none;
+}
+
+@media (max-width: 991.98px) {}
+
+@media (max-width: 767.98px) {
+    .title {
+        margin-bottom: 3rem;
+        width: 250px;
+    }
+
+    .button {
+        margin-bottom: 6.5rem;
+    }
+}
+
+@media (max-width: 479.98px) {
+    .title {
+        margin-bottom: 4rem;
+        width: 180px;
+    }
+
+    .subtitle {
+        width: 180px;
+    }
+
+    .button {
+        margin-bottom: 3.5rem;
+    }
+}

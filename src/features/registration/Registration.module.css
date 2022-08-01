@@ -1,0 +1,35 @@
+.wrapper {
+    margin-bottom: 0.5rem;
+}
+
+form div:nth-child(3) {
+    margin-bottom: 3rem;
+}
+
+.button_group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button_group button:first-child {
+    width: 100px;
+    height: 36px;
+}
+
+.button_group button:last-child {
+    width: 135px;
+    height: 36px;
+}
+
+.button_group button:not(:last-child) {
+    margin-right: 2rem;
+}
+.login {
+    margin-top: 20px;
+    text-decoration: none;
+}
+
+.login:hover {
+    text-decoration: underline;
+}

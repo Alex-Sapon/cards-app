@@ -1,0 +1,15 @@
+.label {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    align-items: center;
+    cursor: pointer;
+}
+
+.checkbox {
+    align-items: center;
+    cursor: pointer;
+}
+
+.span {
+    padding: 0px 3px 3px 3px;
+}

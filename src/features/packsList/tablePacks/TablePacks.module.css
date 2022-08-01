@@ -1,0 +1,43 @@
+.table_container {
+    height: fit-content;
+    box-shadow: 4px 4px 24px 1px rgba(34, 60, 80, 0.14);
+}
+
+.table_title {
+    font-weight: 800;
+    font-size: 22px;
+    color: #2D2E46;
+    letter-spacing: 1px;
+}
+
+.table_wrapper {
+    padding: 30px;
+    display: grid;
+    row-gap: 2.5rem;
+    grid-template-rows: 30px 30px 1fr 30px;
+}
+
+.text_field_group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pagination_group {
+    display: flex;
+    align-items: center;
+}
+
+.select_wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.now_packs {
+    text-align: center!important;
+    padding: 20px!important;
+    font-size: 20px!important;
+    font-weight: 800!important;
+    letter-spacing: 1px!important;
+}

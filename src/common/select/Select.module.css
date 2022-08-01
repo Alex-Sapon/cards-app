@@ -1,0 +1,47 @@
+select {
+    background-color: transparent;
+    appearance: none;
+    min-width: 100%;
+    padding: 0 1em 0 0;
+    border: none;
+    margin: 0px;
+    outline: none;
+}
+
+.select {
+    width: 100%;
+    min-width: 15ch;
+    max-width: 20ch;
+    border: 1px solid #777;
+    border-radius: 0.25em;
+    padding: 0.25em 0.5em;
+    font-size: 1.10rem;
+    cursor: pointer;
+    line-height: 1.1;
+    background-color: #fff;
+}
+
+.select::after {
+    content: '';
+    display: block;
+    width: 0.8em;
+    height: 0.5em;
+    background-color: var(--select-arrow);
+    clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+}
+
+.select:focus {
+    outline: none;
+}
+
+.option {
+    transition: all 0.5s ease;
+}
+
+.option:checked {
+    /* background: darkcyan; */
+}
+
+.option:hover {
+    background-color: tomato;
+}
