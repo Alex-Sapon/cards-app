@@ -12,10 +12,10 @@ import {deleteUpdateCardsPack} from '../../../features/packsList/tablePacks/tabl
 export const EditPackModal = ({isOpen, onClose}: ModalPropsType) => {
     const dispatch = useAppDispatch();
 
+    const [newName, setNewName] = useState('');
+
     const {packId, packName} = useAppSelector(state => state.packList);
     const status = useAppSelector(state => state.app.status);
-
-    const [newName, setNewName] = useState('');
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => setNewName(e.currentTarget.value);
 

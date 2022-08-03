@@ -41,25 +41,27 @@ export const TableCard = () => {
         dispatch(setCardsPage(1));
     }, [debouncedValue])
 
-    const addNewCard = () => setIsOpen('add');
+    const addNewCard = () => {
+        setIsOpen('add');
+    }
     const closeModal = () => setIsOpen('close');
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setValue(e.currentTarget.value)
+        setValue(e.currentTarget.value);
     }
 
     const onChangePageHandler = (page: number) => {
-        dispatch(setCardsPage(page))
+        dispatch(setCardsPage(page));
     }
 
     const onChangePageCountHandler = (value: number) => {
-        dispatch(setCardsPageCount(value))
-        dispatch(setCardsPage(1))
+        dispatch(setCardsPageCount(value));
+        dispatch(setCardsPage(1));
     }
 
     const onChangeNavigateHandler = () => {
         if (status === 'idle') {
-            navigate(-1)
+            navigate(-1);
         }
     }
 
