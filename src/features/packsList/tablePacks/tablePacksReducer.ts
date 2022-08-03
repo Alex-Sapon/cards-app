@@ -124,7 +124,6 @@ export const deleteUpdateCardsPack = (id: string, name?: string): AppThunk => di
         });
 };
 
-// types
 export type TablePacksActionsType =
     | ReturnType<typeof setPage>
     | ReturnType<typeof setCardsPageCount>

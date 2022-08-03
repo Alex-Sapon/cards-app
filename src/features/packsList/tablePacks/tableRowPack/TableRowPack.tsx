@@ -48,9 +48,8 @@ export const TableRowPack = memo((props: TableRowPackType) => {
     }
 
     const handleEditPack = () => {
+        dispatch(setPackModalParams({packId: _id, packName: name}));
         setIsOpen('edit');
-        // dispatch(setPackName(name))
-        // dispatch(setPackId(_id))
     };
 
     const handleLearnPack = () => {

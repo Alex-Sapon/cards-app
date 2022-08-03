@@ -3,7 +3,7 @@ import styles from './CustomModal.module.css';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '../../../common/button/Button';
-import * as React from 'react';
+import React from 'react';
 import {useAppDispatch, useAppSelector} from '../../../app/store';
 import {deleteUpdateCardsPack} from '../../../features/packsList/tablePacks/tablePacksReducer';
 
@@ -23,7 +23,7 @@ export const DeletePackModal = ({isOpen, onClose}: ModalPropsType) => {
             </div>
             <div className={styles.divider}></div>
             <p className={styles.description}>
-                Do you really want to remove <b>Pack Name - </b>{packName}? All cards will be excluded from this course.
+                Do you really want to remove Pack Name - <b>{packName}</b>? All cards will be excluded from this course.
             </p>
             <div className={styles.buttons}>
                 <Button onClick={onClose} disabled={status === 'loading'}>Cancel</Button>
