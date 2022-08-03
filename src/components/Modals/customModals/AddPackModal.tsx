@@ -6,7 +6,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import {TextField} from '@mui/material';
 import Button from '../../../common/button/Button';
-import {useAppDispatch, useAppSelector} from '../../../app/store';
+import {useAppDispatch} from '../../../app/store';
 import React, {ChangeEvent, useState} from 'react';
 import {createNewCardsPack} from '../../../features/packsList/tablePacks/tablePacksReducer';
 
@@ -15,8 +15,6 @@ export const AddPackModal = ({isOpen, onClose}: ModalPropsType) => {
 
     const [name, setName] = useState('');
     const [isPrivate, setIsPrivate] = useState(false);
-
-    const status = useAppSelector(state => state.app.status);
 
     const handleAddNewPack = () => {
         const sendName = name.trim();
@@ -36,11 +34,10 @@ export const AddPackModal = ({isOpen, onClose}: ModalPropsType) => {
         <BasicModal isOpen={isOpen} onClose={onClose}>
             <div className={styles.header}>
                 <h3>Add new pack</h3>
-                <IconButton disabled={status === 'loading'} onClick={onClose}><CloseIcon/></IconButton>
+                <IconButton onClick={onClose}><CloseIcon/></IconButton>
             </div>
             <div className={styles.divider}></div>
             <TextField
-                disabled={status === 'loading'}
                 onChange={handleOnChange}
                 variant="standard"
                 label="Name pack"
@@ -50,12 +47,11 @@ export const AddPackModal = ({isOpen, onClose}: ModalPropsType) => {
             <FormControlLabel
                 label="Private"
                 className={styles.checkbox}
-                control={<Checkbox disabled={status === 'loading'} size="small" onChange={handleOnChecked}
-                                   checked={isPrivate}/>}
+                control={<Checkbox size="small" onChange={handleOnChecked} checked={isPrivate}/>}
             />
             <div className={styles.buttons}>
-                <Button onClick={onClose} disabled={status === 'loading'}>Cancel</Button>
-                <Button onClick={handleAddNewPack} disabled={status === 'loading'}>Add pack</Button>
+                <Button onClick={onClose}>Cancel</Button>
+                <Button onClick={handleAddNewPack}>Add pack</Button>
             </div>
         </BasicModal>
     )

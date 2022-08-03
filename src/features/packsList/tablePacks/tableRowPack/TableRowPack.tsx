@@ -15,6 +15,7 @@ import {DeletePackModal} from '../../../../components/Modals/customModals/Delete
 import {EditPackModal} from '../../../../components/Modals/customModals/EditPackModal';
 import * as React from 'react';
 import {ModalType} from '../../../../components/Modals/BasicModal';
+import {setPackModalParams} from '../../packsListReducer';
 
 type TableRowPackType = {
     _id: string
@@ -42,9 +43,8 @@ export const TableRowPack = memo((props: TableRowPackType) => {
     const closeModal = () => setIsOpen('close');
 
     const handleDeletePack = () => {
+        dispatch(setPackModalParams({packId: _id, packName: name}));
         setIsOpen('delete');
-        // dispatch(setPackName(name))
-        // dispatch(setPackId(_id))
     }
 
     const handleEditPack = () => {

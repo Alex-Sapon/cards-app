@@ -12,21 +12,30 @@ const initialState: PacksListStateType = {
     maxCardsCount: 0,
     token: '',
     tokenDeathTime: 0,
+    packName: '',
+    packId: '',
 }
 
 export const packsListReducer = (state: PacksListStateType = initialState, action: PacksListActionsType): PacksListStateType => {
     switch (action.type) {
         case 'PACKS-LIST/SET-PACKS-LIST-PARAMS':
+        case 'PACKS-LIST/SET-PACK-MODAL-PARAMS':
             return {...state, ...action.data};
         default:
             return state;
     }
 };
 
-//actions
-const setPacksListData = (data: PacksParamsResponseType) => ({type: 'PACKS-LIST/SET-PACKS-LIST-PARAMS', data} as const);
+const setPacksListData = (data: PacksParamsResponseType) => ({
+    type: 'PACKS-LIST/SET-PACKS-LIST-PARAMS',
+    data,
+} as const);
 
-//thunks
+export const setPackModalParams = (data: {packId: string, packName?: string}) => ({
+    type: 'PACKS-LIST/SET-PACK-MODAL-PARAMS',
+    data,
+} as const);
+
 export const fetchCardPacks = (): AppThunk => (dispatch, getState: () => AppStateType) => {
     const {pageCount, page, packName, sortPacks, user_id, min, max} = getState().tablePacks;
 
@@ -37,7 +46,7 @@ export const fetchCardPacks = (): AppThunk => (dispatch, getState: () => AppStat
         pageCount,
         user_id,
         min,
-        max
+        max,
     }
 
     dispatch(setAppStatusAC('loading'));
@@ -54,7 +63,11 @@ export const fetchCardPacks = (): AppThunk => (dispatch, getState: () => AppStat
         })
 }
 
-//types
-export type PacksListActionsType = ReturnType<typeof setPacksListData>
+export type PacksListActionsType =
+    | ReturnType<typeof setPacksListData>
+    | ReturnType<typeof setPackModalParams>
 
-type PacksListStateType = PacksParamsResponseType & {}
+type PacksListStateType = PacksParamsResponseType & {
+    packName: string
+    packId: string
+}

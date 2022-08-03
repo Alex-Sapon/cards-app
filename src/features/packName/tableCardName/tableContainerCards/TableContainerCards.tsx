@@ -20,6 +20,7 @@ import IconButton from '@mui/material/IconButton';
 import {DeleteCardModal} from '../../../../components/Modals/customModals/DeleteCardModal';
 import {EditCardModal} from '../../../../components/Modals/customModals/EditCardModal';
 import {ModalType} from '../../../../components/Modals/BasicModal';
+import TableCell from '@mui/material/TableCell/TableCell';
 
 export const TableContainerCards = () => {
     const [question, setQuestion] = useState<'0question' | '1question'>('0question');
@@ -35,7 +36,10 @@ export const TableContainerCards = () => {
 
     const dispatch = useAppDispatch();
 
-    const handleDeleteCard = () => setIsOpen('delete');
+    const handleDeleteCard = () => {
+
+        setIsOpen('delete');
+    }
     const handleEditCard = () => setIsOpen('edit');
     const handleCloseModal = () => setIsOpen('close');
 
@@ -153,7 +157,7 @@ export const TableContainerCards = () => {
                                     </StyledTableRow>
                                 ) : (
                                     <TableRow>
-                                        <td className={styles.now_cards}>Now pack...</td>
+                                        <TableCell className={styles.now_cards}>Now pack...</TableCell>
                                     </TableRow>)}
                         </TableBody>
                     </Table>
