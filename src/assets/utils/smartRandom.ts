@@ -1,4 +1,4 @@
-import {CardType} from '../../features/packsList/tablePacks/learnPack/learnPack-api';
+import {CardType} from '../../features/packsList/learnPack/learnPack-api';
 
 export const getCard = (cards: CardType[]): CardType => {
     const sum = cards.reduce((acc, card) => acc + (6 - card.grade) * (6 - card.grade), 0);

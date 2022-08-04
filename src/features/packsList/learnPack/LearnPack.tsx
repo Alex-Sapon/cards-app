@@ -3,14 +3,16 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import Button from '../../../../common/button/Button';
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
+import Button from '../../../common/button/Button';
 import {useNavigate, useParams} from 'react-router-dom';
-import {PATH} from '../../../../enums/path';
+import {PATH} from '../../../enums/path';
 import {ChangeEvent, useEffect, useState} from 'react';
-import {useAppDispatch, useAppSelector} from '../../../../app/store';
+import {useAppDispatch, useAppSelector} from '../../../app/store';
 import {Typography} from '@mui/material';
 import {getCardsPack, setCardPack, updateGradePack} from './learnPackReducer';
-import {getCard} from '../../../../assets/utils/smartRandom';
+import {getCard} from '../../../assets/utils/smartRandom';
 
 const grades = [
     {value: 1, label: 'Did not know'},
@@ -47,7 +49,7 @@ export const LearnPack = () => {
         setShowAnswer(false);
     }
 
-    const handleChangeGrade = (e: ChangeEvent<HTMLInputElement>, checked: boolean) => {
+    const handleChangeGrade = (e: ChangeEvent<HTMLInputElement>) => {
         const gradeNumbers = [1, 2, 3, 4, 5];
         const value = Number(e.currentTarget.value);
 
@@ -72,7 +74,9 @@ export const LearnPack = () => {
         <div className={styles.wrapper}>
             {status === 'loading'
                 ? (
-                    <Typography mt={10} variant="h4" sx={{textAlign: 'center'}}>Wait a minute...</Typography>
+                    <Box sx={{display: 'flex', mt: '25%', justifyContent: 'center'}}>
+                        <CircularProgress/>
+                    </Box>
                 ) : (
                     <><h3 className={styles.title}>Learn “Pack Name”</h3>
                         <p className={styles.text}><b>Question: </b>{`“${card.question}”`}</p>
@@ -87,7 +91,8 @@ export const LearnPack = () => {
                                                     <FormControlLabel
                                                         key={value + i}
                                                         value={value}
-                                                        control={<Radio size="small" value={value} onChange={handleChangeGrade}/>}
+                                                        control={<Radio size="small" value={value}
+                                                                        onChange={handleChangeGrade}/>}
                                                         label={label}
                                                     />))}
                                             </RadioGroup>

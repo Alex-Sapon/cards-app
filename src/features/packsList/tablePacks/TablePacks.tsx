@@ -5,8 +5,8 @@ import {AppStateType, useAppDispatch, useAppSelector} from '../../../app/store';
 import useDebounce from '../../../assets/utils/useDebounce';
 import {PackType} from '../packsList-api';
 import {RequestStatusType} from '../../../app/reducer/app-reducer';
-import {TableRowPack} from './tableRowPack/TableRowPack';
-import {StyledTableCell} from './tableRowPack/styledTablePack';
+import {TableRowPack} from '../tableRowPack/TableRowPack';
+import {StyledTableCell} from '../tableRowPack/styledTablePack';
 import Button from '../../../common/button/Button';
 import styles from './TablePacks.module.css';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -17,12 +17,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
-import {TextField} from '@mui/material';
+import {TableCell, TextField} from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
 import {setCardsPageCount, setPage, setSearchPackName, setSortPackName} from './tablePacksReducer';
-import {DeletePackModal} from '../../../components/Modals/customModals/DeletePackModal';
 import {AddPackModal} from '../../../components/Modals/customModals/AddPackModal';
-import {EditPackModal} from '../../../components/Modals/customModals/EditPackModal';
-import {TableCell} from '@mui/material';
 import {ModalType} from '../../../components/Modals/BasicModal';
 
 const selectCardPacks = (state: AppStateType): PackType[] => state.packList.cardPacks;
@@ -106,7 +104,9 @@ export const TablePacks = () => {
                     onChange={handleChangeValue}
                     InputProps={{startAdornment: <InputAdornment position="start"><SearchIcon/></InputAdornment>}}
                 />
-                <Button disabled={status === 'loading'} onClick={handleAddNewPack}>Add new pack</Button>
+                {status === 'loading'
+                    ? <LoadingButton sx={{padding: '19px 61px', borderRadius: '30px'}} variant="outlined" loading/>
+                    : <Button onClick={handleAddNewPack}>Add new pack</Button>}
             </div>
             <TableContainer className={styles.table_container}>
                 <Table>

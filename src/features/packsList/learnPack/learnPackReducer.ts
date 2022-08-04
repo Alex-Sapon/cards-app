@@ -1,8 +1,8 @@
-import {CardType} from '../../../packName/apiCardName/apiPackName';
-import {AppThunk} from '../../../../app/store';
+import {CardType} from '../../packName/apiCardName/apiPackName';
+import {AppThunk} from '../../../app/store';
 import {learnPackAPI, UpdateGradeResponseType, UpdateGradeType} from './learnPack-api';
 import {AxiosError} from 'axios';
-import {setAppErrorAC, setAppStatusAC} from '../../../../app/reducer/app-reducer';
+import {setAppErrorAC, setAppStatusAC} from '../../../app/reducer/app-reducer';
 
 const initState: LearnPackStateType = {
     cards: [] as CardType[],

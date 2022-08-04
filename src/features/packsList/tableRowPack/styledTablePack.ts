@@ -16,7 +16,6 @@ export const StyledTableRow = styled(TableRow)(({theme}) => ({
     '&:nth-of-type(even)': {
         backgroundColor: '#F8F7FD',
     },
-    // hide last border
     '&:last-child td, &:last-child th': {
         border: 0,
     },

@@ -13,7 +13,10 @@ export const DeletePackModal = ({isOpen, onClose}: ModalPropsType) => {
     const {packId, packName} = useAppSelector(state => state.packList);
     const status = useAppSelector(state => state.app.status);
 
-    const handleDeletePack = () => dispatch(deleteUpdateCardsPack(packId));
+    const handleDeletePack = () => {
+        dispatch(deleteUpdateCardsPack(packId));
+        onClose();
+    }
 
     return (
         <BasicModal isOpen={isOpen} onClose={onClose}>

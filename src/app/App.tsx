@@ -16,7 +16,7 @@ import {ErrorSnackbar} from '../components/errorSnackbar/ErrorSnackbar';
 import {Navigate, Route, Routes, Outlet} from 'react-router-dom';
 import {PacksList} from '../features/packsList/PacksList';
 import {TableCardName} from '../features/packName/tableCardName/tableCardName';
-import {LearnPack} from '../features/packsList/tablePacks/learnPack/LearnPack';
+import {LearnPack} from '../features/packsList/learnPack/LearnPack';
 
 const selectIsInitialized = (state: AppStateType): boolean => state.app.isInitialized;
 const selectIsLoggedIn = (state: AppStateType): boolean => state.login.isLoggedIn;

@@ -1,21 +1,21 @@
 import {memo, useState} from 'react';
-import {AppStateType, useAppDispatch, useAppSelector} from '../../../../app/store';
+import {AppStateType, useAppDispatch, useAppSelector} from '../../../app/store';
 import {StyledTableCell, StyledTableRow} from './styledTablePack';
-import {shortWord} from '../../../../assets/utils/shortWord';
-import {PATH} from '../../../../enums/path';
+import {shortWord} from '../../../assets/utils/shortWord';
+import {PATH} from '../../../enums/path';
 import {useNavigate} from 'react-router-dom';
-import Button from '../../../../common/button/Button';
-import {RequestStatusType} from '../../../../app/reducer/app-reducer';
+import Button from '../../../common/button/Button';
+import {RequestStatusType} from '../../../app/reducer/app-reducer';
 import styles from './TableRowPack.module.css';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import IconButton from '@mui/material/IconButton';
-import {setUserCardId, setUserCardName} from '../../../packName/reducer/packCardReducer';
-import {setPackId, setPackName} from '../tablePacksReducer';
-import {DeletePackModal} from '../../../../components/Modals/customModals/DeletePackModal';
-import {EditPackModal} from '../../../../components/Modals/customModals/EditPackModal';
+import {setUserCardId, setUserCardName} from '../../packName/reducer/packCardReducer';
+import {setPackId, setPackName} from '../tablePacks/tablePacksReducer';
+import {DeletePackModal} from '../../../components/Modals/customModals/DeletePackModal';
+import {EditPackModal} from '../../../components/Modals/customModals/EditPackModal';
 import * as React from 'react';
-import {ModalType} from '../../../../components/Modals/BasicModal';
-import {setPackModalParams} from '../../packsListReducer';
+import {ModalType} from '../../../components/Modals/BasicModal';
+import {setPackModalParams} from '../packsListReducer';
 
 type TableRowPackType = {
     _id: string

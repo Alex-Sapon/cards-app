@@ -9,7 +9,7 @@ import {RecoveryPasswordActionsType, recoveryPasswordReducer } from '../features
 import {RegistrationActionsType, registrationReducer} from '../features/registration/reducer/registrationReducer';
 import {SetNewPasswordActionsType, setPasswordReducer} from '../features/setPassword/reducer/setPasswordReducer';
 import {AppActionsType, appReducer} from './reducer/app-reducer';
-import {LearnPackActionsType, learnPackReducer} from '../features/packsList/tablePacks/learnPack/learnPackReducer';
+import {LearnPackActionsType, learnPackReducer} from '../features/packsList/learnPack/learnPackReducer';
 
 const rootReducer = combineReducers({
     app: appReducer,
