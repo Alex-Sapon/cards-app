@@ -9,7 +9,7 @@ import {useAppDispatch, useAppSelector} from '../../../app/store';
 import {ChangeEvent, KeyboardEvent, useEffect, useState} from 'react';
 import {deleteUpdateCardsPack} from '../../../features/packsList/tablePacks/tablePacksReducer';
 
-export const EditPackModal = ({isOpen, onClose}: ModalPropsType) => {
+export const EditPackModal = ({onClose}: ModalPropsType) => {
     const dispatch = useAppDispatch();
 
     const [newName, setNewName] = useState('');
@@ -35,7 +35,7 @@ export const EditPackModal = ({isOpen, onClose}: ModalPropsType) => {
     } ,[packName])
 
     return (
-        <BasicModal isOpen={isOpen} onClose={onClose}>
+        <BasicModal onClose={onClose}>
             <div className={styles.header}>
                 <h3>Edit pack</h3>
                 <IconButton onClick={onClose} disabled={status === 'loading'}><CloseIcon/></IconButton>

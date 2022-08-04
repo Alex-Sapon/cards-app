@@ -7,15 +7,14 @@ import styles from './BasicModal.module.css';
 export type ModalType = 'add' | 'edit' | 'delete' | 'close';
 
 export type ModalPropsType = {
-    isOpen: boolean
     onClose: () => void
     children?: ReactNode
 }
 
-export const BasicModal: React.FC<ModalPropsType> = ({isOpen, onClose, children}) => {
+export const BasicModal: React.FC<ModalPropsType> = ({onClose, children}) => {
     return (
         <Modal
-            open={isOpen}
+            open
             onClose={onClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"

@@ -15,12 +15,10 @@ const initialState: CardsNameStateType = {
     tokenDeathTime: 0,
     cardsPack_id: '',
     cardQuestion: '',
-    name: '',
+    packName: '',
     cardAnswer: '',
     sortCards: '',
     cardId: '',
-    question: '',
-    answer: '',
     min: 0,
     max: 0,
 }
@@ -31,8 +29,8 @@ export const cardsNameReducer = (state: CardsNameStateType = initialState, actio
             return {...state, ...action.data};
         case 'CARDS-NAME/SET-CARDS-QUESTION':
             return {...state, cardQuestion: action.searchCardQuestion};
-        case 'CARDS-NAME/SET-USER-CARD-NAME':
-            return {...state, name: action.name};
+        case 'CARDS-NAME/SET-USER-PACK-NAME':
+            return {...state, packName: action.packName};
         case 'CARDS-NAME/SET-CARDS-PAGE':
             return {...state, page: action.page};
         case 'CARDS-NAME/SET-CARDS-PAGE-COUNT':
@@ -43,10 +41,6 @@ export const cardsNameReducer = (state: CardsNameStateType = initialState, actio
             return {...state, cardsPack_id: action.userId};
         case 'CARDS-NAME/SET-CARD-ID':
             return {...state, cardId: action.id};
-        case 'CARDS-NAME/SET-CARD-ANSWER':
-            return {...state, answer: action.answer};
-        case 'CARDS-NAME/SET-CARD-QUESTION':
-            return {...state, question: action.question};
         case 'CARDS-NAME/SET-SORT-CARDS':
             return {...state, sortCards: action.sortCards};
         default:
@@ -64,9 +58,9 @@ export const setUserCardId = (userId: string) => ({
     userId,
 } as const);
 
-export const setUserCardName = (name: string) => ({
-    type: 'CARDS-NAME/SET-USER-CARD-NAME',
-    name,
+export const setUserCardName = (packName: string) => ({
+    type: 'CARDS-NAME/SET-USER-PACK-NAME',
+    packName,
 } as const);
 
 export const getCardsNameData = (data: CardsTypeResponseType) => ({
@@ -92,16 +86,6 @@ export const setCardsTotalCount = (cardsTotalCount: number) => ({
 export const setCardId = (id: string) => ({
     type: 'CARDS-NAME/SET-CARD-ID',
     id,
-} as const);
-
-export const setCardQuestion = (question: string) => ({
-    type: 'CARDS-NAME/SET-CARD-QUESTION',
-    question,
-} as const);
-
-export const setCardAnswer = (answer: string) => ({
-    type: 'CARDS-NAME/SET-CARD-ANSWER',
-    answer,
 } as const);
 
 export const setSortCards = (sortCards: string) => ({
@@ -155,11 +139,11 @@ export const addCardTC = (cardsPack_id: string, question: string, answer: string
     }
 }
 
-export const removeCardTC = (_id: string): AppThunk => async dispatch => {
+export const removeCardTC = (id: string): AppThunk => async dispatch => {
     dispatch(setAppStatusAC('loading'));
 
     try {
-        await cardNameAPI.deleteCard(_id);
+        await cardNameAPI.deleteCard(id);
         dispatch(fetchCardsTC());
     } catch (e) {
         const err = e as Error | AxiosError<{ error: string }>
@@ -170,8 +154,8 @@ export const removeCardTC = (_id: string): AppThunk => async dispatch => {
     }
 }
 
-export const updateCardTC = (_id: string, question: string, answer: string): AppThunk => async dispatch => {
-    const card = {_id, question, answer};
+export const updateCardTC = (id: string, question: string, answer: string): AppThunk => async dispatch => {
+    const card = {_id: id, question, answer};
 
     dispatch(setAppStatusAC('loading'));
 
@@ -190,10 +174,8 @@ export const updateCardTC = (_id: string, question: string, answer: string): App
 export type CardsNameStateType = CardsTypeResponseType & {
     cardsPack_id: string
     cardQuestion?: string
-    name: string
+    packName: string
     cardId: string
-    question: string
-    answer: string
     cardAnswer: string
     sortCards: string
     min: number
@@ -209,7 +191,5 @@ export type CardsNameActionsType =
     | ReturnType<typeof setUserCardId>
     | ReturnType<typeof setUserCardName>
     | ReturnType<typeof setCardId>
-    | ReturnType<typeof setCardQuestion>
-    | ReturnType<typeof setCardAnswer>
     | ReturnType<typeof setSortCards>
 

@@ -48,8 +48,35 @@
     font-weight: 800;
     letter-spacing: 1px;
 }
-.button_group button:disabled,
-.button_group button[disabled] {
+
+.table_button_group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.table_button_group button:nth-child(2) {
+    margin: 0 .5rem;
+}
+
+.table_button_group button {
+    width: 55px;
+    color: #21268F;
+    font-weight: 600;
+    font-size: 14px;
+    border-radius: 2px;
+    box-shadow: none;
+    background-color: #fff;
+    padding: 5px 5px;
+}
+
+.table_button_group button:hover {
+    color: #21268F;
+}
+
+.table_button_group button:disabled,
+.table_button_group button[disabled] {
     background-color: #FAFBFC;
     border-color: rgba(27, 31, 35, 0.15);
     color: #959DA5;
@@ -57,3 +84,33 @@
     pointer-events: none;
     box-shadow: none;
 }
+
+.table_button_group button:active {
+    background: #9A91C8;
+    color: #FFFFFF;
+    box-shadow: none;
+    font-weight: 600;
+}
+
+.table_button_group button:focus {
+    outline: 1px transparent;
+}
+
+.table_button_group button[id='btn_delete'] {
+    color: #FFFFFF;
+    background-color: #F1453D;
+}
+
+.table_button_group button[id='btn_delete']:disabled,
+.table_button_group button[id='btn_delete'][disabled] {
+    background-color: #de6c69;
+}
+
+.table_button_group button[id='btn_delete']:active {
+    color: rgba(0, 0, 0, 0.73);
+}
+
+.table_button_group button[id='btn_delete']:hover {
+    color: #24292E;
+}
+

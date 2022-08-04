@@ -1,4 +1,4 @@
-import {memo, useState} from 'react';
+import React, {memo, useState} from 'react';
 import {AppStateType, useAppDispatch, useAppSelector} from '../../../app/store';
 import {StyledTableCell, StyledTableRow} from './styledTablePack';
 import {shortWord} from '../../../assets/utils/shortWord';
@@ -10,10 +10,8 @@ import styles from './TableRowPack.module.css';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import IconButton from '@mui/material/IconButton';
 import {setUserCardId, setUserCardName} from '../../packName/reducer/packCardReducer';
-import {setPackId, setPackName} from '../tablePacks/tablePacksReducer';
 import {DeletePackModal} from '../../../components/Modals/customModals/DeletePackModal';
 import {EditPackModal} from '../../../components/Modals/customModals/EditPackModal';
-import * as React from 'react';
 import {ModalType} from '../../../components/Modals/BasicModal';
 import {setPackModalParams} from '../packsListReducer';
 
@@ -27,20 +25,18 @@ type TableRowPackType = {
     status: RequestStatusType
 }
 
-const selectLoginUserId = (state: AppStateType): string => state.login._id;
+const selectLoginUserId = (state: AppStateType): string => state.login._id
 
 export const TableRowPack = memo((props: TableRowPackType) => {
-    const {_id, name, cardsCount, updated, user_id, user_name, status} = props;
+    const {_id, name, cardsCount, updated, user_id, user_name, status} = props
 
-    const dispatch = useAppDispatch();
+    const dispatch = useAppDispatch()
 
-    const [isOpen, setIsOpen] = useState<ModalType>('close');
+    const [isOpen, setIsOpen] = useState<ModalType>('close')
 
-    const navigate = useNavigate();
+    const navigate = useNavigate()
 
-    const userId = useAppSelector(selectLoginUserId);
-
-    const closeModal = () => setIsOpen('close');
+    const userId = useAppSelector(selectLoginUserId)
 
     const handleDeletePack = () => {
         dispatch(setPackModalParams({packId: _id, packName: name}));
@@ -50,17 +46,15 @@ export const TableRowPack = memo((props: TableRowPackType) => {
     const handleEditPack = () => {
         dispatch(setPackModalParams({packId: _id, packName: name}));
         setIsOpen('edit');
-    };
+    }
 
-    const handleLearnPack = () => {
-        navigate(`/packs/learn-pack/${_id}`);
-    };
+    const handleLearnPack = () => navigate(`/packs/learn-pack/${_id}`);
 
     const handleSendPackId = () => {
         dispatch(setUserCardId(_id));
         dispatch(setUserCardName(name));
         navigate(PATH.PACKS + '/' + PATH.CARDS);
-    };
+    }
 
     return (
         <>
@@ -96,8 +90,8 @@ export const TableRowPack = memo((props: TableRowPackType) => {
                     <Button disabled={!cardsCount || status === 'loading'} onClick={handleLearnPack}>Learn</Button>
                 </StyledTableCell>
             </StyledTableRow>
-            <DeletePackModal isOpen={isOpen === 'delete'} onClose={closeModal}/>
-            <EditPackModal isOpen={isOpen === 'edit'} onClose={closeModal}/>
+            {isOpen === 'delete' && <DeletePackModal onClose={() => setIsOpen('close')}/>}
+            {isOpen === 'edit' && <EditPackModal onClose={() => setIsOpen('close')}/>}
         </>
     )
 });

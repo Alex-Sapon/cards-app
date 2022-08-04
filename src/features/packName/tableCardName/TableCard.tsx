@@ -1,5 +1,4 @@
-import * as React from 'react';
-import {ChangeEvent, useEffect, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import styles from './tableCardName.module.css';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
@@ -7,7 +6,6 @@ import {TextField} from '@mui/material';
 import {PaginationGroup} from '../../packsList/paginationGroup/PaginationGroup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import IconButton from '@mui/material/IconButton';
-
 import Button from '../../../common/button/Button';
 import {useAppDispatch, useAppSelector} from '../../../app/store';
 import {setCardsPage, setCardsPageCount, setSearchQuestion} from '../reducer/packCardReducer';
@@ -31,7 +29,7 @@ export const TableCard = () => {
     const page = useAppSelector(state => state.cardPack.page);
     const cardsTotalCount = useAppSelector(state => state.cardPack.cardsTotalCount);
     const pageCount = useAppSelector(state => state.cardPack.pageCount);
-    const packName = useAppSelector(state => state.cardPack.name);
+    const packName = useAppSelector(state => state.cardPack.packName);
     const userId = useAppSelector(state => state.login._id);
     const user_id = useAppSelector(state => state.cardPack.packUserId);
     const status = useAppSelector(state => state.app.status);
@@ -41,10 +39,7 @@ export const TableCard = () => {
         dispatch(setCardsPage(1));
     }, [debouncedValue])
 
-    const addNewCard = () => {
-        setIsOpen('add');
-    }
-    const closeModal = () => setIsOpen('close');
+    const addNewCard = () => setIsOpen('add');
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setValue(e.currentTarget.value);
@@ -59,17 +54,11 @@ export const TableCard = () => {
         dispatch(setCardsPage(1));
     }
 
-    const onChangeNavigateHandler = () => {
-        if (status === 'idle') {
-            navigate(-1);
-        }
-    }
-
     return (
         <>
             <div className={styles.arrow_back}>
-                <IconButton disabled={status === 'loading'} onClick={onChangeNavigateHandler}>
-                    <ArrowBackIcon fontSize="small"/>
+                <IconButton disabled={status === 'loading'} onClick={() => navigate(-1)}>
+                    <ArrowBackIcon/>
                 </IconButton>
                 <h2 className={styles.table_title}>{shortWord(packName, 55)}</h2>
             </div>
@@ -100,7 +89,7 @@ export const TableCard = () => {
                     title="Cards per Page"
                 />
             </div>
-            <AddCardModal isOpen={isOpen === 'add'} onClose={closeModal}/>
+            {isOpen === 'add' && <AddCardModal onClose={() => setIsOpen('close')}/>}
         </>
     )
 };

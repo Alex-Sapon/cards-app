@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {useEffect} from 'react';
 import styles from './PacksList.module.css';
 import {ShowPacks} from './showPacks/ShowPacks';
@@ -16,17 +16,15 @@ export const PacksList = () => {
     const pageCount = useAppSelector(state => state.tablePacks.pageCount);
     const searchPackName = useAppSelector(state => state.tablePacks.packName);
     const sortPackName = useAppSelector(state => state.tablePacks.sortPacks);
-    const commonUserId = useAppSelector(state => state.tablePacks.user_id);
-    const commonMin = useAppSelector(state => state.tablePacks.min);
-    const commonMax = useAppSelector(state => state.tablePacks.max);
+    const userId = useAppSelector(state => state.tablePacks.user_id);
+    const min = useAppSelector(state => state.tablePacks.min);
+    const max = useAppSelector(state => state.tablePacks.max);
 
     useEffect(() => {
         dispatch(fetchCardPacks());
-    }, [page, pageCount, sortPackName, searchPackName, commonUserId, commonMin, commonMax]);
+    }, [page, pageCount, sortPackName, searchPackName, userId, min, max]);
 
-    if (!isLoggedIn) {
-        return <Navigate to={PATH.LOGIN}/>
-    }
+    if (!isLoggedIn) return <Navigate to={PATH.LOGIN}/>
 
     return (
         <div className={styles.container}>

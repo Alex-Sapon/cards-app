@@ -1,38 +1,31 @@
-import * as React from 'react';
+import React from 'react';
 import Slider from '@mui/material/Slider';
 import styles from './ShowPacks.module.css';
 import Button from '../../../common/button/Button';
 import {useAppDispatch, useAppSelector} from '../../../app/store';
 import {setMaxNumberCards, setMinNumberCards, setUserId} from '../tablePacks/tablePacksReducer';
 
-
 export const ShowPacks = () => {
+    const dispatch = useAppDispatch();
 
-    const dispatch = useAppDispatch()
-    const status = useAppSelector(state => state.app.status)
-    const user_id = useAppSelector(state => state.tablePacks.user_id)
-    const loginUserId = useAppSelector(state => state.login._id)
-    const min = useAppSelector(state => state.tablePacks.min)
-    const max = useAppSelector(state => state.tablePacks.max)
+    const status = useAppSelector(state => state.app.status);
+    const user_id = useAppSelector(state => state.tablePacks.user_id);
+    const loginUserId = useAppSelector(state => state.login._id);
+    const min = useAppSelector(state => state.tablePacks.min);
+    const max = useAppSelector(state => state.tablePacks.max);
 
     const [value, setValue] = React.useState<number[]>([min, max]);
 
-    const handleSliderChange = (event: Event, newValue: number | number[])  => {
-            setValue(newValue as number[])
-    }
+    const handleSliderChange = (event: Event, newValue: number | number[])  => setValue(newValue as number[]);
 
-    const showMyPacksClickHandler = () => {
-        dispatch(setUserId(loginUserId))
-    }
-    const showAllPacksClickHandler = () => {
-        dispatch(setUserId(''))
-    }
+    const showMyPacksClickHandler = () => dispatch(setUserId(loginUserId));
+
+    const showAllPacksClickHandler = () => dispatch(setUserId(''));
 
     const handleClick = () => {
-        dispatch(setMinNumberCards(value[0]))
-        dispatch(setMaxNumberCards(value[1]))
+        dispatch(setMinNumberCards(value[0]));
+        dispatch(setMaxNumberCards(value[1]));
     }
-
 
     return (
         <div className={styles.left_bar}>
@@ -63,4 +56,4 @@ export const ShowPacks = () => {
             </div>
         </div>
     )
-}
+};

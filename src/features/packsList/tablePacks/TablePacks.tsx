@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {ChangeEvent, useEffect, useState} from 'react';
 import {PaginationGroup} from '../paginationGroup/PaginationGroup';
 import {AppStateType, useAppDispatch, useAppSelector} from '../../../app/store';
@@ -31,29 +31,27 @@ const selectStatus = (state: AppStateType): RequestStatusType => state.app.statu
 
 
 export const TablePacks = () => {
-	const [value, setValue] = useState('');
+    const [value, setValue] = useState('');
     const [isOpen, setIsOpen] = useState<ModalType>('close');
 
-	const [name, setName] = useState<'0name' | '1name'>('0name');
-	const [cardsCount, setCardsCount] = useState<'0cardsCount' | '1cardsCount'>('0cardsCount');
-	const [updated, setUpdated] = useState<'0updated' | '1updated'>('0updated');
-	const [userName, setUserName] = useState<'0user_name' | '1user_name'>('0user_name');
+    const [name, setName] = useState<'0name' | '1name'>('0name');
+    const [cardsCount, setCardsCount] = useState<'0cardsCount' | '1cardsCount'>('0cardsCount');
+    const [updated, setUpdated] = useState<'0updated' | '1updated'>('0updated');
+    const [userName, setUserName] = useState<'0user_name' | '1user_name'>('0user_name');
 
-	const dispatch = useAppDispatch();
+    const dispatch = useAppDispatch();
 
-	const debouncedValue = useDebounce<string>(value, 500);
+    const debouncedValue = useDebounce<string>(value, 500);
 
-	const cardPacks = useAppSelector(selectCardPacks);
-	const cardPacksTotalCount = useAppSelector(selectCardPacksTotalCount);
-	const pageCount = useAppSelector(selectPageCount);
-	const page = useAppSelector(selectPage);
-	const status = useAppSelector(selectStatus);
+    const cardPacks = useAppSelector(selectCardPacks);
+    const cardPacksTotalCount = useAppSelector(selectCardPacksTotalCount);
+    const pageCount = useAppSelector(selectPageCount);
+    const page = useAppSelector(selectPage);
+    const status = useAppSelector(selectStatus);
 
-	const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
-		setValue(e.currentTarget.value);
-	}
-
-    const closeModal = () => setIsOpen('close');
+    const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
+        setValue(e.currentTarget.value);
+    }
 
     useEffect(() => {
         dispatch(setSearchPackName(debouncedValue));
@@ -72,22 +70,22 @@ export const TablePacks = () => {
 
     const handleNameSort = () => {
         setName(name === '0name' ? '1name' : '0name');
-        name && dispatch(setSortPackName(name));
+        dispatch(setSortPackName(name));
     }
 
     const handleCardsCount = () => {
         setCardsCount(cardsCount === '0cardsCount' ? '1cardsCount' : '0cardsCount');
-        cardsCount && dispatch(setSortPackName(cardsCount));
+        dispatch(setSortPackName(cardsCount));
     }
 
     const handleSortUpdated = () => {
         setUpdated(updated === '0updated' ? '1updated' : '0updated');
-        updated && dispatch(setSortPackName(updated));
+        dispatch(setSortPackName(updated));
     }
 
     const handleSortUserName = () => {
         setUserName(userName === '0user_name' ? '1user_name' : '0user_name');
-        userName && dispatch(setSortPackName(userName));
+        dispatch(setSortPackName(userName));
     }
 
     return (
@@ -158,7 +156,7 @@ export const TablePacks = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {cardPacks.length ? cardPacks.map(({_id, name, cardsCount, updated, user_name, user_id}) => (
+                        {cardPacks.length ? cardPacks.map(({_id, name, cardsCount, updated, user_name, user_id}) =>
                             <TableRowPack
                                 key={_id}
                                 _id={_id}
@@ -168,7 +166,7 @@ export const TablePacks = () => {
                                 user_name={user_name}
                                 user_id={user_id}
                                 status={status}/>
-                        )) : (
+                        ) : (
                             <TableRow>
                                 <TableCell className={styles.now_packs}>{'Now packs...'}</TableCell>
                             </TableRow>)}
@@ -184,7 +182,7 @@ export const TablePacks = () => {
                 onChangePage={handleChangePage}
                 onChangeValue={handleChangeValueSelect}
             />
-            <AddPackModal isOpen={isOpen === 'add'} onClose={closeModal}/>
+            {isOpen === 'add' && <AddPackModal onClose={() => setIsOpen('close')}/>}
         </div>
     )
 };

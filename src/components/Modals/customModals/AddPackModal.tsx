@@ -10,7 +10,7 @@ import {useAppDispatch} from '../../../app/store';
 import React, {ChangeEvent, useState} from 'react';
 import {createNewCardsPack} from '../../../features/packsList/tablePacks/tablePacksReducer';
 
-export const AddPackModal = ({isOpen, onClose}: ModalPropsType) => {
+export const AddPackModal = ({onClose}: ModalPropsType) => {
     const dispatch = useAppDispatch();
 
     const [name, setName] = useState('');
@@ -31,7 +31,7 @@ export const AddPackModal = ({isOpen, onClose}: ModalPropsType) => {
     const handleOnChecked = () => setIsPrivate(!isPrivate);
 
     return (
-        <BasicModal isOpen={isOpen} onClose={onClose}>
+        <BasicModal onClose={onClose}>
             <div className={styles.header}>
                 <h3>Add new pack</h3>
                 <IconButton onClick={onClose}><CloseIcon/></IconButton>

@@ -9,7 +9,7 @@ import {useAppDispatch, useAppSelector} from '../../../app/store';
 import {ChangeEvent, useState} from 'react';
 import {addCardTC} from '../../../features/packName/reducer/packCardReducer';
 
-export const AddCardModal = ({isOpen, onClose}: ModalPropsType) => {
+export const AddCardModal = ({onClose}: ModalPropsType) => {
     const dispatch = useAppDispatch();
 
     const [question, setQuestion] = useState('');
@@ -35,12 +35,12 @@ export const AddCardModal = ({isOpen, onClose}: ModalPropsType) => {
     };
 
     return (
-        <BasicModal isOpen={isOpen} onClose={onClose}>
+        <BasicModal onClose={onClose}>
             <div className={styles.header}>
                 <h3>Add new card</h3>
                 <IconButton onClick={onClose}><CloseIcon/></IconButton>
             </div>
-            <div className={styles.divider}></div>
+            <div className={styles.divider}/>
             <TextField
                 value={question}
                 variant="standard"

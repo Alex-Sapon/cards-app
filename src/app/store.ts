@@ -21,7 +21,6 @@ const rootReducer = combineReducers({
     tablePacks: tablePacksReducer,
     cardPack: cardsNameReducer,
     learnPack: learnPackReducer
-
 });
 
 export const store = createStore(rootReducer, applyMiddleware(thunk));
