@@ -40,7 +40,7 @@ export const cardsNameReducer = (state: CardsNameStateType = initialState, actio
         case 'CARDS-NAME/SET-USER-ID':
             return {...state, cardsPack_id: action.userId};
         case 'CARDS-NAME/SET-CARD-ID':
-            return {...state, cardId: action.id};
+            return {...state, cardId: action.cardId};
         case 'CARDS-NAME/SET-SORT-CARDS':
             return {...state, sortCards: action.sortCards};
         default:
@@ -83,9 +83,9 @@ export const setCardsTotalCount = (cardsTotalCount: number) => ({
     cardsTotalCount,
 } as const);
 
-export const setCardId = (id: string) => ({
+export const setCardId = (cardId: string) => ({
     type: 'CARDS-NAME/SET-CARD-ID',
-    id,
+    cardId,
 } as const);
 
 export const setSortCards = (sortCards: string) => ({

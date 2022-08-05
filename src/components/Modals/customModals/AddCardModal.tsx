@@ -4,35 +4,14 @@ import TextField from '@mui/material/TextField';
 import styles from './CustomModal.module.css';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
-import * as React from 'react';
-import {useAppDispatch, useAppSelector} from '../../../app/store';
-import {ChangeEvent, useState} from 'react';
-import {addCardTC} from '../../../features/packName/reducer/packCardReducer';
+import React from 'react';
+import {useAppSelector} from '../../../app/store';
+import {useAddEditItem} from '../../../assets/utils/useAddEditItem';
 
 export const AddCardModal = ({onClose}: ModalPropsType) => {
-    const dispatch = useAppDispatch();
-
-    const [question, setQuestion] = useState('');
-    const [answer, setAnswer] = useState('');
-
     const packId = useAppSelector(state => state.cardPack.cardsPack_id);
 
-    const handleOnChangeQuestion = (e: ChangeEvent<HTMLInputElement>) => {
-        setQuestion(e.currentTarget.value);
-    }
-
-    const handleOnChangeAnswer = (e: ChangeEvent<HTMLInputElement>) => {
-        setAnswer(e.currentTarget.value);
-    }
-
-    const handleAddCard = () => {
-        if (question.trim() && answer.trim()) {
-            dispatch(addCardTC(packId, question, answer));
-            setAnswer('');
-            setQuestion('');
-            onClose();
-        }
-    };
+    const [error, changeQuestion, changeAnswer, addItem, question, answer] = useAddEditItem(packId, onClose);
 
     return (
         <BasicModal onClose={onClose}>
@@ -47,7 +26,7 @@ export const AddCardModal = ({onClose}: ModalPropsType) => {
                 label="Question"
                 fullWidth
                 className={styles.field}
-                onChange={handleOnChangeQuestion}
+                onChange={changeQuestion}
             />
             <TextField
                 value={answer}
@@ -57,12 +36,13 @@ export const AddCardModal = ({onClose}: ModalPropsType) => {
                 rows={3}
                 fullWidth
                 className={styles.field}
-                onChange={handleOnChangeAnswer}
+                onChange={changeAnswer}
             />
             <div className={styles.buttons}>
                 <Button onClick={onClose}>Cancel</Button>
-                <Button onClick={handleAddCard}>Add card</Button>
+                <Button onClick={addItem}>Add card</Button>
             </div>
+            {error && <div className={styles.error}>{error}</div>}
         </BasicModal>
     )
 };

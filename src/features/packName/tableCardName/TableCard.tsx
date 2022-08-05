@@ -41,13 +41,9 @@ export const TableCard = () => {
 
     const addNewCard = () => setIsOpen('add');
 
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setValue(e.currentTarget.value);
-    }
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => setValue(e.currentTarget.value);
 
-    const onChangePageHandler = (page: number) => {
-        dispatch(setCardsPage(page));
-    }
+    const onChangePageHandler = (page: number) => dispatch(setCardsPage(page));
 
     const onChangePageCountHandler = (value: number) => {
         dispatch(setCardsPageCount(value));

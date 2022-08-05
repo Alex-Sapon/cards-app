@@ -35,7 +35,10 @@ export const StyledTableRowComponent = (props: StyledTableRowProps) => {
         setIsOpen('delete');
     }
 
-    const handleEditCard = () => setIsOpen('edit');
+    const handleEditCard = () => {
+        dispatch(setCardId(cardId));
+        setIsOpen('edit');
+    }
 
     return (
         <>

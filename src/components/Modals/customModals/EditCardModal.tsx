@@ -1,32 +1,18 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {BasicModal, ModalPropsType} from '../BasicModal';
 import styles from './CustomModal.module.css';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import {TextField} from '@mui/material';
 import Button from '../../../common/button/Button';
-import {useAppDispatch, useAppSelector} from '../../../app/store';
-import {updateCardTC} from '../../../features/packName/reducer/packCardReducer';
+import {useAppSelector} from '../../../app/store';
+import {useAddEditItem} from '../../../assets/utils/useAddEditItem';
 
 export const EditCardModal = ({onClose}: ModalPropsType) => {
-    const dispatch = useAppDispatch();
-
-    const [question, setQuestion] = useState('');
-    const [answer, setAnswer] = useState('');
-
     const cardId = useAppSelector(state => state.cardPack.cardId);
     const card = useAppSelector(state => state.cardPack.cards.find(card => card._id === cardId));
 
-    const handleOnChangeQuestion = (e: ChangeEvent<HTMLInputElement>) => setQuestion(e.currentTarget.value);
-
-    const handleOnChangeAnswer = (e: ChangeEvent<HTMLInputElement>) => setAnswer(e.currentTarget.value);
-
-    const handleEditCard = () => {
-        if (question.trim() && answer.trim()) {
-            dispatch(updateCardTC(cardId, question, answer));
-            onClose();
-        }
-    };
+    const [error, changeQuestion, changeAnswer, addItem, question, answer, setQuestion, setAnswer] = useAddEditItem(cardId, onClose);
 
     useEffect(() => {
         if (card?.question && card?.answer) {
@@ -48,7 +34,7 @@ export const EditCardModal = ({onClose}: ModalPropsType) => {
                 label="Question"
                 fullWidth
                 className={styles.field}
-                onChange={handleOnChangeQuestion}
+                onChange={changeQuestion}
             />
             <TextField
                 value={answer}
@@ -58,12 +44,13 @@ export const EditCardModal = ({onClose}: ModalPropsType) => {
                 rows={3}
                 fullWidth
                 className={styles.field}
-                onChange={handleOnChangeAnswer}
+                onChange={changeAnswer}
             />
             <div className={styles.buttons}>
                 <Button onClick={onClose}>Cancel</Button>
-                <Button onClick={handleEditCard}>Edit pack</Button>
+                <Button onClick={addItem}>Edit pack</Button>
             </div>
+            {error && <div className={styles.error}>{error}</div>}
         </BasicModal>
     )
 };
