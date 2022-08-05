@@ -3,7 +3,7 @@ export enum PATH {
     LOGIN = '/login',
     REGISTRATION = '/registration',
     PACKS = '/packs',
-    CARDS = 'cards/:id',
+    CARDS = 'cards',
     LEARN_PACK = 'learn-pack/:id',
     PACKS_LIST = 'packs-list',
     PROFILE = '/profile',

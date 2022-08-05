@@ -2,7 +2,7 @@ import React, {ChangeEvent, useEffect, useState} from 'react';
 import styles from './tableCardName.module.css';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
-import {TextField} from '@mui/material';
+import {Box, CircularProgress, TextField} from '@mui/material';
 import {PaginationGroup} from '../../packsList/paginationGroup/PaginationGroup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import IconButton from '@mui/material/IconButton';
@@ -69,9 +69,9 @@ export const TableCard = () => {
                     InputProps={{startAdornment: <InputAdornment position="start"><SearchIcon/></InputAdornment>}}
                 />
                 {userId === user_id
-                    ? <Button className={styles.button} disabled={status === 'loading'} onClick={addNewCard}>
-                        ADD NEW CARD
-                    </Button> : null}
+                    && <Button className={styles.button} disabled={status === 'loading'} onClick={addNewCard}>
+                        Add new card
+                    </Button>}
             </div>
             <TableContainerCards/>
             <div className={styles.paginationContainer}>

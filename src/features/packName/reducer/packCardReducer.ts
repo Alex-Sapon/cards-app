@@ -123,8 +123,8 @@ export const fetchCardsTC = (): AppThunk => async (dispatch, getState: () => App
     }
 }
 
-export const addCardTC = (cardsPack_id: string, question: string, answer: string): AppThunk => async dispatch => {
-    const card = {cardsPack_id, question, answer};
+export const addCardTC = (id: string, question: string, answer: string): AppThunk => async dispatch => {
+    const card = {cardsPack_id: id, question, answer};
     dispatch(setAppStatusAC('loading'));
 
     try {

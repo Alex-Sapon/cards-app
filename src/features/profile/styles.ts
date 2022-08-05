@@ -34,11 +34,12 @@ export const useStyles = makeStyles((theme) => ({
 
 	nickName: {
 		display: "flex",
-		justifyContent: 'center',
-		padding: '20px 0 5px 0'
+		alignItems: 'center',
 	},
 	name: {
-		padding: '0 5px 0 5px'
+		padding: '0 5px 0 5px',
+		display: 'inline-block',
+		width: '100%'
 	},
 
 	information: {

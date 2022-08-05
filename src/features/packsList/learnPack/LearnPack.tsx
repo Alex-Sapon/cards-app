@@ -10,7 +10,6 @@ import {useNavigate, useParams} from 'react-router-dom';
 import {PATH} from '../../../enums/path';
 import {ChangeEvent, useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../../app/store';
-import {Typography} from '@mui/material';
 import {getCardsPack, setCardPack, updateGradePack} from './learnPackReducer';
 import {getCard} from '../../../assets/utils/smartRandom';
 
@@ -73,45 +72,36 @@ export const LearnPack = () => {
     return (
         <div className={styles.wrapper}>
             {status === 'loading'
-                ? (
-                    <Box sx={{display: 'flex', mt: '25%', justifyContent: 'center'}}>
-                        <CircularProgress/>
-                    </Box>
-                ) : (
-                    <><h3 className={styles.title}>Learn “Pack Name”</h3>
-                        <p className={styles.text}><b>Question: </b>{`“${card.question}”`}</p>
-                        {showAnswer
-                            ? (
-                                <><p className={styles.text}><b>Answer: </b>{`“${card.answer}”`}</p>
-                                    <div className={styles.rate}>
-                                        <div className={styles.label}>Rate yourself:</div>
-                                        <FormControl>
-                                            <RadioGroup defaultValue={1}>
-                                                {grades.map(({value, label}, i) => (
-                                                    <FormControlLabel
-                                                        key={value + i}
-                                                        value={value}
-                                                        control={<Radio size="small" value={value}
-                                                                        onChange={handleChangeGrade}/>}
-                                                        label={label}
-                                                    />))}
-                                            </RadioGroup>
-                                        </FormControl>
-                                    </div>
-                                    <div className={styles.buttons_answer}>
-                                        <Button onClick={handleCancel}>Cancel</Button>
-                                        <Button onClick={handleNext}>Next</Button>
-                                    </div>
-                                </>
-                            ) : (
-                                <div className={styles.buttons_question}>
-                                    <Button onClick={handleCancel}>Cancel</Button>
-                                    <Button onClick={handleToggleShowAnswer}>Show answer</Button>
-                                </div>
-                            )}
-                    </>
-                )}
+                ? <Box sx={{display: 'flex', mt: '25%', justifyContent: 'center'}}><CircularProgress/></Box>
+                : <><h3 className={styles.title}>Learn “Pack Name”</h3>
+                    <p className={styles.text}><b>Question: </b>{`“${card.question}”`}</p>
+                    {showAnswer
+                        ? <><p className={styles.text}><b>Answer: </b>{`“${card.answer}”`}</p>
+                            <div className={styles.rate}>
+                                <div className={styles.label}>Rate yourself:</div>
+                                <FormControl>
+                                    <RadioGroup defaultValue={1}>
+                                        {grades.map(({value, label}, i) => (
+                                            <FormControlLabel
+                                                key={value + i}
+                                                value={value}
+                                                control={<Radio size="small" value={value}
+                                                                onChange={handleChangeGrade}/>}
+                                                label={label}
+                                            />))}
+                                    </RadioGroup>
+                                </FormControl>
+                            </div>
+                            <div className={styles.buttons_answer}>
+                                <Button onClick={handleCancel}>Cancel</Button>
+                                <Button onClick={handleNext}>Next</Button>
+                            </div>
+                        </>
+                        : <div className={styles.buttons_question}>
+                            <Button onClick={handleCancel}>Cancel</Button>
+                            <Button onClick={handleToggleShowAnswer}>Show answer</Button>
+                        </div>}
+                </>}
         </div>
-
     )
 };

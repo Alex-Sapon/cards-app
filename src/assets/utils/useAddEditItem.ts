@@ -1,6 +1,5 @@
 import {ChangeEvent, useState} from 'react';
-import {useAppDispatch} from '../../app/store';
-import {addCardTC} from '../../features/packName/reducer/packCardReducer';
+import {AppThunk, useAppDispatch} from '../../app/store';
 
 type AddEditProps = [
     error: string,
@@ -13,7 +12,7 @@ type AddEditProps = [
     setError: (value: string) => void,
 ]
 
-export const useAddEditItem = (id: string, onClose: () => void): AddEditProps => {
+export function useAddEditItem(id: string, thunkCreator: {(id: string, question: string, answer: string): AppThunk}, onClose: () => void): AddEditProps {
     const dispatch = useAppDispatch();
 
     const [question, setQuestion] = useState('');
@@ -32,7 +31,7 @@ export const useAddEditItem = (id: string, onClose: () => void): AddEditProps =>
 
     const addItem = () => {
         if (question.trim() && answer.trim()) {
-            dispatch(addCardTC(id, question, answer));
+            dispatch(thunkCreator(id, question, answer));
             onClose();
         }
 

@@ -7,11 +7,12 @@ import IconButton from '@mui/material/IconButton';
 import React from 'react';
 import {useAppSelector} from '../../../app/store';
 import {useAddEditItem} from '../../../assets/utils/useAddEditItem';
+import {addCardTC} from '../../../features/packName/reducer/packCardReducer';
 
 export const AddCardModal = ({onClose}: ModalPropsType) => {
     const packId = useAppSelector(state => state.cardPack.cardsPack_id);
 
-    const [error, changeQuestion, changeAnswer, addItem, question, answer] = useAddEditItem(packId, onClose);
+    const [error, changeQuestion, changeAnswer, addItem, question, answer] = useAddEditItem(packId, addCardTC, onClose);
 
     return (
         <BasicModal onClose={onClose}>

@@ -7,12 +7,22 @@ import {TextField} from '@mui/material';
 import Button from '../../../common/button/Button';
 import {useAppSelector} from '../../../app/store';
 import {useAddEditItem} from '../../../assets/utils/useAddEditItem';
+import {updateCardTC} from '../../../features/packName/reducer/packCardReducer';
 
 export const EditCardModal = ({onClose}: ModalPropsType) => {
     const cardId = useAppSelector(state => state.cardPack.cardId);
     const card = useAppSelector(state => state.cardPack.cards.find(card => card._id === cardId));
 
-    const [error, changeQuestion, changeAnswer, addItem, question, answer, setQuestion, setAnswer] = useAddEditItem(cardId, onClose);
+    const [
+        error,
+        changeQuestion,
+        changeAnswer,
+        addItem,
+        question,
+        answer,
+        setQuestion,
+        setAnswer
+    ] = useAddEditItem(cardId, updateCardTC, onClose);
 
     useEffect(() => {
         if (card?.question && card?.answer) {
