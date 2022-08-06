@@ -21,6 +21,7 @@ type PackType = {
     name: string
     path?: string
     grade?: number
+    deckCover?: string
     shots?: number
     cardsCount?: number
     type?: string

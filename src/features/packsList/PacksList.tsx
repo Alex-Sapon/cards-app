@@ -1,5 +1,4 @@
-import React from 'react';
-import {useEffect} from 'react';
+import React, {useEffect} from 'react';
 import styles from './PacksList.module.css';
 import {ShowPacks} from './showPacks/ShowPacks';
 import {TablePacks} from './tablePacks/TablePacks';

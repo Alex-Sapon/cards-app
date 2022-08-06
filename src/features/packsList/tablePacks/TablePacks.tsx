@@ -109,7 +109,7 @@ export const TablePacks = () => {
             <TableContainer className={styles.table_container}>
                 <Table>
                     <TableHead>
-                        <TableRow sx={{display: 'grid', gridTemplateColumns: '21% 15% 19% 17% 28%'}}>
+                        <TableRow sx={{display: 'grid', gridTemplateColumns: '25% 13% 17% 17% 28%'}}>
                             <StyledTableCell>
                                 <TableSortLabel
                                     active={true}
@@ -138,7 +138,7 @@ export const TablePacks = () => {
                                     onClick={handleSortUpdated}
                                 >
                                 </TableSortLabel>
-                                <b>Last Updated</b>
+                                <b>Updated</b>
                             </StyledTableCell>
                             <StyledTableCell align="center">
                                 <TableSortLabel
@@ -156,11 +156,12 @@ export const TablePacks = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {cardPacks.length ? cardPacks.map(({_id, name, cardsCount, updated, user_name, user_id}) =>
+                        {cardPacks.length ? cardPacks.map(({_id, name, cardsCount, updated, user_name, user_id, deckCover}) =>
                             <TableRowPack
                                 key={_id}
                                 _id={_id}
                                 name={name}
+                                cover={deckCover}
                                 cardsCount={cardsCount}
                                 updated={updated}
                                 user_name={user_name}

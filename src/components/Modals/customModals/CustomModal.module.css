@@ -15,6 +15,13 @@
     background-color: #EDF0F6;
 }
 
+.image {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    margin-bottom: 1rem;
+}
+
 .description {
     font-size: 14px;
     line-height: 24px;
@@ -38,7 +45,7 @@
 }
 
 .field,
-.checkbox {
+.block {
     margin-bottom: 2rem!important;
 }
 
@@ -46,4 +53,15 @@
     text-align: center;
     color: red;
     margin-top: 1rem;
+}
+
+.block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cover {
+    display: flex;
+    align-items: center;
 }

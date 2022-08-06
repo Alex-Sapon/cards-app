@@ -6,11 +6,13 @@ import CloseIcon from '@mui/icons-material/Close';
 import Button from '../../../common/button/Button';
 import {useAppDispatch, useAppSelector} from '../../../app/store';
 import {deleteUpdateCardsPack} from '../../../features/packsList/tablePacks/tablePacksReducer';
+import Cover from '../../../assets/images/cover.jpg';
 
 export const DeletePackModal = ({onClose}: ModalPropsType) => {
     const dispatch = useAppDispatch();
 
     const {packId, packName} = useAppSelector(state => state.packList);
+    const pack = useAppSelector(state => state.packList.cardPacks.find(pack => pack._id === packId));
 
     const handleDeletePack = () => {
         dispatch(deleteUpdateCardsPack(packId));
@@ -24,6 +26,7 @@ export const DeletePackModal = ({onClose}: ModalPropsType) => {
                 <IconButton onClick={onClose}><CloseIcon/></IconButton>
             </div>
             <div className={styles.divider}/>
+            <img src={pack?.deckCover ? pack?.deckCover : Cover} alt="" className={styles.image}/>
             <p className={styles.description}>
                 Do you really want to remove Pack Name - <b>{packName}</b>? All cards will be excluded from this course.
             </p>

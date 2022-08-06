@@ -7,7 +7,6 @@ export const packsListApi = {
     }
 }
 
-//types
 export type PacksParamsType = {
     packName: string
     min?: number
@@ -37,6 +36,7 @@ export type PackType = {
     name: string
     path: string
     grade: number
+    deckCover: string
     shots: number
     cardsCount: number
     type: string

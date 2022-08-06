@@ -9,6 +9,9 @@ import {RequestStatusType} from '../../../app/reducer/app-reducer';
 import styles from './TableRowPack.module.css';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import IconButton from '@mui/material/IconButton';
+import Avatar from '@mui/material/Avatar';
+import {green} from '@mui/material/colors';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 import {setUserCardId, setUserCardName} from '../../packName/reducer/packCardReducer';
 import {DeletePackModal} from '../../../components/Modals/customModals/DeletePackModal';
 import {EditPackModal} from '../../../components/Modals/customModals/EditPackModal';
@@ -20,6 +23,7 @@ type TableRowPackType = {
     name: string
     cardsCount: number
     updated: string
+    cover: string
     user_name: string
     user_id: string
     status: RequestStatusType
@@ -28,7 +32,7 @@ type TableRowPackType = {
 const selectLoginUserId = (state: AppStateType): string => state.login._id
 
 export const TableRowPack = memo((props: TableRowPackType) => {
-    const {_id, name, cardsCount, updated, user_id, user_name, status} = props
+    const {_id, name, cardsCount, updated, user_id, user_name, status, cover} = props
 
     const dispatch = useAppDispatch()
 
@@ -58,8 +62,9 @@ export const TableRowPack = memo((props: TableRowPackType) => {
 
     return (
         <>
-            <StyledTableRow sx={{display: 'grid', gridTemplateColumns: '25% 8% 24% 15% 28%'}}>
+            <StyledTableRow sx={{display: 'grid', gridTemplateColumns: '28% 8% 21% 15% 28%'}}>
                 <StyledTableCell component="th" scope="row" className={styles.sell}>
+                    <Avatar sx={{mr: '.5rem'}} variant="rounded" src={cover}/>
                     <span style={{display: 'inline-block', flex: '1 1 auto'}}>{shortWord(name, 12)}</span>
                     <IconButton
                         disabled={status === 'loading'}
@@ -79,14 +84,14 @@ export const TableRowPack = memo((props: TableRowPackType) => {
                 </StyledTableCell>
                 <StyledTableCell align="center" className={styles.table_button_group}>
                     {userId === user_id
-                        ? <>
+                        && <>
                             <Button id="btn_delete" disabled={status === 'loading'} onClick={handleDeletePack}>
                                 Delete
                             </Button>
                             <Button disabled={status === 'loading'} onClick={handleEditPack}>
                                 Edit
                             </Button>
-                        </> : null}
+                        </>}
                     <Button disabled={!cardsCount || status === 'loading'} onClick={handleLearnPack}>Learn</Button>
                 </StyledTableCell>
             </StyledTableRow>

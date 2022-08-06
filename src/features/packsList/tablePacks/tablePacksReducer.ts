@@ -86,11 +86,11 @@ export const setPackName = (name: string) => ({
     name,
 } as const);
 
-export const createNewCardsPack = (name: string, isPrivate: boolean): AppThunk => dispatch => {
+export const createNewCardsPack = (name: string, cover: string, isPrivate: boolean): AppThunk => dispatch => {
     const data: NewCardsPackType = {
         cardsPack: {
             name: name,
-            deckCover: '',
+            deckCover: cover,
             private: isPrivate,
         },
     };
@@ -98,7 +98,7 @@ export const createNewCardsPack = (name: string, isPrivate: boolean): AppThunk =
     dispatch(setAppStatusAC('loading'));
 
     tablePacksAPI.createPack(data)
-        .then(() => {
+        .then(res => {
             dispatch(fetchCardPacks());
         })
         .catch((e: AxiosError<{ error: string }>) => {
@@ -107,9 +107,9 @@ export const createNewCardsPack = (name: string, isPrivate: boolean): AppThunk =
         })
 };
 
-export const deleteUpdateCardsPack = (id: string, name?: string): AppThunk => dispatch => {
-    const apiMethod = name
-        ? tablePacksAPI.updatePack({cardsPack: {_id: id, name: name}})
+export const deleteUpdateCardsPack = (id: string, name?: string, cover?: string): AppThunk => dispatch => {
+    const apiMethod = name && cover
+        ? tablePacksAPI.updatePack({cardsPack: {_id: id, name: name, deckCover: cover}})
         : tablePacksAPI.deletePack(id);
 
     dispatch(setAppStatusAC('loading'));
