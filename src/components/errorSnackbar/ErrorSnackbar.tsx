@@ -16,9 +16,8 @@ export const ErrorSnackbar = () => {
     const message = useAppSelector(state => state.registration.message);
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === 'clickaway') {
-            return;
-        }
+        if (reason === 'clickaway') return;
+
         dispatch(setRegisterMessageAC(null))
         dispatch(setAppErrorAC(null))
     };

@@ -9,7 +9,6 @@ import Button from '../../common/button/Button';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Tooltip from '@mui/material/Tooltip';
-import userPhoto from '../../assets/images/avatar.jpg';
 import {useAppDispatch, useAppSelector} from '../../app/store';
 import {useStyles} from './styles';
 import {PATH} from '../../enums/path';
@@ -69,7 +68,7 @@ export const Profile = () => {
     const logoutHandler = () => dispatch(logoutTC());
 
     useEffect(() => {
-        dispatch(updateUserDataTC(title, avatar || userPhoto));
+        dispatch(updateUserDataTC(title, avatar));
     }, [])
 
     if (!isLoggedIn) return <Navigate to={PATH.LOGIN}/>;
@@ -78,7 +77,9 @@ export const Profile = () => {
         <div className={styles.profileContainer}>
             <div className={styles.profileLogOutButton}>
                 <Tooltip title="Logout">
-                    <IconButton disabled={status === 'loading'} onClick={logoutHandler}><LogoutIcon/></IconButton>
+                    <span>
+                         <IconButton disabled={status === 'loading'} onClick={logoutHandler}><LogoutIcon/></IconButton>
+                    </span>
                 </Tooltip>
             </div>
             <div className={styles.profileWrapper}>
@@ -90,17 +91,18 @@ export const Profile = () => {
                         sx={{mb: '2rem'}}
                         anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
                         badgeContent={
-                            <IconButton
-                                disabled={status === 'loading'}
-                                component="span"
-                            ><AddAPhotoIcon/></IconButton>}>
-                        <Avatar alt="Avatar" src={avatar || userPhoto} sx={{width: 120, height: 120}}/>
+                            <IconButton sx={{ml: '2rem'}} disabled={status === 'loading'} component="span">
+                                <AddAPhotoIcon/>
+                            </IconButton>}>
+                        <Avatar alt="Avatar" src={avatar} sx={{width: 120, height: 120}}/>
                     </Badge>
                 </label>
                 <div className={styles.information}>
-                    <div className={styles.nickName}><b>Nickname: </b>
+                    <div className={styles.nickName}>
+                        <span className={styles.subtitle}>Name:</span>
                         {isEditMode
                             ? <><TextField
+                                sx={{ml: '10px'}}
                                 size="small"
                                 fullWidth
                                 onKeyPress={onKeyPressHandler}
@@ -109,17 +111,18 @@ export const Profile = () => {
                                 variant="standard"
                                 autoFocus
                                 onBlur={activateViewMode}
-                            />
-                                <IconButton><ClearIcon fontSize="small"/></IconButton></>
+                                InputProps={{
+                                    endAdornment: (<IconButton size="small"><ClearIcon fontSize="small"/></IconButton>)
+                                }}
+                            /></>
                             : <><span className={styles.name}>{title}</span>
-                                <IconButton
-                                    disabled={status === 'loading'}
-                                    onClick={activateEditMode}
-                                ><ModeEditIcon fontSize="small"/></IconButton>
+                                <IconButton size="small" disabled={status === 'loading'} onClick={activateEditMode}>
+                                    <ModeEditIcon fontSize="small"/>
+                                </IconButton>
                             </>}
                     </div>
-                    <div className={styles.email}><b>Contact email:</b> {email}</div>
-                    <div><b>Number of decks created:</b> {publicCardPacksCount}</div>
+                    <div className={styles.email}><span className={styles.subtitle}>Contact email:</span>{email}</div>
+                    <div><span className={styles.subtitle}>Number of decks created:</span>{publicCardPacksCount}</div>
                 </div>
                 {status === 'loading'
                     ? <LoadingButton sx={{padding: '17px 61px', borderRadius: '30px'}} variant="outlined" loading/>

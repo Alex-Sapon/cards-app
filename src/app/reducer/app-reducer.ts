@@ -5,8 +5,8 @@ import {authAPI} from '../../api/auth-api';
 
 const initialState: AppStateType = {
     isInitialized: false,
-    status: 'idle' as RequestStatusType,
-    error: null
+    status: 'idle',
+    error: null,
 };
 
 export const appReducer = (state: AppStateType = initialState, action: AppActionsType): AppStateType => {
@@ -22,12 +22,21 @@ export const appReducer = (state: AppStateType = initialState, action: AppAction
     }
 };
 
-//actions
-const setInitializeApp = (isInitialized: boolean) => ({type: 'APP/SET-INITIALIZE-APP', isInitialized,} as const);
-export const setAppStatusAC = (status: RequestStatusType) => ({type: 'APP/SET-APP-STATUS', status} as const);
-export const setAppErrorAC = (error: string | null) => ({type: 'APP/SET-APP-ERROR', error} as const);
+const setInitializeApp = (isInitialized: boolean) => ({
+    type: 'APP/SET-INITIALIZE-APP',
+    isInitialized,
+} as const);
 
-//thunks
+export const setAppStatusAC = (status: RequestStatusType) => ({
+    type: 'APP/SET-APP-STATUS',
+    status,
+} as const);
+
+export const setAppErrorAC = (error: string | null) => ({
+    type: 'APP/SET-APP-ERROR',
+    error,
+} as const);
+
 export const initializeApp = (): AppThunk => dispatch => {
     authAPI.me()
         .then((res) => {
@@ -36,19 +45,20 @@ export const initializeApp = (): AppThunk => dispatch => {
         })
         .catch((e: AxiosError<{ error: string }, any>) => {
             const error = (e.response && e.response.data) ? e.response.data.error : e.message;
+            setAppErrorAC(error);
         })
         .finally(() => {
             dispatch(setInitializeApp(true));
         });
 };
 
-//types
 type AppStateType = {
     isInitialized: boolean
     status: RequestStatusType
     error: string | null
 }
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
+
 export type AppActionsType =
     | ReturnType<typeof setInitializeApp>
     | ReturnType<typeof setAppStatusAC>

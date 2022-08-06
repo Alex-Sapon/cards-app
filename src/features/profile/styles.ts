@@ -4,7 +4,6 @@ import {Avatar} from "@mui/material";
 export const useStyles = makeStyles((theme) => ({
 	profileContainer: {
 		width: '500px',
-		maxHeight: '800px',
 		background: '#f9f9fe',
 		margin: '20px auto 0',
 		padding: '20px 30px 50px 30px',
@@ -40,16 +39,19 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	nickName: {
 		display: "flex",
-		justifyContent: 'space-between',
 		alignItems: 'center',
+		marginBottom: '1rem',
 	},
 	name: {
-		display: 'block',
 		width: '100%',
-		marginRight: 'auto'
 	},
 	email: {
-		margin: '10px 0 20px 0',
+		marginBottom: '1rem',
+	},
+	subtitle: {
+		marginRight: '1rem',
+		fontSize: '16px',
+		fontWeight: '600'
 	}
 }))
 
