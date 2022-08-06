@@ -1,4 +1,4 @@
-import {authAPI, UpdatePasswordPayloadType} from '../../../api/auth-api';
+import {authAPI, UpdatePasswordType} from '../../../api/auth-api';
 import {setAppErrorAC, setAppStatusAC} from '../../../app/reducer/app-reducer';
 import {AppThunk} from '../../../app/store';
 import {AxiosError} from 'axios';
@@ -21,7 +21,7 @@ export const setNewPassword = (isUpdatePass: boolean) => ({
     isUpdatePass,
 } as const);
 
-export const updateNewPassword = (data: UpdatePasswordPayloadType): AppThunk => async dispatch => {
+export const updateNewPassword = (data: UpdatePasswordType): AppThunk => async dispatch => {
     try {
         dispatch(setAppStatusAC('loading'));
         await authAPI.updatePassword(data);

@@ -1,5 +1,5 @@
 import {AppThunk} from '../../../app/store';
-import {authAPI, ForgotPasswordPayloadType} from '../../../api/auth-api';
+import {authAPI, ForgotPasswordType} from '../../../api/auth-api';
 import {setAppErrorAC, setAppStatusAC} from '../../../app/reducer/app-reducer';
 import axios, {AxiosError} from 'axios';
 
@@ -30,7 +30,7 @@ export const setEmail = (email: string) => ({
 } as const);
 
 export const forgotPass = (email: string): AppThunk => async dispatch => {
-    const data: ForgotPasswordPayloadType = {
+    const data: ForgotPasswordType = {
         email: email,
         from: 'alexsapon@gmail.com',
         message: `

@@ -3,11 +3,11 @@ import {Avatar} from "@mui/material";
 
 export const useStyles = makeStyles((theme) => ({
 	profileContainer: {
-		width: '400px',
+		width: '500px',
 		maxHeight: '800px',
 		background: '#f9f9fe',
 		margin: '20px auto 0',
-		padding: '20px 20px 20px 20px',
+		padding: '20px 30px 50px 30px',
 		borderRadius: ' 8px',
 	},
 	profileWrapper: {
@@ -21,39 +21,39 @@ export const useStyles = makeStyles((theme) => ({
 		display: 'flex',
 		justifyContent: 'flex-end',
 	},
-
 	title: {
-		margin: '1.25em'
+		display: 'flex',
+		alignItems: 'center',
+		fontSize: '20px',
+		marginBottom: '2em',
 	},
-
 	button: {
-		margin: '30px',
 		width: '127px',
 		height: '36px',
 	},
-
+	information: {
+		width: '100%',
+		display: 'flex',
+		alignItems: 'flex-start',
+		flexDirection: 'column',
+		marginBottom: '2rem',
+	},
 	nickName: {
 		display: "flex",
+		justifyContent: 'space-between',
 		alignItems: 'center',
 	},
 	name: {
-		padding: '0 5px 0 5px',
-		display: 'inline-block',
-		width: '100%'
+		display: 'block',
+		width: '100%',
+		marginRight: 'auto'
 	},
-
-	information: {
-		display: 'flex',
-		alignItems: 'center',
-		flexDirection: 'column',
-		justifyContent: 'space-between',
-	},
-	description: {
+	email: {
 		margin: '10px 0 20px 0',
 	}
-
 }))
+
 export const SmallAvatar = styled(Avatar)(({ theme }) => ({
-	width: 32,
-	height: 32,
+	width: 36,
+	height: 36,
 }));
