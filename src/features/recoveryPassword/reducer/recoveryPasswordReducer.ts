@@ -1,5 +1,5 @@
 import {AppThunk} from '../../../app/store';
-import {authAPI, ForgotPasswordType} from '../../../api/auth-api';
+import {authAPI, ForgotPasswordType} from '../../../api/authAPI';
 import {setAppErrorAC, setAppStatusAC} from '../../../app/reducer/app-reducer';
 import axios, {AxiosError} from 'axios';
 

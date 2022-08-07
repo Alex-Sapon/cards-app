@@ -1,6 +1,6 @@
 import {AppThunk} from '../../../app/store';
 import {AxiosError} from 'axios';
-import {authAPI} from '../../../api/auth-api';
+import {authAPI} from '../../../api/authAPI';
 import {setAppErrorAC, setAppStatusAC} from '../../../app/reducer/app-reducer';
 
 const initialState: RegistrationStateType = {

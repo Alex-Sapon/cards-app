@@ -1,4 +1,4 @@
-import {authAPI, UpdatePasswordType} from '../../../api/auth-api';
+import {authAPI, UpdatePasswordType} from '../../../api/authAPI';
 import {setAppErrorAC, setAppStatusAC} from '../../../app/reducer/app-reducer';
 import {AppThunk} from '../../../app/store';
 import {AxiosError} from 'axios';

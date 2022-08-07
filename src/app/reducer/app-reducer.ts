@@ -1,7 +1,7 @@
 import {AppThunk} from '../store';
 import {setIsLoggedIn, setLoginData} from '../../features/login/reducer/loginReducer';
 import {AxiosError} from 'axios';
-import {authAPI} from '../../api/auth-api';
+import {authAPI} from '../../api/authAPI';
 
 const initialState: AppStateType = {
     isInitialized: false,

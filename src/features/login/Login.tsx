@@ -25,14 +25,12 @@ import {RequestStatusType} from '../../app/reducer/app-reducer';
 
 
 const selectIsLoggedIn = (state: AppStateType): boolean => state.login.isLoggedIn;
-const selectResponseMessage = (state: AppStateType): string | null => state.app.error;
 const selectStatus = (state: AppStateType): RequestStatusType => state.app.status;
 
 export const Login = () => {
 	const dispatch = useAppDispatch();
 
 	const isLoggedIn = useAppSelector(selectIsLoggedIn);
-	const responseMessage = useAppSelector(selectResponseMessage);
 	const status = useAppSelector(selectStatus);
 
 	const [showPassword, setShowPassword] = useState(false);
