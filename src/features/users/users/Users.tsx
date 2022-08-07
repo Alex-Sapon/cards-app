@@ -1,4 +1,4 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import {NavLink} from 'react-router-dom';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -10,12 +10,15 @@ import {Box, TextField} from '@mui/material';
 import styles from './Users.module.css';
 import {PaginationGroup} from '../../packsList/paginationGroup/PaginationGroup';
 import {useAppDispatch, useAppSelector} from '../../../app/store';
-import {setPageCountUsers, setPageUsers} from '../usersReducer';
+import {setPageCountUsers, setPageUsers, setSearchName} from '../usersReducer';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
+import useDebounce from '../../../assets/utils/useDebounce';
 
 export const Users = () => {
     const dispatch = useAppDispatch();
+
+    const [value, setValue] = useState('');
 
     const users = useAppSelector(state => state.usersPage.users);
     const page = useAppSelector(state => state.usersPage.usersParams.page);
@@ -23,9 +26,15 @@ export const Users = () => {
     const usersTotalCount = useAppSelector(state => state.usersPage.usersTotalCount);
     const status = useAppSelector(state => state.app.status);
 
+    const debouncedValue  = useDebounce<string>(value, 500);
+
     const changePageHandler = (page: number) => dispatch(setPageUsers(page));
 
     const changePageCountHandler = (value: number) => dispatch(setPageCountUsers(value));
+
+    const changeSearchValue = (e: ChangeEvent<HTMLInputElement>) => setValue(e.currentTarget.value);
+
+    useEffect(() => {dispatch(setSearchName(debouncedValue))}, [debouncedValue])
 
     return (
         <Box sx={{mt: '20px', borderRadius: '5px', bgcolor: '#fff'}}>
@@ -36,8 +45,8 @@ export const Users = () => {
                     size="small"
                     placeholder="Search"
                     disabled={status === 'loading'}
-                    // value={value}
-                    // onChange={handleChangeValue}
+                    value={value}
+                    onChange={changeSearchValue}
                     InputProps={{startAdornment: <InputAdornment position="start"><SearchIcon/></InputAdornment>}}
                 />
             </div>

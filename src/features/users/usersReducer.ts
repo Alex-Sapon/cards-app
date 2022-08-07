@@ -28,6 +28,8 @@ export const usersReducer = (state: UsersStateType = initState, action: UsersAct
             return {...state, usersParams: {...state.usersParams, page: action.page}};
         case 'USERS/SET-PAGE-COUNT-USERS':
             return {...state, usersParams: {...state.usersParams, pageCount: action.pageCount}};
+        case 'USERS/SET-SEARCH-USER-NAME':
+            return {...state, usersParams: {...state.usersParams, userName: action.userName}};
         default:
             return state;
     }
@@ -46,6 +48,11 @@ export const setPageUsers = (page: number) => ({
 export const setPageCountUsers = (pageCount: number) => ({
     type: 'USERS/SET-PAGE-COUNT-USERS',
     pageCount,
+} as const);
+
+export const setSearchName = (userName: string) => ({
+    type: 'USERS/SET-SEARCH-USER-NAME',
+    userName,
 } as const);
 
 export const getUsers = (): AppThunk => async (dispatch, getState: () => AppStateType) => {
@@ -78,3 +85,4 @@ export type UsersActionsType =
     | ReturnType<typeof setUsers>
     | ReturnType<typeof setPageUsers>
     | ReturnType<typeof setPageCountUsers>
+    | ReturnType<typeof setSearchName>
