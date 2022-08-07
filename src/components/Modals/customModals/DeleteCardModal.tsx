@@ -6,6 +6,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import React from 'react';
 import {removeCardTC} from '../../../features/packName/reducer/packCardReducer';
 import {useAppDispatch, useAppSelector} from '../../../app/store';
+import Cover from '../../../assets/images/cover.jpg';
 
 export const DeleteCardModal = ({onClose}: ModalPropsType) => {
     const dispatch = useAppDispatch();
@@ -25,6 +26,7 @@ export const DeleteCardModal = ({onClose}: ModalPropsType) => {
                 <IconButton onClick={onClose}><CloseIcon/></IconButton>
             </div>
             <div className={styles.divider}/>
+            <img src={card?.questionImg ? card?.questionImg : Cover} alt="Cover" className={styles.image}/>
             <p className={styles.description}>
                 Do you really want to remove Card Name - <b>{card?.question}</b>? All cards will be excluded from this course.
             </p>

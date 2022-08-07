@@ -10,7 +10,6 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import {useAppDispatch, useAppSelector} from '../../../app/store';
-import {useAddEditItem} from '../../../assets/utils/useAddEditItem';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import {setAppErrorAC} from '../../../app/reducer/app-reducer';
 import {convertFileToBase64} from '../../../assets/utils/convertFileToBase64';
