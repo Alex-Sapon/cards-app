@@ -8,31 +8,45 @@ const initState: UsersStateType = {
     maxPublicCardPacksCount: 0,
     minPublicCardPacksCount: 0,
     page: 1,
-    pageCount: 4,
-    usersTotalCount: 7,
+    pageCount: 0,
+    usersTotalCount: 0,
     usersParams: {
         userName: '',
         min: 0,
         max: 10000,
         sortUsers: '',
         page: 1,
-        pageCount: 8,
+        pageCount: 5,
     } as UsersParamsType,
 }
 
 export const usersReducer = (state: UsersStateType = initState, action: UsersActionsType): UsersStateType => {
     switch(action.type) {
         case 'USERS/SET-USERS':
-            return {...state, users: action.users};
+            return {...state, ...action.usersData};
+        case 'USERS/SET-PAGE-USERS':
+            return {...state, usersParams: {...state.usersParams, page: action.page}};
+        case 'USERS/SET-PAGE-COUNT-USERS':
+            return {...state, usersParams: {...state.usersParams, pageCount: action.pageCount}};
         default:
             return state;
     }
 }
 
-export const setUsers = (users: UserType[]) => ({
+export const setUsers = (usersData: UsersResponseType) => ({
     type: 'USERS/SET-USERS',
-    users,
-});
+    usersData,
+} as const);
+
+export const setPageUsers = (page: number) => ({
+    type: 'USERS/SET-PAGE-USERS',
+    page,
+} as const);
+
+export const setPageCountUsers = (pageCount: number) => ({
+    type: 'USERS/SET-PAGE-COUNT-USERS',
+    pageCount,
+} as const);
 
 export const getUsers = (): AppThunk => async (dispatch, getState: () => AppStateType) => {
     const {userName, min, max, sortUsers, page, pageCount} = getState().usersPage.usersParams;
@@ -43,7 +57,7 @@ export const getUsers = (): AppThunk => async (dispatch, getState: () => AppStat
 
     try {
         const res = await usersAPI.getUsers(data);
-        dispatch(setUsers(res.data.users));
+        dispatch(setUsers(res.data));
     } catch (e) {
         const err = e as Error | AxiosError<{error: string}>;
         if (axios.isAxiosError(err)) {
@@ -51,6 +65,8 @@ export const getUsers = (): AppThunk => async (dispatch, getState: () => AppStat
         } else {
             dispatch(setAppErrorAC(err.message));
         }
+    } finally {
+        dispatch(setAppStatusAC('idle'));
     }
 }
 
@@ -58,4 +74,7 @@ type UsersStateType = UsersResponseType & {
     usersParams: UsersParamsType
 }
 
-export type UsersActionsType = ReturnType<typeof setUsers>
+export type UsersActionsType =
+    | ReturnType<typeof setUsers>
+    | ReturnType<typeof setPageUsers>
+    | ReturnType<typeof setPageCountUsers>
