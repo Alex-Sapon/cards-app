@@ -1,7 +1,7 @@
 import {AppStateType, AppThunk} from '../../../app/store';
 import {setAppErrorAC, setAppStatusAC} from '../../../app/reducer/app-reducer';
 import axios, {AxiosError} from 'axios';
-import {cardNameAPI, CardsTypeResponseType, CardType,} from '../apiCardName/apiPackName';
+import {cardNameAPI, CardType, CreateCardType, PackResponseType, UpdateCardType,} from '../apiCardName/apiPackName';
 
 const initialState: CardsNameStateType = {
     cards: [] as CardType[],
@@ -63,7 +63,7 @@ export const setUserCardName = (packName: string) => ({
     packName,
 } as const);
 
-export const getCardsNameData = (data: CardsTypeResponseType) => ({
+export const getCardsNameData = (data: PackResponseType) => ({
     type: 'CARDS-NAME/SET-CARDS-PARAMS',
     data,
 } as const);
@@ -111,7 +111,7 @@ export const fetchCardsTC = (): AppThunk => async (dispatch, getState: () => App
     dispatch(setAppStatusAC('loading'));
 
     try {
-        const res = await cardNameAPI.getCard(params);
+        const res = await cardNameAPI.getCards(params);
         dispatch(getCardsNameData(res.data));
     } catch (e) {
         const err = e as Error | AxiosError<{ error: string }>
@@ -123,12 +123,11 @@ export const fetchCardsTC = (): AppThunk => async (dispatch, getState: () => App
     }
 }
 
-export const addCardTC = (id: string, question: string, answer: string): AppThunk => async dispatch => {
-    const card = {cardsPack_id: id, question, answer};
+export const createCard = (data: CreateCardType): AppThunk => async dispatch => {
     dispatch(setAppStatusAC('loading'));
 
     try {
-        await cardNameAPI.createCard(card);
+        await cardNameAPI.createCard(data);
         dispatch(fetchCardsTC());
     } catch (e) {
         const err = e as Error | AxiosError<{ error: string }>
@@ -154,13 +153,11 @@ export const removeCardTC = (id: string): AppThunk => async dispatch => {
     }
 }
 
-export const updateCardTC = (id: string, question: string, answer: string): AppThunk => async dispatch => {
-    const card = {_id: id, question, answer};
-
+export const updateCard = (data: UpdateCardType): AppThunk => async dispatch => {
     dispatch(setAppStatusAC('loading'));
 
     try {
-        await cardNameAPI.updateCard(card);
+        await cardNameAPI.updateCard(data);
         dispatch(fetchCardsTC());
     } catch (e) {
         const err = e as Error | AxiosError<{ error: string }>
@@ -171,7 +168,7 @@ export const updateCardTC = (id: string, question: string, answer: string): AppT
     }
 };
 
-export type CardsNameStateType = CardsTypeResponseType & {
+export type CardsNameStateType = PackResponseType & {
     cardsPack_id: string
     cardQuestion?: string
     packName: string

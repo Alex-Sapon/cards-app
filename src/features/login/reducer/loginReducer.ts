@@ -79,14 +79,6 @@ export const logoutTC = (): AppThunk => dispatch => {
 export const updateUserDataTC = (name: string, avatar: string): AppThunk => dispatch => {
     dispatch(setAppStatusAC('loading'));
 
-    const brokenAvatar = avatar.includes('data:image');
-
-    if (!brokenAvatar) {
-        dispatch(setAppErrorAC('Error upload avatar.'));
-        dispatch(setAppStatusAC('idle'));
-        return;
-    }
-
     authAPI.updateProfile({name, avatar})
         .then(res => {
             dispatch(setLoginData(res.data.updatedUser));

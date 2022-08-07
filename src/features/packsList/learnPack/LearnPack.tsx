@@ -73,7 +73,7 @@ export const LearnPack = () => {
         <div className={styles.wrapper}>
             {status === 'loading'
                 ? <Box sx={{display: 'flex', mt: '25%', justifyContent: 'center'}}><CircularProgress/></Box>
-                : <><h3 className={styles.title}>Learn “Pack Name”</h3>
+                : <><h3 className={styles.title}>{`Learn “${card.question}”`}</h3>
                     <p className={styles.text}><b>Question: </b>{`“${card.question}”`}</p>
                     {showAnswer
                         ? <><p className={styles.text}><b>Answer: </b>{`“${card.answer}”`}</p>

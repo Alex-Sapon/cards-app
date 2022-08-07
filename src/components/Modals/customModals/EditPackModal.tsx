@@ -1,35 +1,35 @@
+import React, {ChangeEvent, KeyboardEvent, useEffect, useState} from 'react';
+import {useAppDispatch, useAppSelector} from '../../../app/store';
+import {updateCardsPack} from '../../../features/packsList/tablePacks/tablePacksReducer';
+import {setAppErrorAC} from '../../../app/reducer/app-reducer';
 import {BasicModal, ModalPropsType} from '../BasicModal';
-import * as React from 'react';
+import Button from '../../../common/button/Button';
+import {convertFileToBase64} from '../../../assets/utils/convertFileToBase64';
 import styles from './CustomModal.module.css';
 import {TextField} from '@mui/material';
-import Button from '../../../common/button/Button';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import {useAppDispatch, useAppSelector} from '../../../app/store';
-import {ChangeEvent, KeyboardEvent, useEffect, useState} from 'react';
-import {deleteUpdateCardsPack} from '../../../features/packsList/tablePacks/tablePacksReducer';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import {convertFileToBase64} from '../../../assets/utils/convertFileToBase64';
 import Cover from '../../../assets/images/cover.jpg';
 
 export const EditPackModal = ({onClose}: ModalPropsType) => {
     const dispatch = useAppDispatch();
 
     const [newName, setNewName] = useState('');
+    const [newCover, setNewCover] = useState('');
 
     const {packId, packName} = useAppSelector(state => state.packList);
     const pack = useAppSelector(state => state.packList.cardPacks.find(pack => pack._id === packId));
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => setNewName(e.currentTarget.value);
 
-    const name = newName.trim();
-
     const handleEditPack = () => {
-        if (name) {
-            dispatch(deleteUpdateCardsPack(packId, newName));
-            onClose();
-        }
-    };
+        const sendName = newName.trim();
+        const sendCover = newCover ? newCover : pack?.deckCover!;
+
+        dispatch(updateCardsPack(packId, sendName, sendCover));
+        onClose();
+    }
 
     const handleOnKeyPress = (e: KeyboardEvent<HTMLDivElement>) => {
         if (e.key === 'Enter') handleEditPack();
@@ -40,8 +40,11 @@ export const EditPackModal = ({onClose}: ModalPropsType) => {
             const file = e.target.files[0];
 
             convertFileToBase64(file, (file64: string) => {
-                dispatch(deleteUpdateCardsPack(packId, name, file64));
-                onClose();
+                if (file64.includes('data:image')) {
+                    setNewCover(file64);
+                } else {
+                    dispatch(setAppErrorAC('Wrong file format.'));
+                }
             })
         }
     }

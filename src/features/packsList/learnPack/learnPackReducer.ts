@@ -23,18 +23,27 @@ export const learnPackReducer = (state: LearnPackStateType = initState, action: 
     }
 }
 
-// actions
-export const setCardsPack = (cards: CardType[]) => ({type: 'LEARN-PACK/SET-CARDS-PACK', cards} as const);
-export const updateCardsPack = (data: UpdateGradeResponseType) => ({type: 'LEARN-PACK/UPDATE-CARD-PACK', data} as const);
-export const setCardPack = (card: CardType) => ({type: 'LEARN-PACK/SET-CARD-PACK', card} as const);
+export const setCards = (cards: CardType[]) => ({
+    type: 'LEARN-PACK/SET-CARDS-PACK',
+    cards,
+} as const);
 
-// thunks
+export const updateCardsPack = (data: UpdateGradeResponseType) => ({
+    type: 'LEARN-PACK/UPDATE-CARD-PACK',
+    data,
+} as const);
+
+export const setCardPack = (card: CardType) => ({
+    type: 'LEARN-PACK/SET-CARD-PACK',
+    card,
+} as const);
+
 export const getCardsPack = (id: string): AppThunk => dispatch => {
     dispatch(setAppStatusAC('loading'));
 
     learnPackAPI.getCards(id)
         .then(res => {
-            dispatch(setCardsPack(res.data.cards));
+            dispatch(setCards(res.data.cards));
         })
         .catch((e: AxiosError<{error: string}>) => {
             dispatch(setAppErrorAC(e.response ? e.response.data.error : e.message));
@@ -59,9 +68,8 @@ export const updateGradePack = (data: UpdateGradeType): AppThunk => dispatch => 
         })
 }
 
-// types
 export type LearnPackActionsType =
-    | ReturnType<typeof setCardsPack>
+    | ReturnType<typeof setCards>
     | ReturnType<typeof updateCardsPack>
     | ReturnType<typeof setCardPack>
 

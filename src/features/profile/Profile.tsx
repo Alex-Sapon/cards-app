@@ -17,6 +17,7 @@ import {logoutTC, updateUserDataTC} from '../login/reducer/loginReducer';
 import IconButton from '@mui/material/IconButton';
 import LoadingButton from '@mui/lab/LoadingButton';
 import {convertFileToBase64} from '../../assets/utils/convertFileToBase64';
+import {setAppErrorAC} from '../../app/reducer/app-reducer';
 
 export const Profile = () => {
     const styles = useStyles();
@@ -29,8 +30,9 @@ export const Profile = () => {
     const isLoggedIn = useAppSelector(state => state.login.isLoggedIn);
     const status = useAppSelector(state => state.app.status);
 
-    const [isEditMode, setEditMode] = useState<boolean>(false);
-    const [title, setTitle] = useState<string>(name);
+    const [isEditMode, setEditMode] = useState(false);
+    const [title, setTitle] = useState(name);
+    const [newAvatar, setNewAvatar] = useState('');
 
     const activateEditMode = () => {
         setEditMode(true);
@@ -42,7 +44,12 @@ export const Profile = () => {
             const file = e.target.files[0];
 
             convertFileToBase64(file, (file64: string) => {
-                dispatch(updateUserDataTC(title, file64));
+                if (!file64.includes('data:image')) {
+                    dispatch(setAppErrorAC('Wrong file format.'));
+                } else {
+                    setNewAvatar(file64);
+                    dispatch(setAppErrorAC(null));
+                }
             })
         }
     }
@@ -60,8 +67,8 @@ export const Profile = () => {
         }
     }
 
-    const updateName = () => {
-        dispatch(updateUserDataTC(title, avatar));
+    const updateProfile = () => {
+        dispatch(updateUserDataTC(title, newAvatar));
         setEditMode(false);
     }
 
@@ -126,7 +133,7 @@ export const Profile = () => {
                 </div>
                 {status === 'loading'
                     ? <LoadingButton sx={{padding: '17px 61px', borderRadius: '30px'}} variant="outlined" loading/>
-                    : <Button className={styles.button} onClick={updateName}>Save</Button>
+                    : <Button className={styles.button} onClick={updateProfile}>Save</Button>
                 }
             </div>
         </div>

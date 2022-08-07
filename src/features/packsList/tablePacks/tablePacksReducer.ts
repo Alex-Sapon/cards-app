@@ -2,7 +2,7 @@ import {AppThunk} from '../../../app/store';
 import {AxiosError} from 'axios';
 import {setAppErrorAC, setAppStatusAC} from '../../../app/reducer/app-reducer';
 import {fetchCardPacks} from '../packsListReducer';
-import {NewCardsPackType, tablePacksAPI} from './tablePacks-api';
+import {CreateCardsPackType, tablePacksAPI} from './tablePacks-api';
 
 const initialState: TablePacksType = {
     packName: '',
@@ -13,7 +13,7 @@ const initialState: TablePacksType = {
     min: 0,
     max: 110,
     packId: '',
-    name: ''
+    name: '',
 };
 
 export const tablePacksReducer = (state: TablePacksType = initialState, action: TablePacksActionsType): TablePacksType => {
@@ -86,8 +86,8 @@ export const setPackName = (name: string) => ({
     name,
 } as const);
 
-export const createNewCardsPack = (name: string, cover: string, isPrivate: boolean): AppThunk => dispatch => {
-    const data: NewCardsPackType = {
+export const createCardsPack = (name: string, cover: string, isPrivate: boolean): AppThunk => dispatch => {
+    const data: CreateCardsPackType = {
         cardsPack: {
             name: name,
             deckCover: cover,
@@ -98,7 +98,7 @@ export const createNewCardsPack = (name: string, cover: string, isPrivate: boole
     dispatch(setAppStatusAC('loading'));
 
     tablePacksAPI.createPack(data)
-        .then(res => {
+        .then(() => {
             dispatch(fetchCardPacks());
         })
         .catch((e: AxiosError<{ error: string }>) => {
@@ -107,14 +107,31 @@ export const createNewCardsPack = (name: string, cover: string, isPrivate: boole
         })
 };
 
-export const deleteUpdateCardsPack = (id: string, name?: string, cover?: string): AppThunk => dispatch => {
-    const apiMethod = name && cover
-        ? tablePacksAPI.updatePack({cardsPack: {_id: id, name: name, deckCover: cover}})
-        : tablePacksAPI.deletePack(id);
-
+export const deleteCardsPack = (id: string): AppThunk => dispatch => {
     dispatch(setAppStatusAC('loading'));
 
-    apiMethod
+    tablePacksAPI.deletePack(id)
+        .then(() => {
+            dispatch(fetchCardPacks());
+        })
+        .catch((e: AxiosError<{ error: string }>) => {
+            dispatch(setAppErrorAC(e.response ? e.response.data.error : e.message));
+            dispatch(setAppStatusAC('idle'));
+        });
+};
+
+export const updateCardsPack = (id: string, name: string, cover: string): AppThunk => dispatch => {
+    dispatch(setAppStatusAC('loading'));
+
+    const data = {
+        cardsPack: {
+            _id: id,
+            name: name,
+            deckCover: cover,
+        }
+    }
+
+    tablePacksAPI.updatePack(data)
         .then(() => {
             dispatch(fetchCardPacks());
         })

@@ -49,7 +49,7 @@ export const TableContainerCards = () => {
             <TableContainer>
                 <Table>
                     <TableHead className={styles.wrapperRowCards}>
-                        <TableRow>
+                        <TableRow sx={{display: 'grid', gridTemplateColumns: '29% 29% 13% 12% 17%'}}>
                             <StyledTableCell align="justify">
                                 <TableSortLabel
                                     active={true}
@@ -59,7 +59,7 @@ export const TableContainerCards = () => {
                                 </TableSortLabel>
                                 <b>Question</b>
                             </StyledTableCell>
-                            <StyledTableCell align="justify">
+                            <StyledTableCell align="center">
                                 <TableSortLabel
                                     active={true}
                                     disabled={status === 'loading'}
@@ -68,7 +68,7 @@ export const TableContainerCards = () => {
                                 </TableSortLabel>
                                 <b>Answer</b>
                             </StyledTableCell>
-                            <StyledTableCell align="justify">
+                            <StyledTableCell align="center">
                                 <TableSortLabel
                                     active={true}
                                     disabled={status === 'loading'}
@@ -77,7 +77,7 @@ export const TableContainerCards = () => {
                                 </TableSortLabel>
                                 <b>Updated</b>
                             </StyledTableCell>
-                            <StyledTableCell align="justify">
+                            <StyledTableCell align="center">
                                 <TableSortLabel
                                     active={true}
                                     disabled={status === 'loading'}
@@ -86,13 +86,13 @@ export const TableContainerCards = () => {
                                 </TableSortLabel>
                                 <b>Grade</b>
                             </StyledTableCell>
-                            <StyledTableCell align="justify">
+                            <StyledTableCell align="center">
                                 <b>Actions</b>
                             </StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {cards.length ? cards.map(({answer, question, updated, _id, user_id, grade}) =>
+                        {cards.length ? cards.map(({answer, question, updated, _id, user_id, grade, questionImg, answerImg}) =>
                             <StyledTableRowComponent
                                 key={_id}
                                 cardId={_id}
@@ -103,6 +103,8 @@ export const TableContainerCards = () => {
                                 userId={userId}
                                 grade={grade}
                                 status={status}
+                                questionImg={questionImg}
+                                answerImg={answerImg}
                             />
                         ) : (
                             <StyledTableRow>

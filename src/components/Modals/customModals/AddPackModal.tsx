@@ -9,23 +9,21 @@ import {TextField} from '@mui/material';
 import Button from '../../../common/button/Button';
 import {useAppDispatch} from '../../../app/store';
 import React, {ChangeEvent, useState} from 'react';
-import {createNewCardsPack} from '../../../features/packsList/tablePacks/tablePacksReducer';
+import {createCardsPack} from '../../../features/packsList/tablePacks/tablePacksReducer';
 import {convertFileToBase64} from '../../../assets/utils/convertFileToBase64';
+import {setAppErrorAC} from '../../../app/reducer/app-reducer';
 
 export const AddPackModal = ({onClose}: ModalPropsType) => {
     const dispatch = useAppDispatch();
 
     const [name, setName] = useState('');
+    const [cover, setCover] = useState('');
     const [isPrivate, setIsPrivate] = useState(false);
 
-    const sendName = name.trim();
-
     const handleAddNewPack = () => {
-        if (sendName) {
-            // dispatch(createNewCardsPack(sendName, isPrivate));
-            setIsPrivate(false);
-            onClose();
-        }
+        dispatch(createCardsPack(name.trim(), cover, isPrivate));
+        setIsPrivate(false);
+        onClose();
     }
 
     const upload = (e: ChangeEvent<HTMLInputElement>) => {
@@ -33,14 +31,18 @@ export const AddPackModal = ({onClose}: ModalPropsType) => {
             const file = e.target.files[0];
 
             convertFileToBase64(file, (file64: string) => {
-                dispatch(createNewCardsPack(sendName, file64, isPrivate));
+                if (file64.includes('data:image')) {
+                    setCover(file64);
+                } else {
+                    dispatch(setAppErrorAC('Wrong file format.'));
+                }
             })
         }
     }
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => setName(e.currentTarget.value);
 
-    const handleOnChecked = () => setIsPrivate(!isPrivate);
+    const handleOnChecked = () => setIsPrivate(prev => !prev);
 
     return (
         <BasicModal onClose={onClose}>
@@ -48,7 +50,7 @@ export const AddPackModal = ({onClose}: ModalPropsType) => {
                 <h3>Add new pack</h3>
                 <IconButton onClick={onClose}><CloseIcon/></IconButton>
             </div>
-            <div className={styles.divider}></div>
+            <div className={styles.divider}/>
             <TextField
                 onChange={handleOnChange}
                 variant="standard"
@@ -68,7 +70,6 @@ export const AddPackModal = ({onClose}: ModalPropsType) => {
                     control={<Checkbox size="small" onChange={handleOnChecked} checked={isPrivate}/>}
                 />
             </div>
-
             <div className={styles.buttons}>
                 <Button onClick={onClose}>Cancel</Button>
                 <Button onClick={handleAddNewPack}>Add pack</Button>
