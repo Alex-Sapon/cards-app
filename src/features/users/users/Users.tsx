@@ -6,7 +6,9 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import {Box, TextField} from '@mui/material';
+import TextField from '@mui/material/TextField';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 import styles from './Users.module.css';
 import {PaginationGroup} from '../../packsList/paginationGroup/PaginationGroup';
 import {useAppDispatch, useAppSelector} from '../../../app/store';
@@ -26,7 +28,7 @@ export const Users = () => {
     const usersTotalCount = useAppSelector(state => state.usersPage.usersTotalCount);
     const status = useAppSelector(state => state.app.status);
 
-    const debouncedValue  = useDebounce<string>(value, 500);
+    const debouncedValue = useDebounce<string>(value, 500);
 
     const changePageHandler = (page: number) => dispatch(setPageUsers(page));
 
@@ -34,10 +36,12 @@ export const Users = () => {
 
     const changeSearchValue = (e: ChangeEvent<HTMLInputElement>) => setValue(e.currentTarget.value);
 
-    useEffect(() => {dispatch(setSearchName(debouncedValue))}, [debouncedValue])
+    useEffect(() => {
+        dispatch(setSearchName(debouncedValue))
+    }, [debouncedValue])
 
     return (
-        <Box sx={{mt: '20px', borderRadius: '5px', bgcolor: '#fff'}}>
+        <Box sx={{mt: '20px', borderRadius: '5px', bgcolor: '#fff', minHeight: '779px'}}>
             <h2 className={styles.title}>Users of Cards App</h2>
             <div className={styles.search}>
                 <TextField
@@ -60,35 +64,40 @@ export const Users = () => {
                     disable={status === 'loading'}
                 />
             </div>
-            <List sx={{width: '100%', bgcolor: 'background.paper'}}>
-                {users.map(({_id, name, avatar, email, publicCardPacksCount, isAdmin}) =>
-                    <ListItem alignItems="center" key={_id}>
-                        <ListItemAvatar>
-                            <NavLink to={``}><Avatar alt={name} src={avatar}/></NavLink>
-                        </ListItemAvatar>
-                        <ListItemText
-                            sx={{borderBottom: '1px solid', borderBottomColor: 'rgba(0, 0, 0, 0.12)', pb: '10px'}}
-                            primary={name}
-                            secondary={
-                                <>
-                                    <Typography
-                                        sx={{display: 'block'}}
-                                        component="span"
-                                        variant="body2"
-                                        color="text.primary"
-                                    >{`Card packs count - ${publicCardPacksCount}`}</Typography>
-                                    <Typography
-                                        sx={{display: 'inline'}}
-                                        component="span"
-                                        variant="body2"
-                                        color="text.primary"
-                                    >{`Email - ${email}`}</Typography>
-                                </>
-                            }
-                        />
-                    </ListItem>
-                )}
-            </List>
+            {status === 'loading'
+                ? <Box sx={{display: 'flex', justifyContent: 'center', height: '100%'}}>
+                    <CircularProgress sx={{mt: '18%'}}/>
+                </Box>
+                : <List sx={{width: '100%', bgcolor: 'background.paper'}}>
+                    {users.map(({_id, name, avatar, email, publicCardPacksCount, isAdmin}) =>
+                        <ListItem alignItems="center" key={_id}>
+                            <ListItemAvatar>
+                                <NavLink to={``}><Avatar alt={name} src={avatar}/></NavLink>
+                            </ListItemAvatar>
+                            <ListItemText
+                                sx={{borderBottom: '1px solid', borderBottomColor: 'rgba(0, 0, 0, 0.12)', pb: '10px'}}
+                                primary={name}
+                                secondary={
+                                    <>
+                                        <Typography
+                                            sx={{display: 'block'}}
+                                            component="span"
+                                            variant="body2"
+                                            color="text.primary"
+                                        >{`Card packs count - ${publicCardPacksCount}`}</Typography>
+                                        <Typography
+                                            sx={{display: 'inline'}}
+                                            component="span"
+                                            variant="body2"
+                                            color="text.primary"
+                                        >{`Email - ${email}`}</Typography>
+                                    </>
+                                }
+                            />
+                        </ListItem>
+                    )}
+                </List>
+            }
         </Box>
     )
 }
