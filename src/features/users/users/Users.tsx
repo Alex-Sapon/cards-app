@@ -46,7 +46,7 @@ export const Users = () => {
     }, [debouncedValue])
 
     return (
-        <Box sx={{mt: '20px', borderRadius: '5px', bgcolor: '#fff', minHeight: '759px'}}>
+        <Box className={styles.wrapper}>
             <h2 className={styles.title}>Users of Cards Pack</h2>
             <div className={styles.search}>
                 <TextField

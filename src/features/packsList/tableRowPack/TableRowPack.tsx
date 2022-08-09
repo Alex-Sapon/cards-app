@@ -10,8 +10,6 @@ import styles from './TableRowPack.module.css';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
-import {green} from '@mui/material/colors';
-import AssignmentIcon from '@mui/icons-material/Assignment';
 import {setUserCardId, setUserCardName} from '../../packName/reducer/packCardReducer';
 import {DeletePackModal} from '../../../components/Modals/customModals/DeletePackModal';
 import {EditPackModal} from '../../../components/Modals/customModals/EditPackModal';
