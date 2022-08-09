@@ -1,10 +1,13 @@
 import {instance} from '../../api/instance';
 import {AxiosResponse} from 'axios';
 
-export const usersAPI = {
+export const socialAPI = {
     getUsers(data: UsersParamsType) {
         return instance.get<any, AxiosResponse<UsersResponseType>, UsersParamsType>('social/users', {params: data})
-    }
+    },
+    getUser(id: string) {
+        return instance.get<any, AxiosResponse<{ user: UserProfileType }>, { id: string }>(`social/user/?id=${id}`)
+    },
 }
 
 export type UsersParamsType = {
@@ -17,7 +20,7 @@ export type UsersParamsType = {
 }
 
 export type UsersResponseType = {
-    users: UserType[]
+    users: UserProfileType[]
     maxPublicCardPacksCount: number
     minPublicCardPacksCount: number
     page: number
@@ -25,7 +28,7 @@ export type UsersResponseType = {
     usersTotalCount: number
 }
 
-export type UserType = {
+export type UserProfileType = {
     avatar: string
     created: Date
     email: string
@@ -36,3 +39,5 @@ export type UserType = {
     verified: boolean
     _id: string
 }
+
+

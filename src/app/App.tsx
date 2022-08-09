@@ -13,11 +13,12 @@ import {AppStateType, useAppDispatch, useAppSelector} from './store';
 import {initializeApp} from './reducer/app-reducer';
 import {Navbar} from '../components/navbar/Navbar';
 import {ErrorSnackbar} from '../components/errorSnackbar/ErrorSnackbar';
-import {Navigate, Route, Routes, Outlet} from 'react-router-dom';
+import {Navigate, Outlet, Route, Routes} from 'react-router-dom';
 import {PacksList} from '../features/packsList/PacksList';
 import {TableCardName} from '../features/packName/tableCardName/tableCardName';
 import {LearnPack} from '../features/packsList/learnPack/LearnPack';
 import {UsersContainer} from '../features/users/UsersContainer';
+import {UserProfile} from '../features/users/user/User';
 
 const selectIsInitialized = (state: AppStateType): boolean => state.app.isInitialized;
 const selectIsLoggedIn = (state: AppStateType): boolean => state.login.isLoggedIn;
@@ -56,6 +57,7 @@ export const App = () => {
                         <Route path={PATH.CARDS} element={<TableCardName/>}/>
                     </Route>
                     <Route path={PATH.USERS} element={<UsersContainer/>}/>
+                    <Route path={PATH.USER} element={<UserProfile/>}/>
                     <Route path={PATH.PROFILE} element={<Profile/>}/>
                     <Route path={PATH.SET_PASS} element={<SetPassword/>}/>
                     <Route path={PATH.RECOVERY_PASS} element={<RecoveryPassword/>}/>

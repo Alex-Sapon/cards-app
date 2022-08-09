@@ -23,7 +23,6 @@ import FormHelperText from '@mui/material/FormHelperText';
 import LoadingButton from '@mui/lab/LoadingButton/LoadingButton';
 import {RequestStatusType} from '../../app/reducer/app-reducer';
 
-
 const selectIsLoggedIn = (state: AppStateType): boolean => state.login.isLoggedIn;
 const selectStatus = (state: AppStateType): RequestStatusType => state.app.status;
 
@@ -74,9 +73,7 @@ export const Login = () => {
 
 	const handleClickShowPassword = () => setShowPassword(!showPassword);
 
-	if (isLoggedIn) {
-		return <Navigate to={PATH.PROFILE}/>
-	}
+	if (isLoggedIn) return <Navigate to={PATH.PROFILE}/>
 
 	return (
 		<>

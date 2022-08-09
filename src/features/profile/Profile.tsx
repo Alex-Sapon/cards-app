@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, {ChangeEvent, useState} from 'react';
 import {Navigate} from 'react-router-dom';
 import {Avatar} from '@mui/material';
 import TextField from '@mui/material/TextField';
@@ -21,6 +21,7 @@ import {setAppErrorAC} from '../../app/reducer/app-reducer';
 
 export const Profile = () => {
     const styles = useStyles();
+
     const dispatch = useAppDispatch();
 
     const avatar = useAppSelector(state => state.login.avatar);
@@ -73,10 +74,6 @@ export const Profile = () => {
     }
 
     const logoutHandler = () => dispatch(logoutTC());
-
-    useEffect(() => {
-        dispatch(updateUserDataTC(title, avatar));
-    }, [])
 
     if (!isLoggedIn) return <Navigate to={PATH.LOGIN}/>;
 
