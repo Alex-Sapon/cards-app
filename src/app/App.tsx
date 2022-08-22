@@ -19,6 +19,7 @@ import {TableCardName} from '../features/packName/tableCardName/tableCardName';
 import {LearnPack} from '../features/packsList/learnPack/LearnPack';
 import {UsersContainer} from '../features/users/UsersContainer';
 import {UserProfile} from '../features/users/user/User';
+import {UsersChat} from '../features/usersChat/UsersChat';
 
 const selectIsInitialized = (state: AppStateType): boolean => state.app.isInitialized;
 const selectIsLoggedIn = (state: AppStateType): boolean => state.login.isLoggedIn;
@@ -58,6 +59,7 @@ export const App = () => {
                     </Route>
                     <Route path={PATH.USERS} element={<UsersContainer/>}/>
                     <Route path={PATH.USER} element={<UserProfile/>}/>
+                    <Route path={PATH.USER_CHAT} element={<UsersChat/>}/>
                     <Route path={PATH.PROFILE} element={<Profile/>}/>
                     <Route path={PATH.SET_PASS} element={<SetPassword/>}/>
                     <Route path={PATH.RECOVERY_PASS} element={<RecoveryPassword/>}/>

@@ -85,7 +85,7 @@ export const SetPassword = () => {
                             endAdornment={
                                 <InputAdornment position="end">
                                     {status === 'loading'
-                                        ? <LoadingButton loading variant="text" sx={{minWidth: '24px'}}></LoadingButton>
+                                        ? <LoadingButton loading variant="text" sx={{minWidth: '24px'}}/>
                                         :<IconButton
                                             onClick={handleClickShowPassword}
                                             onMouseDown={handleMouseDownPassword}

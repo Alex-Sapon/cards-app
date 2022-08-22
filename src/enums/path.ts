@@ -9,6 +9,7 @@ export enum PATH {
     PROFILE = '/profile',
     USERS = '/users',
     USER = '/user/:id',
+    USER_CHAT = '/user-chat',
     SET_PASS = '/set-new-password/:token',
     RECOVERY_PASS = '/recovery-password',
     PAGE_NOT_FOUND = '/*',

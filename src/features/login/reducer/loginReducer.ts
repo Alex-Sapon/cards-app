@@ -2,6 +2,7 @@ import {AxiosError} from 'axios';
 import {authAPI, LoginType, UserResponseType} from '../../../api/authAPI';
 import {AppThunk} from '../../../app/store';
 import {setAppErrorAC, setAppStatusAC} from '../../../app/reducer/app-reducer';
+import {call, put, takeEvery} from 'redux-saga/effects';
 
 const initialState: LoginDataUserType = {
     _id: '',
@@ -61,20 +62,41 @@ export const login = (data: LoginType): AppThunk => dispatch => {
         })
 };
 
-export const logoutTC = (): AppThunk => dispatch => {
-    dispatch(setAppStatusAC('loading'));
+export function* logoutSaga() {
+    yield put(setAppStatusAC('loading'));
 
-    authAPI.logout()
-        .then(() => {
-            dispatch(setIsLoggedIn(false));
-        })
-        .catch((e: AxiosError<{ error: string }>) => {
-            dispatch(setAppErrorAC(e.message ? e.message : 'Some error occurred'));
-        })
-        .finally(() => {
-            dispatch(setAppStatusAC('idle'));
-        })
+    try {
+        yield call(authAPI.logout);
+        yield put(setIsLoggedIn(false));
+    } catch (e) {
+        const err = e as AxiosError<{ error: string }>
+        yield put(setAppErrorAC(err.response ? err.response.data.error : err.message));
+    } finally {
+        yield put(setAppStatusAC('idle'));
+    }
 }
+
+export function* loginWatcherSaga() {
+    yield takeEvery('LOGIN/LOGOUT-PROFILE', logoutSaga)
+}
+
+export const logout = () => ({type: 'LOGIN/LOGOUT-PROFILE'} as const);
+
+
+// export const logoutTC = (): AppThunk => dispatch => {
+//     dispatch(setAppStatusAC('loading'));
+//
+//     authAPI.logout()
+//         .then(() => {
+//             dispatch(setIsLoggedIn(false));
+//         })
+//         .catch((e: AxiosError<{ error: string }>) => {
+//             dispatch(setAppErrorAC(e.message ? e.message : 'Some error occurred'));
+//         })
+//         .finally(() => {
+//             dispatch(setAppStatusAC('idle'));
+//         })
+// }
 
 export const updateUserDataTC = (name: string, avatar: string): AppThunk => dispatch => {
     dispatch(setAppStatusAC('loading'));
@@ -95,6 +117,7 @@ export const updateUserDataTC = (name: string, avatar: string): AppThunk => disp
 export type LoginActionsType =
     | ReturnType<typeof setLoginData>
     | ReturnType<typeof setIsLoggedIn>
+    | ReturnType<typeof logout>
 
 export type LoginDataUserType = UserResponseType & {
     isLoggedIn: boolean

@@ -13,7 +13,7 @@ import {useAppDispatch, useAppSelector} from '../../app/store';
 import {useStyles} from './styles';
 import {PATH} from '../../enums/path';
 import Badge from '@mui/material/Badge';
-import {logoutTC, updateUserDataTC} from '../login/reducer/loginReducer';
+import {logout, updateUserDataTC} from '../login/reducer/loginReducer';
 import IconButton from '@mui/material/IconButton';
 import LoadingButton from '@mui/lab/LoadingButton';
 import {convertFileToBase64} from '../../assets/utils/convertFileToBase64';
@@ -73,8 +73,6 @@ export const Profile = () => {
         setEditMode(false);
     }
 
-    const logoutHandler = () => dispatch(logoutTC());
-
     if (!isLoggedIn) return <Navigate to={PATH.LOGIN}/>;
 
     return (
@@ -82,7 +80,9 @@ export const Profile = () => {
             <div className={styles.profileLogOutButton}>
                 <Tooltip title="Logout">
                     <span>
-                         <IconButton disabled={status === 'loading'} onClick={logoutHandler}><LogoutIcon/></IconButton>
+                         <IconButton disabled={status === 'loading'} onClick={() => dispatch(logout())}>
+                             <LogoutIcon/>
+                         </IconButton>
                     </span>
                 </Tooltip>
             </div>

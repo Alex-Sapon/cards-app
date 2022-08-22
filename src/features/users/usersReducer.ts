@@ -22,7 +22,7 @@ const initState: UsersStateType = {
 }
 
 export const usersReducer = (state: UsersStateType = initState, action: UsersActionsType): UsersStateType => {
-    switch(action.type) {
+    switch (action.type) {
         case 'USERS/SET-USERS':
             return {...state, ...action.usersData};
         case 'USERS/SET-USER-PROFILE':
@@ -74,7 +74,7 @@ export const getUsers = (): AppThunk => async (dispatch, getState: () => AppStat
         const res = await socialAPI.getUsers(data);
         dispatch(setUsers(res.data));
     } catch (e) {
-        const err = e as Error | AxiosError<{error: string}>;
+        const err = e as Error | AxiosError<{ error: string }>;
         if (axios.isAxiosError(err)) {
             dispatch(setAppErrorAC(err.response ? err.response.data.error : err.message));
         } else {
@@ -92,7 +92,7 @@ export const getUser = (id: string): AppThunk => async dispatch => {
         const res = await socialAPI.getUser(id);
         dispatch(setUserProfile(res.data.user));
     } catch (e) {
-        const err = e as Error | AxiosError<{error: string}>;
+        const err = e as Error | AxiosError<{ error: string }>;
 
         if (axios.isAxiosError(err)) {
             dispatch(setAppErrorAC(err.response ? err.response.data.error : err.message));

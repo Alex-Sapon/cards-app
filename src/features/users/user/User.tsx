@@ -68,7 +68,8 @@ export const UserProfile = () => {
                         <Tooltip title="Back to users list">
                             <span><IconButton onClick={() => navigate(-1)}><ArrowBackIcon/></IconButton></span>
                         </Tooltip>
-                    </CardActions></>
+                    </CardActions>
+                </>
             }
         </Card>
     )

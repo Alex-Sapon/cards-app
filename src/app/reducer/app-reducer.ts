@@ -1,7 +1,7 @@
-import {AppThunk} from '../store';
 import {setIsLoggedIn, setLoginData} from '../../features/login/reducer/loginReducer';
-import {AxiosError} from 'axios';
-import {authAPI} from '../../api/authAPI';
+import {AxiosError, AxiosResponse} from 'axios';
+import {authAPI, UserResponseType} from '../../api/authAPI';
+import {call, put, takeEvery} from 'redux-saga/effects';
 
 const initialState: AppStateType = {
     isInitialized: false,
@@ -37,20 +37,24 @@ export const setAppErrorAC = (error: string | null) => ({
     error,
 } as const);
 
-export const initializeApp = (): AppThunk => dispatch => {
-    authAPI.me()
-        .then((res) => {
-            dispatch(setLoginData(res.data));
-            dispatch(setIsLoggedIn(true));
-        })
-        .catch((e: AxiosError<{ error: string }, any>) => {
-            const error = (e.response && e.response.data) ? e.response.data.error : e.message;
-            setAppErrorAC(error);
-        })
-        .finally(() => {
-            dispatch(setInitializeApp(true));
-        });
-};
+export function* initializeAppSaga() {
+    try {
+        const res: AxiosResponse<UserResponseType> = yield call(authAPI.me);
+        yield put(setLoginData(res.data));
+        yield put(setIsLoggedIn(true));
+    } catch (e) {
+        const err = e as AxiosError<{ error: string }>;
+        yield put(setAppErrorAC(err.response ? err.response.data.error : err.message));
+    } finally {
+        yield put(setInitializeApp(true));
+    }
+}
+
+export function* appWatcherSaga() {
+    yield takeEvery('APP/INITIALIZE-APP', initializeAppSaga);
+}
+
+export const initializeApp = () => ({type: 'APP/INITIALIZE-APP'} as const);
 
 type AppStateType = {
     isInitialized: boolean
@@ -63,3 +67,13 @@ export type AppActionsType =
     | ReturnType<typeof setInitializeApp>
     | ReturnType<typeof setAppStatusAC>
     | ReturnType<typeof setAppErrorAC>
+    | ReturnType<typeof initializeApp>
+
+export type ResponseGenerator = {
+    config?: any,
+    data?: any,
+    headers?: any,
+    request?: any,
+    status?: number,
+    statusText?: string
+}
