@@ -9,28 +9,28 @@ import IconButton from '@mui/material/IconButton';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import {useAppDispatch, useAppSelector} from '../../../app/store';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import {setAppErrorAC} from '../../../app/reducer/app-reducer';
+import {setAppError} from '../../../app/reducer/app-reducer';
 import {convertFileToBase64} from '../../../assets/utils/convertFileToBase64';
+import {useAppDispatch, useAppSelector} from '../../../assets/utils/hooks';
 
 export const AddCardModal = ({onClose}: ModalPropsType) => {
+    const dispatch = useAppDispatch();
+
     const packId = useAppSelector(state => state.cardPack.cardsPack_id);
     const error = useAppSelector(state => state.app.error);
-
-    const dispatch = useAppDispatch();
 
     const [question, setQuestion] = useState('');
     const [answer, setAnswer] = useState('');
     const [isChecked, setIsChecked] = useState(true);
 
     const changeQuestion = (e: ChangeEvent<HTMLInputElement>) => {
-        error && dispatch(setAppErrorAC(null));
+        error && dispatch(setAppError(null));
         setQuestion(e.currentTarget.value);
     }
 
     const changeAnswer = (e: ChangeEvent<HTMLInputElement>) => {
-        error && dispatch(setAppErrorAC(null));
+        error && dispatch(setAppError(null));
         setAnswer(e.currentTarget.value);
     }
 
@@ -49,11 +49,11 @@ export const AddCardModal = ({onClose}: ModalPropsType) => {
 
         }
 
-        if (sendQuestion && !sendAnswer) dispatch(setAppErrorAC('Please, enter answer.'));
+        if (sendQuestion && !sendAnswer) dispatch(setAppError('Please, enter answer.'));
 
-        if (!sendQuestion && sendAnswer) dispatch(setAppErrorAC('Please, enter question.'));
+        if (!sendQuestion && sendAnswer) dispatch(setAppError('Please, enter question.'));
 
-        if (!sendQuestion && !sendAnswer) dispatch(setAppErrorAC('Please, enter question and answer.'));
+        if (!sendQuestion && !sendAnswer) dispatch(setAppError('Please, enter question and answer.'));
     };
 
     const uploadQuestion = (e: ChangeEvent<HTMLInputElement>) => {
@@ -64,7 +64,7 @@ export const AddCardModal = ({onClose}: ModalPropsType) => {
                 if (file64.includes('data:image')) {
                     setQuestion(file64);
                 } else {
-                    dispatch(setAppErrorAC('Wrong file format from question image.'));
+                    dispatch(setAppError('Wrong file format from question image.'));
                 }
             })
         }
@@ -78,7 +78,7 @@ export const AddCardModal = ({onClose}: ModalPropsType) => {
                 if (file64.includes('data:image')) {
                     setAnswer(file64);
                 } else {
-                    dispatch(setAppErrorAC('Wrong file format from answer image.'));
+                    dispatch(setAppError('Wrong file format from answer image.'));
                 }
             })
         }

@@ -9,15 +9,15 @@ import Button from '../../common/button/Button';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Tooltip from '@mui/material/Tooltip';
-import {useAppDispatch, useAppSelector} from '../../app/store';
 import {useStyles} from './styles';
 import {PATH} from '../../enums/path';
 import Badge from '@mui/material/Badge';
-import {logout, updateUserDataTC} from '../login/reducer/loginReducer';
+import {logout, updateUserData} from '../login/reducer/loginReducer';
 import IconButton from '@mui/material/IconButton';
 import LoadingButton from '@mui/lab/LoadingButton';
 import {convertFileToBase64} from '../../assets/utils/convertFileToBase64';
-import {setAppErrorAC} from '../../app/reducer/app-reducer';
+import {setAppError} from '../../app/reducer/app-reducer';
+import {useAppDispatch, useAppSelector} from '../../assets/utils/hooks';
 
 export const Profile = () => {
     const styles = useStyles();
@@ -46,10 +46,10 @@ export const Profile = () => {
 
             convertFileToBase64(file, (file64: string) => {
                 if (!file64.includes('data:image')) {
-                    dispatch(setAppErrorAC('Wrong file format.'));
+                    dispatch(setAppError('Wrong file format.'));
                 } else {
                     setNewAvatar(file64);
-                    dispatch(setAppErrorAC(null));
+                    dispatch(setAppError(null));
                 }
             })
         }
@@ -69,7 +69,7 @@ export const Profile = () => {
     }
 
     const updateProfile = () => {
-        dispatch(updateUserDataTC(title, newAvatar));
+        dispatch(updateUserData(title, newAvatar));
         setEditMode(false);
     }
 

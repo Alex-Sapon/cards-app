@@ -5,8 +5,8 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import React from 'react';
 import {removeCardTC} from '../../../features/packName/reducer/packCardReducer';
-import {useAppDispatch, useAppSelector} from '../../../app/store';
 import Cover from '../../../assets/images/cover.jpg';
+import {useAppDispatch, useAppSelector} from '../../../assets/utils/hooks';
 
 export const DeleteCardModal = ({onClose}: ModalPropsType) => {
     const dispatch = useAppDispatch();

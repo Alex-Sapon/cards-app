@@ -2,8 +2,8 @@ import React from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, {AlertProps} from '@mui/material/Alert';
 import {setRegisterMessageAC} from '../../features/registration/reducer/registrationReducer';
-import {useAppDispatch, useAppSelector} from '../../app/store';
-import {setAppErrorAC} from '../../app/reducer/app-reducer';
+import {setAppError} from '../../app/reducer/app-reducer';
+import {useAppDispatch, useAppSelector} from '../../assets/utils/hooks';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -18,7 +18,7 @@ export const ErrorSnackbar = () => {
         if (reason === 'clickaway') return;
 
         dispatch(setRegisterMessageAC(null));
-        dispatch(setAppErrorAC(null));
+        dispatch(setAppError(null));
     }
 
     return (

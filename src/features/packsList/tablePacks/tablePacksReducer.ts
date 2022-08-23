@@ -1,6 +1,6 @@
 import {AppThunk} from '../../../app/store';
 import {AxiosError} from 'axios';
-import {setAppErrorAC, setAppStatusAC} from '../../../app/reducer/app-reducer';
+import {setAppError, setAppStatus} from '../../../app/reducer/app-reducer';
 import {fetchCardPacks} from '../packsListReducer';
 import {CreateCardsPackType, tablePacksAPI} from './tablePacks-api';
 
@@ -95,33 +95,33 @@ export const createCardsPack = (name: string, cover: string, isPrivate: boolean)
         },
     };
 
-    dispatch(setAppStatusAC('loading'));
+    dispatch(setAppStatus('loading'));
 
     tablePacksAPI.createPack(data)
         .then(() => {
             dispatch(fetchCardPacks());
         })
         .catch((e: AxiosError<{ error: string }>) => {
-            dispatch(setAppErrorAC(e.response ? e.response.data.error : e.message));
-            dispatch(setAppStatusAC('idle'));
+            dispatch(setAppError(e.response ? e.response.data.error : e.message));
+            dispatch(setAppStatus('idle'));
         })
 };
 
 export const deleteCardsPack = (id: string): AppThunk => dispatch => {
-    dispatch(setAppStatusAC('loading'));
+    dispatch(setAppStatus('loading'));
 
     tablePacksAPI.deletePack(id)
         .then(() => {
             dispatch(fetchCardPacks());
         })
         .catch((e: AxiosError<{ error: string }>) => {
-            dispatch(setAppErrorAC(e.response ? e.response.data.error : e.message));
-            dispatch(setAppStatusAC('idle'));
+            dispatch(setAppError(e.response ? e.response.data.error : e.message));
+            dispatch(setAppStatus('idle'));
         });
 };
 
 export const updateCardsPack = (id: string, name: string, cover: string): AppThunk => dispatch => {
-    dispatch(setAppStatusAC('loading'));
+    dispatch(setAppStatus('loading'));
 
     const data = {
         cardsPack: {
@@ -136,8 +136,8 @@ export const updateCardsPack = (id: string, name: string, cover: string): AppThu
             dispatch(fetchCardPacks());
         })
         .catch((e: AxiosError<{ error: string }>) => {
-            dispatch(setAppErrorAC(e.response ? e.response.data.error : e.message));
-            dispatch(setAppStatusAC('idle'));
+            dispatch(setAppError(e.response ? e.response.data.error : e.message));
+            dispatch(setAppStatus('idle'));
         });
 };
 

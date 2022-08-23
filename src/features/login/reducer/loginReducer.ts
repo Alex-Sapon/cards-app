@@ -1,10 +1,9 @@
-import {AxiosError} from 'axios';
-import {authAPI, LoginType, UserResponseType} from '../../../api/authAPI';
-import {AppThunk} from '../../../app/store';
-import {setAppErrorAC, setAppStatusAC} from '../../../app/reducer/app-reducer';
+import {AxiosError, AxiosResponse} from 'axios';
+import {authAPI, LoginType, UpdateProfileResponseType, UserResponseType} from '../../../api/authAPI';
+import {setAppError, setAppStatus} from '../../../app/reducer/app-reducer';
 import {call, put, takeEvery} from 'redux-saga/effects';
 
-const initialState: LoginDataUserType = {
+const initial: LoginDataUserType = {
     _id: '',
     email: '',
     name: '',
@@ -22,9 +21,9 @@ const initialState: LoginDataUserType = {
     isLoggedIn: false,
 }
 
-export type LoginStateType = typeof initialState;
+export type LoginStateType = typeof initial;
 
-export const loginReducer = (state: LoginStateType = initialState, action: LoginActionsType): LoginStateType => {
+export const loginReducer = (state: LoginStateType = initial, action: LoginActionsType): LoginStateType => {
     switch (action.type) {
         case 'LOGIN/SET-LOGIN-DATA-USER':
             return {...state, ...action.data};
@@ -45,79 +44,70 @@ export const setIsLoggedIn = (isLoggedIn: boolean) => ({
     isLoggedIn,
 } as const);
 
-export const login = (data: LoginType): AppThunk => dispatch => {
-    dispatch(setAppStatusAC('loading'));
+export function* loginSaga(action: ReturnType<typeof login>) {
+    yield put(setAppStatus('loading'));
 
-    authAPI.login(data)
-        .then(res => {
-            dispatch(setLoginData(res.data));
-            dispatch(setIsLoggedIn(true));
-        })
-        .catch((e: AxiosError<{ error: string }>) => {
-            const error = (e.response && e.response.data) ? e.response.data.error : e.message;
-            dispatch(setAppErrorAC(error));
-        })
-        .finally(() => {
-            dispatch(setAppStatusAC('idle'));
-        })
-};
+    try {
+        const res: AxiosResponse<UserResponseType> = yield authAPI.login(action.data);
+        yield put(setLoginData(res.data));
+        yield put(setIsLoggedIn(true));
+    } catch (e) {
+        const err = e as AxiosError<{ error: string }>;
+        yield put(setAppError(err.response ? err.response.data.error : err.message))
+    } finally {
+        yield put(setAppStatus('idle'));
+    }
+}
 
 export function* logoutSaga() {
-    yield put(setAppStatusAC('loading'));
+    yield put(setAppStatus('loading'));
 
     try {
         yield call(authAPI.logout);
         yield put(setIsLoggedIn(false));
     } catch (e) {
         const err = e as AxiosError<{ error: string }>
-        yield put(setAppErrorAC(err.response ? err.response.data.error : err.message));
+        yield put(setAppError(err.response ? err.response.data.error : err.message));
     } finally {
-        yield put(setAppStatusAC('idle'));
+        yield put(setAppStatus('idle'));
+    }
+}
+
+export function* updateUserDataSaga({name, avatar}: ReturnType<typeof updateUserData>) {
+    yield put(setAppStatus('loading'));
+
+    try {
+        const res: AxiosResponse<UpdateProfileResponseType> = yield call(authAPI.updateProfile, {name, avatar});
+        yield put(setLoginData(res.data.updatedUser));
+    } catch (e) {
+        const err = e as AxiosError<{ error: string }>;
+        yield put(setAppError(err.response ? err.response.data.error : err.message));
+    } finally {
+        yield put(setAppStatus('idle'));
     }
 }
 
 export function* loginWatcherSaga() {
-    yield takeEvery('LOGIN/LOGOUT-PROFILE', logoutSaga)
+    yield takeEvery('LOGIN/LOGOUT-PROFILE', logoutSaga);
+    yield takeEvery('LOGIN/LOGIN-PROFILE', loginSaga);
+    yield takeEvery('LOGIN/UPDATE-USER-DATA', updateUserDataSaga);
 }
+
+export const login = (data: LoginType) => ({type: 'LOGIN/LOGIN-PROFILE', data} as const);
 
 export const logout = () => ({type: 'LOGIN/LOGOUT-PROFILE'} as const);
 
-
-// export const logoutTC = (): AppThunk => dispatch => {
-//     dispatch(setAppStatusAC('loading'));
-//
-//     authAPI.logout()
-//         .then(() => {
-//             dispatch(setIsLoggedIn(false));
-//         })
-//         .catch((e: AxiosError<{ error: string }>) => {
-//             dispatch(setAppErrorAC(e.message ? e.message : 'Some error occurred'));
-//         })
-//         .finally(() => {
-//             dispatch(setAppStatusAC('idle'));
-//         })
-// }
-
-export const updateUserDataTC = (name: string, avatar: string): AppThunk => dispatch => {
-    dispatch(setAppStatusAC('loading'));
-
-    authAPI.updateProfile({name, avatar})
-        .then(res => {
-            dispatch(setLoginData(res.data.updatedUser));
-        })
-        .catch((e: AxiosError<{ error: string }>) => {
-            const error = e.response ? e.response.data.error : (e.message + ', more details in the console');
-            dispatch(setAppErrorAC(error));
-        })
-        .finally(() => {
-            dispatch(setAppStatusAC('idle'));
-        })
-}
+export const updateUserData = (name: string, avatar: string) => ({
+    type: 'LOGIN/UPDATE-USER-DATA',
+    name,
+    avatar,
+} as const);
 
 export type LoginActionsType =
     | ReturnType<typeof setLoginData>
     | ReturnType<typeof setIsLoggedIn>
     | ReturnType<typeof logout>
+    | ReturnType<typeof login>
 
 export type LoginDataUserType = UserResponseType & {
     isLoggedIn: boolean

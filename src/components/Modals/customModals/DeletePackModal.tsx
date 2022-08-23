@@ -4,9 +4,9 @@ import styles from './CustomModal.module.css';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '../../../common/button/Button';
-import {useAppDispatch, useAppSelector} from '../../../app/store';
 import {deleteCardsPack} from '../../../features/packsList/tablePacks/tablePacksReducer';
 import Cover from '../../../assets/images/cover.jpg';
+import {useAppDispatch, useAppSelector} from '../../../assets/utils/hooks';
 
 export const DeletePackModal = ({onClose}: ModalPropsType) => {
     const dispatch = useAppDispatch();

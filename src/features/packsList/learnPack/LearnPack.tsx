@@ -9,9 +9,9 @@ import Button from '../../../common/button/Button';
 import {useNavigate, useParams} from 'react-router-dom';
 import {PATH} from '../../../enums/path';
 import {ChangeEvent, useEffect, useState} from 'react';
-import {useAppDispatch, useAppSelector} from '../../../app/store';
 import {getCardsPack, setCardPack, updateGradePack} from './learnPackReducer';
 import {getCard} from '../../../assets/utils/smartRandom';
+import {useAppDispatch, useAppSelector} from '../../../assets/utils/hooks';
 
 const grades = [
     {value: 1, label: 'Did not know'},

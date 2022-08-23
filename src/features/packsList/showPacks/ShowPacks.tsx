@@ -2,8 +2,8 @@ import React from 'react';
 import Slider from '@mui/material/Slider';
 import styles from './ShowPacks.module.css';
 import Button from '../../../common/button/Button';
-import {useAppDispatch, useAppSelector} from '../../../app/store';
 import {setMaxNumberCards, setMinNumberCards, setUserId} from '../tablePacks/tablePacksReducer';
+import {useAppDispatch, useAppSelector} from '../../../assets/utils/hooks';
 
 export const ShowPacks = () => {
     const dispatch = useAppDispatch();

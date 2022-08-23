@@ -5,30 +5,30 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import {TextField} from '@mui/material';
 import Button from '../../../common/button/Button';
-import {useAppDispatch, useAppSelector} from '../../../app/store';
 import {updateCard} from '../../../features/packName/reducer/packCardReducer';
 import Cover from '../../../assets/images/cover.jpg';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import {setAppErrorAC} from '../../../app/reducer/app-reducer';
+import {setAppError} from '../../../app/reducer/app-reducer';
 import {convertFileToBase64} from '../../../assets/utils/convertFileToBase64';
+import {useAppDispatch, useAppSelector} from '../../../assets/utils/hooks';
 
 export const EditCardModal = ({onClose}: ModalPropsType) => {
+    const dispatch = useAppDispatch();
+
     const cardId = useAppSelector(state => state.cardPack.cardId);
     const card = useAppSelector(state => state.cardPack.cards.find(card => card._id === cardId));
     const error = useAppSelector(state => state.app.error);
-
-    const dispatch = useAppDispatch();
 
     const [question, setQuestion] = useState('');
     const [answer, setAnswer] = useState('');
 
     const changeQuestion = (e: ChangeEvent<HTMLInputElement>) => {
-        error && dispatch(setAppErrorAC(null));
+        error && dispatch(setAppError(null));
         setQuestion(e.currentTarget.value);
     }
 
     const changeAnswer = (e: ChangeEvent<HTMLInputElement>) => {
-        error && dispatch(setAppErrorAC(null));
+        error && dispatch(setAppError(null));
         setAnswer(e.currentTarget.value);
     }
 
@@ -46,11 +46,11 @@ export const EditCardModal = ({onClose}: ModalPropsType) => {
             }
         }
 
-        if (sendQuestion && !sendAnswer) dispatch(setAppErrorAC('Please, enter answer.'));
+        if (sendQuestion && !sendAnswer) dispatch(setAppError('Please, enter answer.'));
 
-        if (!sendQuestion && sendAnswer) dispatch(setAppErrorAC('Please, enter question.'));
+        if (!sendQuestion && sendAnswer) dispatch(setAppError('Please, enter question.'));
 
-        if (!sendQuestion && !sendAnswer) dispatch(setAppErrorAC('Please, enter question and answer.'));
+        if (!sendQuestion && !sendAnswer) dispatch(setAppError('Please, enter question and answer.'));
     };
 
     const uploadQuestion = (e: ChangeEvent<HTMLInputElement>) => {
@@ -61,7 +61,7 @@ export const EditCardModal = ({onClose}: ModalPropsType) => {
                 if (file64.includes('data:image')) {
                     setQuestion(file64);
                 } else {
-                    dispatch(setAppErrorAC('Wrong file format from question image.'));
+                    dispatch(setAppError('Wrong file format from question image.'));
                 }
             })
         }
@@ -75,7 +75,7 @@ export const EditCardModal = ({onClose}: ModalPropsType) => {
                 if (file64.includes('data:image')) {
                     setAnswer(file64);
                 } else {
-                    dispatch(setAppErrorAC('Wrong file format from answer image.'));
+                    dispatch(setAppError('Wrong file format from answer image.'));
                 }
             })
         }

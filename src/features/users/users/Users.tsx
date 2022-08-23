@@ -10,7 +10,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import styles from './Users.module.css';
 import {PaginationGroup} from '../../packsList/paginationGroup/PaginationGroup';
-import {useAppDispatch, useAppSelector} from '../../../app/store';
 import {setPageCountUsers, setPageUsers, setSearchName} from '../usersReducer';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
@@ -19,6 +18,7 @@ import {useNavigate} from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import ContactPageIcon from '@mui/icons-material/ContactPage';
 import Tooltip from '@mui/material/Tooltip';
+import {useAppDispatch, useAppSelector} from '../../../assets/utils/hooks';
 
 export const Users = () => {
     const dispatch = useAppDispatch();

@@ -2,11 +2,12 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Stack from '@mui/material/Stack';
 import {CSSProperties, useEffect} from 'react';
-import {ActionsType, useAppDispatch} from '../../app/store';
+import {AnyAction} from 'redux';
+import {useAppDispatch} from '../../assets/utils/hooks';
 
 type AlertBarType = {
     message: string | null
-    closeAlert?: () => ActionsType
+    closeAlert?: () => AnyAction
     alertWrapper?: CSSProperties
 }
 

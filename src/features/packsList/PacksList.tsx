@@ -4,8 +4,8 @@ import {ShowPacks} from './showPacks/ShowPacks';
 import {TablePacks} from './tablePacks/TablePacks';
 import {PATH} from '../../enums/path';
 import {Navigate} from 'react-router-dom';
-import {useAppDispatch, useAppSelector} from '../../app/store';
 import {fetchCardPacks} from './packsListReducer';
+import {useAppDispatch, useAppSelector} from '../../assets/utils/hooks';
 
 export const PacksList = () => {
     const dispatch = useAppDispatch();

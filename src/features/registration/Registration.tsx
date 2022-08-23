@@ -14,11 +14,11 @@ import {PATH} from '../../enums/path';
 import {useFormik} from 'formik';
 import {Navigate, NavLink} from 'react-router-dom';
 import {userRegisterTC} from './reducer/registrationReducer';
-import {useAppDispatch, useAppSelector} from '../../app/store';
+import {useAppDispatch, useAppSelector} from '../../assets/utils/hooks';
 
 export const Registration = () => {
-
     const dispatch = useAppDispatch();
+
     const status = useAppSelector(state => state.app.status);
     const isLoggedIn = useAppSelector(state => state.login.isLoggedIn)
 

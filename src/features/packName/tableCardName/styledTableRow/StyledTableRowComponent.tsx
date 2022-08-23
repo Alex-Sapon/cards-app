@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {useState} from 'react';
 import {StyledTableCell, StyledTableRow} from '../styledTableCard/styledTableCard';
 import {shortWord} from '../../../../assets/utils/shortWord';
 import Rating from '@mui/material/Rating';
@@ -9,10 +9,10 @@ import Button from '../../../../common/button/Button';
 import {DeleteCardModal} from '../../../../components/Modals/customModals/DeleteCardModal';
 import {EditCardModal} from '../../../../components/Modals/customModals/EditCardModal';
 import {ModalType} from '../../../../components/Modals/BasicModal';
-import {useAppDispatch} from '../../../../app/store';
 import {setCardId} from '../../reducer/packCardReducer';
 import Avatar from '@mui/material/Avatar';
 import DefaultCover from '../../../../assets/images/cover.jpg';
+import {useAppDispatch} from '../../../../assets/utils/hooks';
 
 type StyledTableRowProps = {
     cardId: string

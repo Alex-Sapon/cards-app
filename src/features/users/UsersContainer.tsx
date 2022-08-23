@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
 import {Navigate} from 'react-router-dom';
-import {useAppDispatch, useAppSelector} from '../../app/store';
 import {getUsers} from './usersReducer';
 import {PATH} from '../../enums/path';
 import {Users} from './users/Users';
+import {useAppDispatch, useAppSelector} from '../../assets/utils/hooks';
 
 export const UsersContainer = () => {
     const dispatch = useAppDispatch();

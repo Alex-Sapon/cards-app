@@ -1,7 +1,7 @@
 import React from 'react';
 import {ChangeEvent, useEffect, useState} from 'react';
 import {PaginationGroup} from '../paginationGroup/PaginationGroup';
-import {AppStateType, useAppDispatch, useAppSelector} from '../../../app/store';
+import {AppStateType} from '../../../app/store';
 import useDebounce from '../../../assets/utils/useDebounce';
 import {PackType} from '../packsList-api';
 import {RequestStatusType} from '../../../app/reducer/app-reducer';
@@ -22,6 +22,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import {setCardsPageCount, setPage, setSearchPackName, setSortPackName} from './tablePacksReducer';
 import {AddPackModal} from '../../../components/Modals/customModals/AddPackModal';
 import {ModalType} from '../../../components/Modals/BasicModal';
+import {useAppDispatch, useAppSelector} from '../../../assets/utils/hooks';
 
 const selectCardPacks = (state: AppStateType): PackType[] => state.packList.cardPacks;
 const selectCardPacksTotalCount = (state: AppStateType): number => state.packList.cardPacksTotalCount;

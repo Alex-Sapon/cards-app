@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {StyledTableCell, StyledTableRow} from '../styledTableCard/styledTableCard';
 import {setSortCards,} from '../../reducer/packCardReducer';
-import {useAppDispatch, useAppSelector} from '../../../../app/store';
 import styles from '../tableCardName.module.css';
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
@@ -11,6 +10,7 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import TableBody from '@mui/material/TableBody';
 import Paper from '@mui/material/Paper';
 import {StyledTableRowComponent} from '../styledTableRow/StyledTableRowComponent';
+import {useAppDispatch, useAppSelector} from '../../../../assets/utils/hooks';
 
 export const TableContainerCards = () => {
     const dispatch = useAppDispatch();

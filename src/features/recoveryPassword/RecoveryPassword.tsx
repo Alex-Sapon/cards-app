@@ -6,14 +6,15 @@ import {useFormik} from 'formik';
 import {NavLink} from 'react-router-dom';
 import Button from '../../common/button/Button';
 import {Form} from '../../common/form/Form';
-import {AppStateType, useAppDispatch, useAppSelector} from '../../app/store';
+import {AppStateType} from '../../app/store';
 import {PATH} from '../../enums/path';
 import styles from './RecoveryPass.module.css';
 import {AlertBar} from '../login/AlertBar';
 import {forgotPass} from './reducer/recoveryPasswordReducer';
 import React from 'react';
 import {SendEmail} from './sendEmail/SendEmail';
-import {RequestStatusType, setAppErrorAC} from '../../app/reducer/app-reducer';
+import {RequestStatusType, setAppError} from '../../app/reducer/app-reducer';
+import {useAppDispatch, useAppSelector} from '../../assets/utils/hooks';
 
 type RecoveryPasswordErrorType = {
     email?: string
@@ -74,7 +75,7 @@ export const RecoveryPassword = () => {
                             endAdornment={
                                 <InputAdornment position="end">
                                     {status === 'loading' &&
-                                        <LoadingButton loading variant="text" sx={{minWidth: '24px'}}></LoadingButton>}
+                                        <LoadingButton loading variant="text" sx={{minWidth: '24px'}}/>}
                                 </InputAdornment>
                             }
                             {...formik.getFieldProps('email')}
@@ -85,11 +86,12 @@ export const RecoveryPassword = () => {
                     </FormControl>
                 </FormGroup>
                 <div className={styles.title}>Enter your email address and we will send you further instructions</div>
-                <Button type="submit" className={styles.button} disabled={status === 'loading'}>Send instructions</Button>
+                <Button type="submit" className={styles.button} disabled={status === 'loading'}>Send
+                    instructions</Button>
                 <div className={styles.subtitle}>Did you remember your password?</div>
                 <NavLink className={styles.link} to={PATH.LOGIN} onClick={handleDisableClick}>Try logging in</NavLink>
             </Form>
-            {responseMessage && <AlertBar message={responseMessage} closeAlert={() => setAppErrorAC(null)}/>}
+            {responseMessage && <AlertBar message={responseMessage} closeAlert={() => setAppError(null)}/>}
         </>
     )
 };

@@ -7,11 +7,11 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import {TextField} from '@mui/material';
 import Button from '../../../common/button/Button';
-import {useAppDispatch} from '../../../app/store';
 import React, {ChangeEvent, useState} from 'react';
 import {createCardsPack} from '../../../features/packsList/tablePacks/tablePacksReducer';
 import {convertFileToBase64} from '../../../assets/utils/convertFileToBase64';
-import {setAppErrorAC} from '../../../app/reducer/app-reducer';
+import {setAppError} from '../../../app/reducer/app-reducer';
+import {useAppDispatch} from '../../../assets/utils/hooks';
 
 export const AddPackModal = ({onClose}: ModalPropsType) => {
     const dispatch = useAppDispatch();
@@ -34,7 +34,7 @@ export const AddPackModal = ({onClose}: ModalPropsType) => {
                 if (file64.includes('data:image')) {
                     setCover(file64);
                 } else {
-                    dispatch(setAppErrorAC('Wrong file format.'));
+                    dispatch(setAppError('Wrong file format.'));
                 }
             })
         }

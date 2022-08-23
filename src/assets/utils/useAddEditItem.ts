@@ -1,5 +1,6 @@
 import {ChangeEvent, useState} from 'react';
-import {AppThunk, useAppDispatch} from '../../app/store';
+import {AppThunk} from '../../app/store';
+import {useAppDispatch} from './hooks';
 
 type AddEditProps = [
     error: string,

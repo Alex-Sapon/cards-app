@@ -1,6 +1,6 @@
 import {packsListApi, PacksParamsResponseType, PackType} from './packsList-api';
 import axios, {AxiosError} from 'axios';
-import {setAppErrorAC, setAppStatusAC} from '../../app/reducer/app-reducer';
+import {setAppError, setAppStatus} from '../../app/reducer/app-reducer';
 import {AppStateType, AppThunk} from '../../app/store';
 
 const initialState: PacksListStateType = {
@@ -49,7 +49,7 @@ export const fetchCardPacks = (): AppThunk => async (dispatch, getState: () => A
         max,
     }
 
-    dispatch(setAppStatusAC('loading'));
+    dispatch(setAppStatus('loading'));
 
     try {
         const res = await packsListApi.getPacks(params);
@@ -57,12 +57,12 @@ export const fetchCardPacks = (): AppThunk => async (dispatch, getState: () => A
     } catch (e) {
         const error = e as Error | AxiosError<{error: string}>
         if (axios.isAxiosError(error)) {
-            dispatch(setAppErrorAC(error.response ? error.response.data.error : error.message));
+            dispatch(setAppError(error.response ? error.response.data.error : error.message));
         } else {
-            dispatch(setAppErrorAC(error.message));
+            dispatch(setAppError(error.message));
         }
     } finally {
-        dispatch(setAppStatusAC('idle'));
+        dispatch(setAppStatus('idle'));
     }
 }
 

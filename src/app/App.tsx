@@ -9,7 +9,7 @@ import {RecoveryPassword} from '../features/recoveryPassword/RecoveryPassword';
 import {Error404} from '../components/error404/Error404';
 import {PATH} from '../enums/path';
 import {useEffect} from 'react';
-import {AppStateType, useAppDispatch, useAppSelector} from './store';
+import {AppStateType} from './store';
 import {initializeApp} from './reducer/app-reducer';
 import {Navbar} from '../components/navbar/Navbar';
 import {ErrorSnackbar} from '../components/errorSnackbar/ErrorSnackbar';
@@ -20,6 +20,7 @@ import {LearnPack} from '../features/packsList/learnPack/LearnPack';
 import {UsersContainer} from '../features/users/UsersContainer';
 import {UserProfile} from '../features/users/user/User';
 import {UsersChat} from '../features/usersChat/UsersChat';
+import {useAppDispatch, useAppSelector} from '../assets/utils/hooks';
 
 const selectIsInitialized = (state: AppStateType): boolean => state.app.isInitialized;
 const selectIsLoggedIn = (state: AppStateType): boolean => state.login.isLoggedIn;

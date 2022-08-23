@@ -17,11 +17,12 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Input from '@mui/material/Input';
 import React, {useState} from 'react';
-import {AppStateType, useAppDispatch, useAppSelector} from '../../app/store';
+import {AppStateType} from '../../app/store';
 import {login} from './reducer/loginReducer';
 import FormHelperText from '@mui/material/FormHelperText';
 import LoadingButton from '@mui/lab/LoadingButton/LoadingButton';
 import {RequestStatusType} from '../../app/reducer/app-reducer';
+import {useAppDispatch, useAppSelector} from '../../assets/utils/hooks';
 
 const selectIsLoggedIn = (state: AppStateType): boolean => state.login.isLoggedIn;
 const selectStatus = (state: AppStateType): RequestStatusType => state.app.status;

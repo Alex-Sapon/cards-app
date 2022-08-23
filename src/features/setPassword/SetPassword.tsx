@@ -1,7 +1,7 @@
 import {useFormik} from 'formik';
 import Button from '../../common/button/Button';
 import {Form} from '../../common/form/Form';
-import {AppStateType, useAppDispatch, useAppSelector} from '../../app/store';
+import {AppStateType} from '../../app/store';
 import {PATH} from '../../enums/path';
 import {FormControl, FormGroup, IconButton, InputAdornment, InputLabel} from '@mui/material';
 import Input from '@mui/material/Input';
@@ -13,8 +13,9 @@ import React, {useEffect, useState} from 'react';
 import {Navigate, useParams} from 'react-router';
 import LoadingButton from '@mui/lab/LoadingButton/LoadingButton';
 import styles from './SetPassword.module.css';
-import {initializeApp, RequestStatusType, setAppErrorAC} from '../../app/reducer/app-reducer';
+import {initializeApp, RequestStatusType, setAppError} from '../../app/reducer/app-reducer';
 import {updateNewPassword} from './reducer/setPasswordReducer';
+import {useAppDispatch, useAppSelector} from '../../assets/utils/hooks';
 
 type SetPasswordErrorType = {
     password?: string
@@ -104,7 +105,7 @@ export const SetPassword = () => {
                 <div className={styles.title}>Create new password and we will send you further instructions to email</div>
                 <Button type="submit" className={styles.button} disabled={status === 'loading'}>Create new password</Button>
             </Form>
-            {responseMessage && <AlertBar message={responseMessage} closeAlert={() => setAppErrorAC(null)}/>}
+            {responseMessage && <AlertBar message={responseMessage} closeAlert={() => setAppError(null)}/>}
         </>
     )
 }

@@ -2,12 +2,11 @@ import React, {ChangeEvent, useEffect, useState} from 'react';
 import styles from './tableCardName.module.css';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
-import {Box, CircularProgress, TextField} from '@mui/material';
+import {TextField} from '@mui/material';
 import {PaginationGroup} from '../../packsList/paginationGroup/PaginationGroup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import IconButton from '@mui/material/IconButton';
 import Button from '../../../common/button/Button';
-import {useAppDispatch, useAppSelector} from '../../../app/store';
 import {setCardsPage, setCardsPageCount, setSearchQuestion} from '../reducer/packCardReducer';
 import {useNavigate} from 'react-router-dom';
 import useDebounce from '../../../assets/utils/useDebounce';
@@ -15,6 +14,7 @@ import {AddCardModal} from '../../../components/Modals/customModals/AddCardModal
 import {TableContainerCards} from './tableContainerCards/TableContainerCards';
 import {shortWord} from '../../../assets/utils/shortWord';
 import {ModalType} from '../../../components/Modals/BasicModal';
+import {useAppDispatch, useAppSelector} from '../../../assets/utils/hooks';
 
 export const TableCard = () => {
     const dispatch = useAppDispatch();

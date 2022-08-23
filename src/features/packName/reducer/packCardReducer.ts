@@ -1,5 +1,5 @@
 import {AppStateType, AppThunk} from '../../../app/store';
-import {setAppErrorAC, setAppStatusAC} from '../../../app/reducer/app-reducer';
+import {setAppError, setAppStatus} from '../../../app/reducer/app-reducer';
 import axios, {AxiosError} from 'axios';
 import {cardNameAPI, CardType, CreateCardType, PackResponseType, UpdateCardType,} from '../apiCardName/apiPackName';
 
@@ -108,7 +108,7 @@ export const fetchCardsTC = (): AppThunk => async (dispatch, getState: () => App
 
     const params = {cardsPack_id, page, pageCount, packUserId, cardQuestion, cardAnswer, min, max, sortCards};
 
-    dispatch(setAppStatusAC('loading'));
+    dispatch(setAppStatus('loading'));
 
     try {
         const res = await cardNameAPI.getCards(params);
@@ -116,15 +116,15 @@ export const fetchCardsTC = (): AppThunk => async (dispatch, getState: () => App
     } catch (e) {
         const err = e as Error | AxiosError<{ error: string }>
         if (axios.isAxiosError(err)) {
-            dispatch(setAppErrorAC(err.response ? err.response.data.error : err.message));
+            dispatch(setAppError(err.response ? err.response.data.error : err.message));
         }
     } finally {
-        dispatch(setAppStatusAC('idle'));
+        dispatch(setAppStatus('idle'));
     }
 }
 
 export const createCard = (data: CreateCardType): AppThunk => async dispatch => {
-    dispatch(setAppStatusAC('loading'));
+    dispatch(setAppStatus('loading'));
 
     try {
         await cardNameAPI.createCard(data);
@@ -132,14 +132,14 @@ export const createCard = (data: CreateCardType): AppThunk => async dispatch => 
     } catch (e) {
         const err = e as Error | AxiosError<{ error: string }>
         if (axios.isAxiosError(err)) {
-            dispatch(setAppErrorAC(err.response ? err.response.data.error : err.message));
-            dispatch(setAppStatusAC('idle'));
+            dispatch(setAppError(err.response ? err.response.data.error : err.message));
+            dispatch(setAppStatus('idle'));
         }
     }
 }
 
 export const removeCardTC = (id: string): AppThunk => async dispatch => {
-    dispatch(setAppStatusAC('loading'));
+    dispatch(setAppStatus('loading'));
 
     try {
         await cardNameAPI.deleteCard(id);
@@ -147,14 +147,14 @@ export const removeCardTC = (id: string): AppThunk => async dispatch => {
     } catch (e) {
         const err = e as Error | AxiosError<{ error: string }>
         if (axios.isAxiosError(err)) {
-            dispatch(setAppErrorAC(err.response ? err.response.data.error : err.message))
-            dispatch(setAppStatusAC('idle'));
+            dispatch(setAppError(err.response ? err.response.data.error : err.message))
+            dispatch(setAppStatus('idle'));
         }
     }
 }
 
 export const updateCard = (data: UpdateCardType): AppThunk => async dispatch => {
-    dispatch(setAppStatusAC('loading'));
+    dispatch(setAppStatus('loading'));
 
     try {
         await cardNameAPI.updateCard(data);
@@ -162,8 +162,8 @@ export const updateCard = (data: UpdateCardType): AppThunk => async dispatch => 
     } catch (e) {
         const err = e as Error | AxiosError<{ error: string }>
         if (axios.isAxiosError(err)) {
-            dispatch(setAppErrorAC(err.response ? err.response.data.error : err.message));
-            dispatch(setAppStatusAC('idle'));
+            dispatch(setAppError(err.response ? err.response.data.error : err.message));
+            dispatch(setAppStatus('idle'));
         }
     }
 };

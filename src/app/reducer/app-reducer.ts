@@ -27,12 +27,12 @@ const setInitializeApp = (isInitialized: boolean) => ({
     isInitialized,
 } as const);
 
-export const setAppStatusAC = (status: RequestStatusType) => ({
+export const setAppStatus = (status: RequestStatusType) => ({
     type: 'APP/SET-APP-STATUS',
     status,
 } as const);
 
-export const setAppErrorAC = (error: string | null) => ({
+export const setAppError = (error: string | null) => ({
     type: 'APP/SET-APP-ERROR',
     error,
 } as const);
@@ -44,7 +44,9 @@ export function* initializeAppSaga() {
         yield put(setIsLoggedIn(true));
     } catch (e) {
         const err = e as AxiosError<{ error: string }>;
-        yield put(setAppErrorAC(err.response ? err.response.data.error : err.message));
+        // yield put(setAppError(err.response ? err.response.data.error : err.message));
+        const error = err.response && err.response?.data ? err.response.data.error : err.message
+        yield put({type: 'APP/SET-APP-ERROR', error});
     } finally {
         yield put(setInitializeApp(true));
     }
@@ -65,8 +67,8 @@ export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
 export type AppActionsType =
     | ReturnType<typeof setInitializeApp>
-    | ReturnType<typeof setAppStatusAC>
-    | ReturnType<typeof setAppErrorAC>
+    | ReturnType<typeof setAppStatus>
+    | ReturnType<typeof setAppError>
     | ReturnType<typeof initializeApp>
 
 export type ResponseGenerator = {

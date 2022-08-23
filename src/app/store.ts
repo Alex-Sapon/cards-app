@@ -1,19 +1,15 @@
-import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
-import {applyMiddleware, combineReducers, legacy_createStore as createStore} from 'redux';
+import {AnyAction, applyMiddleware, combineReducers, legacy_createStore as createStore} from 'redux';
 import thunkMiddleware, {ThunkAction, ThunkDispatch} from 'redux-thunk';
-import {LoginActionsType, loginReducer, loginWatcherSaga} from '../features/login/reducer/loginReducer';
-import {CardsNameActionsType, cardsNameReducer} from '../features/packName/reducer/packCardReducer';
-import {PacksListActionsType, packsListReducer} from '../features/packsList/packsListReducer';
-import {TablePacksActionsType, tablePacksReducer} from '../features/packsList/tablePacks/tablePacksReducer';
-import {
-    RecoveryPasswordActionsType,
-    recoveryPasswordReducer
-} from '../features/recoveryPassword/reducer/recoveryPasswordReducer';
-import {RegistrationActionsType, registrationReducer} from '../features/registration/reducer/registrationReducer';
-import {SetNewPasswordActionsType, setPasswordReducer} from '../features/setPassword/reducer/setPasswordReducer';
-import {AppActionsType, appReducer, appWatcherSaga} from './reducer/app-reducer';
-import {LearnPackActionsType, learnPackReducer} from '../features/packsList/learnPack/learnPackReducer';
-import {UsersActionsType, usersReducer} from '../features/users/usersReducer';
+import {loginReducer, loginWatcherSaga} from '../features/login/reducer/loginReducer';
+import {cardsNameReducer} from '../features/packName/reducer/packCardReducer';
+import {packsListReducer} from '../features/packsList/packsListReducer';
+import {tablePacksReducer} from '../features/packsList/tablePacks/tablePacksReducer';
+import {recoveryPasswordReducer} from '../features/recoveryPassword/reducer/recoveryPasswordReducer';
+import {registrationReducer} from '../features/registration/reducer/registrationReducer';
+import {setPasswordReducer} from '../features/setPassword/reducer/setPasswordReducer';
+import {appReducer, appWatcherSaga} from './reducer/app-reducer';
+import {learnPackReducer} from '../features/packsList/learnPack/learnPackReducer';
+import {usersReducer} from '../features/users/usersReducer';
 import createSagaMiddleware from 'redux-saga';
 import {all} from 'redux-saga/effects';
 
@@ -43,28 +39,24 @@ function* rootWatcher() {
     ])
 }
 
-
 export type AppStateType = ReturnType<typeof rootReducer>;
 
-export type ActionsType =
-    | LoginActionsType
-    | AppActionsType
-    | RecoveryPasswordActionsType
-    | SetNewPasswordActionsType
-    | RegistrationActionsType
-    | PacksListActionsType
-    | TablePacksActionsType
-    | CardsNameActionsType
-    | LearnPackActionsType
-    | UsersActionsType
+// export type ActionsType =
+//     | LoginActionsType
+//     | AppActionsType
+//     | RecoveryPasswordActionsType
+//     | SetNewPasswordActionsType
+//     | RegistrationActionsType
+//     | PacksListActionsType
+//     | TablePacksActionsType
+//     | CardsNameActionsType
+//     | LearnPackActionsType
+//     | UsersActionsType
 
 
-export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppStateType, unknown, ActionsType>;
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppStateType, unknown, AnyAction>;
 
-export type AppDispatch = ThunkDispatch<AppStateType, unknown, ActionsType>;
-
-export const useAppDispatch = () => useDispatch<AppDispatch>();
-export const useAppSelector: TypedUseSelectorHook<AppStateType> = useSelector;
+export type AppDispatch = ThunkDispatch<AppStateType, unknown, AnyAction>;
 
 // @ts-ignore
 window.store = store;

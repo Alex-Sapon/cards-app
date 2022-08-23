@@ -1,6 +1,6 @@
-import {useAppSelector} from '../../../app/store';
 import styles from './SendEmail.module.css';
 import Mail from '../../../assets/images/mail.svg';
+import {useAppSelector} from '../../../assets/utils/hooks';
 
 export const SendEmail = () => {
     const email = useAppSelector(state => state.recoveryPassword.email);

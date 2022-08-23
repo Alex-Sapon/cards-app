@@ -5,7 +5,6 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import {useAppDispatch, useAppSelector} from '../../../app/store';
 import {getUser} from '../usersReducer';
 import {Navigate, useNavigate, useParams} from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
@@ -14,6 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import {PATH} from '../../../enums/path';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import {useAppDispatch, useAppSelector} from '../../../assets/utils/hooks';
 
 export const UserProfile = () => {
     const dispatch = useAppDispatch();

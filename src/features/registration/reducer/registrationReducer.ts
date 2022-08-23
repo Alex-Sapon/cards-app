@@ -1,7 +1,7 @@
 import {AppThunk} from '../../../app/store';
 import {AxiosError} from 'axios';
 import {authAPI} from '../../../api/authAPI';
-import {setAppErrorAC, setAppStatusAC} from '../../../app/reducer/app-reducer';
+import {setAppError, setAppStatus} from '../../../app/reducer/app-reducer';
 
 const initialState: RegistrationStateType = {
     message: null,
@@ -16,18 +16,17 @@ export const registrationReducer = (state: RegistrationStateType = initialState,
     }
 };
 
-//actions
 export const setRegisterMessageAC = (message: string | null) => ({type: 'REGISTRATION/SET-MESSAGE', message} as const);
 
-//thunks
 export const userRegisterTC = (email: string, password: string): AppThunk => (dispatch) => {
-    dispatch(setAppStatusAC('loading'));
+    dispatch(setAppStatus('loading'));
+
     authAPI.registration({email, password})
         .then((res) => {
             if (res.data.addedUser) {
                 dispatch(setRegisterMessageAC('You have successfully registered'));
             } else if (res.data.error) {
-                dispatch(setAppErrorAC(res.data.error));
+                dispatch(setAppError(res.data.error));
             } else {
                 dispatch(setRegisterMessageAC('Some error occurred'));
             }
@@ -35,25 +34,21 @@ export const userRegisterTC = (email: string, password: string): AppThunk => (di
         .catch((error: AxiosError<{ error: string }>) => {
             if (error.response) {
                 if (error.response.data === undefined) {
-                    dispatch(setAppErrorAC(error.message));
-                    dispatch(setAppStatusAC('failed'));
+                    dispatch(setAppError(error.message));
                 } else {
-                    dispatch(setAppErrorAC(error.response.data.error));
-                    dispatch(setAppStatusAC('failed'));
+                    dispatch(setAppError(error.response.data.error));
                 }
             }
         })
         .finally(() => {
-            dispatch(setAppStatusAC('idle'));
+            dispatch(setAppStatus('idle'));
         });
 };
 
-//types
 export type RegistrationStateType = {
     message: string | null
 }
-export type RegistrationActionsType =
-    | ReturnType<typeof setRegisterMessageAC>
+export type RegistrationActionsType = | ReturnType<typeof setRegisterMessageAC>
 
 
 

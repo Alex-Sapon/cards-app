@@ -1,5 +1,5 @@
 import React, {memo, useState} from 'react';
-import {AppStateType, useAppDispatch, useAppSelector} from '../../../app/store';
+import {AppStateType} from '../../../app/store';
 import {StyledTableCell, StyledTableRow} from './styledTablePack';
 import {shortWord} from '../../../assets/utils/shortWord';
 import {PATH} from '../../../enums/path';
@@ -15,6 +15,7 @@ import {DeletePackModal} from '../../../components/Modals/customModals/DeletePac
 import {EditPackModal} from '../../../components/Modals/customModals/EditPackModal';
 import {ModalType} from '../../../components/Modals/BasicModal';
 import {setPackModalParams} from '../packsListReducer';
+import {useAppDispatch, useAppSelector} from '../../../assets/utils/hooks';
 
 type TableRowPackType = {
     _id: string

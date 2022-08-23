@@ -1,6 +1,6 @@
 import {socialAPI, UsersParamsType, UsersResponseType, UserProfileType} from './usersAPI';
 import {AppStateType, AppThunk} from '../../app/store';
-import {setAppErrorAC, setAppStatusAC} from '../../app/reducer/app-reducer';
+import {setAppError, setAppStatus} from '../../app/reducer/app-reducer';
 import axios, {AxiosError} from 'axios';
 
 const initState: UsersStateType = {
@@ -68,7 +68,7 @@ export const getUsers = (): AppThunk => async (dispatch, getState: () => AppStat
 
     const data = {userName, min, max, sortUsers, page, pageCount};
 
-    dispatch(setAppStatusAC('loading'));
+    dispatch(setAppStatus('loading'));
 
     try {
         const res = await socialAPI.getUsers(data);
@@ -76,17 +76,17 @@ export const getUsers = (): AppThunk => async (dispatch, getState: () => AppStat
     } catch (e) {
         const err = e as Error | AxiosError<{ error: string }>;
         if (axios.isAxiosError(err)) {
-            dispatch(setAppErrorAC(err.response ? err.response.data.error : err.message));
+            dispatch(setAppError(err.response ? err.response.data.error : err.message));
         } else {
-            dispatch(setAppErrorAC(err.message));
+            dispatch(setAppError(err.message));
         }
     } finally {
-        dispatch(setAppStatusAC('idle'));
+        dispatch(setAppStatus('idle'));
     }
 }
 
 export const getUser = (id: string): AppThunk => async dispatch => {
-    dispatch(setAppStatusAC('loading'));
+    dispatch(setAppStatus('loading'));
 
     try {
         const res = await socialAPI.getUser(id);
@@ -95,12 +95,12 @@ export const getUser = (id: string): AppThunk => async dispatch => {
         const err = e as Error | AxiosError<{ error: string }>;
 
         if (axios.isAxiosError(err)) {
-            dispatch(setAppErrorAC(err.response ? err.response.data.error : err.message));
+            dispatch(setAppError(err.response ? err.response.data.error : err.message));
         } else {
-            dispatch(setAppErrorAC(err.message));
+            dispatch(setAppError(err.message));
         }
     } finally {
-        dispatch(setAppStatusAC('idle'));
+        dispatch(setAppStatus('idle'));
     }
 }
 

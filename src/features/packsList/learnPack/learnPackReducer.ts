@@ -2,7 +2,7 @@ import {CardType} from '../../packName/apiCardName/apiPackName';
 import {AppThunk} from '../../../app/store';
 import {learnPackAPI, UpdateGradeResponseType, UpdateGradeType} from './learnPack-api';
 import {AxiosError} from 'axios';
-import {setAppErrorAC, setAppStatusAC} from '../../../app/reducer/app-reducer';
+import {setAppError, setAppStatus} from '../../../app/reducer/app-reducer';
 
 const initState: LearnPackStateType = {
     cards: [] as CardType[],
@@ -39,32 +39,32 @@ export const setCardPack = (card: CardType) => ({
 } as const);
 
 export const getCardsPack = (id: string): AppThunk => dispatch => {
-    dispatch(setAppStatusAC('loading'));
+    dispatch(setAppStatus('loading'));
 
     learnPackAPI.getCards(id)
         .then(res => {
             dispatch(setCards(res.data.cards));
         })
         .catch((e: AxiosError<{error: string}>) => {
-            dispatch(setAppErrorAC(e.response ? e.response.data.error : e.message));
+            dispatch(setAppError(e.response ? e.response.data.error : e.message));
         })
         .finally(() => {
-            dispatch(setAppStatusAC('idle'));
+            dispatch(setAppStatus('idle'));
         })
 }
 
 export const updateGradePack = (data: UpdateGradeType): AppThunk => dispatch => {
-    dispatch(setAppStatusAC('loading'));
+    dispatch(setAppStatus('loading'));
 
     learnPackAPI.updateGrade(data)
         .then(res => {
             dispatch(updateCardsPack(res.data));
         })
         .catch((e: AxiosError<{error: string}>) => {
-            dispatch(setAppErrorAC(e.response ? e.response.data.error : e.message));
+            dispatch(setAppError(e.response ? e.response.data.error : e.message));
         })
         .finally(() => {
-            dispatch(setAppStatusAC('idle'));
+            dispatch(setAppStatus('idle'));
         })
 }
 

@@ -1,7 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useEffect, useState} from 'react';
-import {useAppDispatch, useAppSelector} from '../../../app/store';
 import {updateCardsPack} from '../../../features/packsList/tablePacks/tablePacksReducer';
-import {setAppErrorAC} from '../../../app/reducer/app-reducer';
+import {setAppError} from '../../../app/reducer/app-reducer';
 import {BasicModal, ModalPropsType} from '../BasicModal';
 import Button from '../../../common/button/Button';
 import {convertFileToBase64} from '../../../assets/utils/convertFileToBase64';
@@ -11,6 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import Cover from '../../../assets/images/cover.jpg';
+import {useAppDispatch, useAppSelector} from '../../../assets/utils/hooks';
 
 export const EditPackModal = ({onClose}: ModalPropsType) => {
     const dispatch = useAppDispatch();
@@ -43,7 +43,7 @@ export const EditPackModal = ({onClose}: ModalPropsType) => {
                 if (file64.includes('data:image')) {
                     setNewCover(file64);
                 } else {
-                    dispatch(setAppErrorAC('Wrong file format.'));
+                    dispatch(setAppError('Wrong file format.'));
                 }
             })
         }

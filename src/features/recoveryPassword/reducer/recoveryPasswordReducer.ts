@@ -1,6 +1,6 @@
 import {AppThunk} from '../../../app/store';
 import {authAPI, ForgotPasswordType} from '../../../api/authAPI';
-import {setAppErrorAC, setAppStatusAC} from '../../../app/reducer/app-reducer';
+import {setAppError, setAppStatus} from '../../../app/reducer/app-reducer';
 import axios, {AxiosError} from 'axios';
 
 const initialState: RecoveryPasswordStateType = {
@@ -41,7 +41,7 @@ export const forgotPass = (email: string): AppThunk => async dispatch => {
     }
 
     try {
-        dispatch(setAppStatusAC('loading'));
+        dispatch(setAppStatus('loading'));
         await authAPI.forgotPassword(data);
         dispatch(setIsSendEmail(true));
         dispatch(setEmail(email));
@@ -49,12 +49,12 @@ export const forgotPass = (email: string): AppThunk => async dispatch => {
         const err = e as Error | AxiosError<{ error: string }>;
 
         if (axios.isAxiosError(err)) {
-            dispatch(setAppErrorAC(err.response ? err.response.data.error : err.message));
+            dispatch(setAppError(err.response ? err.response.data.error : err.message));
         } else {
-            dispatch(setAppErrorAC(err.message));
+            dispatch(setAppError(err.message));
         }
     } finally {
-        dispatch(setAppStatusAC('idle'));
+        dispatch(setAppStatus('idle'));
     }
 };
 
