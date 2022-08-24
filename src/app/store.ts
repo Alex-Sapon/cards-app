@@ -8,7 +8,7 @@ import {recoveryPasswordReducer} from '../features/recoveryPassword/reducer/reco
 import {registrationReducer} from '../features/registration/reducer/registrationReducer';
 import {setPasswordReducer} from '../features/setPassword/reducer/setPasswordReducer';
 import {appReducer, appWatcher} from './reducer/app-reducer';
-import {learnPackReducer} from '../features/packsList/learnPack/learnPackReducer';
+import {learnPackReducer, learnPackWatcher} from '../features/packsList/learnPack/learnPackReducer';
 import {usersReducer, usersWatcher} from '../features/users/usersReducer';
 import createSagaMiddleware from 'redux-saga';
 import {all} from 'redux-saga/effects';
@@ -40,6 +40,7 @@ function* rootWatcher() {
         packsListWatcher(),
         usersWatcher(),
         packCardWatcher(),
+        learnPackWatcher(),
     ])
 }
 

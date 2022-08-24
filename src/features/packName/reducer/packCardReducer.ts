@@ -114,6 +114,8 @@ export function* fetchCardsSaga() {
         const err = e as Error | AxiosError<{ error: string }>
         if (axios.isAxiosError(err)) {
             yield put(setAppError(err.response ? err.response.data.error : err.message));
+        } else {
+            yield put(setAppError(err.message));
         }
     } finally {
         yield put(setAppStatus('idle'));

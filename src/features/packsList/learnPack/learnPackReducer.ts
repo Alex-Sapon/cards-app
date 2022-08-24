@@ -1,21 +1,23 @@
-import {CardType} from '../../packName/apiCardName/apiPackName';
-import {AppThunk} from '../../../app/store';
+import {CardType, PackResponseType} from '../../packName/apiCardName/apiPackName';
 import {learnPackAPI, UpdateGradeResponseType, UpdateGradeType} from './learnPack-api';
-import {AxiosError} from 'axios';
+import {AxiosError, AxiosResponse} from 'axios';
 import {setAppError, setAppStatus} from '../../../app/reducer/app-reducer';
+import {call, put, takeEvery} from 'redux-saga/effects';
 
-const initState: LearnPackStateType = {
+const initial: LearnPackStateType = {
     cards: [] as CardType[],
     card: {} as CardType,
 }
 
-export const learnPackReducer = (state: LearnPackStateType = initState, action: LearnPackActionsType): LearnPackStateType => {
+export const learnPackReducer = (state: LearnPackStateType = initial, action: LearnPackActionsType): LearnPackStateType => {
     switch (action.type) {
         case 'LEARN-PACK/SET-CARDS-PACK':
             return {...state, cards: action.cards};
         case 'LEARN-PACK/UPDATE-CARD-PACK':
-            return {...state, cards: state.cards.map(card => card._id === action.data.updatedGrade.card_id
-                    ? {...card, grade: action.data.updatedGrade.grade} : card)};
+            return {
+                ...state, cards: state.cards.map(card => card._id === action.data.updatedGrade.card_id
+                    ? {...card, grade: action.data.updatedGrade.grade} : card)
+            };
         case 'LEARN-PACK/SET-CARD-PACK':
             return {...state, card: action.card};
         default:
@@ -38,34 +40,41 @@ export const setCardPack = (card: CardType) => ({
     card,
 } as const);
 
-export const getCardsPack = (id: string): AppThunk => dispatch => {
-    dispatch(setAppStatus('loading'));
+export const getCardsPack = (id: string) => ({type: 'LEARN-PACK/GET-CARDS-PACK', id} as const);
 
-    learnPackAPI.getCards(id)
-        .then(res => {
-            dispatch(setCards(res.data.cards));
-        })
-        .catch((e: AxiosError<{error: string}>) => {
-            dispatch(setAppError(e.response ? e.response.data.error : e.message));
-        })
-        .finally(() => {
-            dispatch(setAppStatus('idle'));
-        })
+export const updateGradePack = (data: UpdateGradeType) => ({type: 'LEARN-PACK/UPDATE-GRADE-PACK', data} as const);
+
+export function* getCardsPackSaga({id}: ReturnType<typeof getCardsPack>) {
+    yield put(setAppStatus('loading'));
+
+    try {
+        const res: AxiosResponse<PackResponseType> = yield call(learnPackAPI.getCards, id);
+        yield put(setCards(res.data.cards));
+    } catch (e) {
+        const err = e as AxiosError<{ error: string }>;
+        yield put(setAppError(err.response ? err.response.data.error : err.message));
+    } finally {
+        yield put(setAppStatus('idle'));
+    }
 }
 
-export const updateGradePack = (data: UpdateGradeType): AppThunk => dispatch => {
-    dispatch(setAppStatus('loading'));
+export function* updateGradePackSaga({data}: ReturnType<typeof updateGradePack>) {
+    yield put(setAppStatus('loading'));
 
-    learnPackAPI.updateGrade(data)
-        .then(res => {
-            dispatch(updateCardsPack(res.data));
-        })
-        .catch((e: AxiosError<{error: string}>) => {
-            dispatch(setAppError(e.response ? e.response.data.error : e.message));
-        })
-        .finally(() => {
-            dispatch(setAppStatus('idle'));
-        })
+    try {
+        const res: AxiosResponse<UpdateGradeResponseType> = yield call(learnPackAPI.updateGrade, data);
+        yield put(updateCardsPack(res.data));
+    } catch (e) {
+        const err = e as AxiosError<{ error: string }>;
+        yield put(setAppError(err.response ? err.response.data.error : err.message));
+    } finally {
+        yield put(setAppStatus('idle'));
+    }
+}
+
+export function* learnPackWatcher() {
+    yield takeEvery('LEARN-PACK/GET-CARDS-PACK', getCardsPackSaga);
+    yield takeEvery('LEARN-PACK/UPDATE-GRADE-PACK', updateGradePackSaga);
 }
 
 export type LearnPackActionsType =
