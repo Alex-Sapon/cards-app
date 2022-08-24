@@ -21,9 +21,7 @@ const initial: LoginDataUserType = {
     isLoggedIn: false,
 }
 
-export type LoginStateType = typeof initial;
-
-export const loginReducer = (state: LoginStateType = initial, action: LoginActionsType): LoginStateType => {
+export const loginReducer = (state: LoginDataUserType = initial, action: LoginActionsType): LoginDataUserType => {
     switch (action.type) {
         case 'LOGIN/SET-LOGIN-DATA-USER':
             return {...state, ...action.data};
@@ -34,21 +32,25 @@ export const loginReducer = (state: LoginStateType = initial, action: LoginActio
     }
 };
 
-export const setLoginData = (data: UserResponseType) => ({
-    type: 'LOGIN/SET-LOGIN-DATA-USER',
-    data,
+export const setLoginData = (data: UserResponseType) => ({type: 'LOGIN/SET-LOGIN-DATA-USER', data} as const);
+
+export const setIsLoggedIn = (isLoggedIn: boolean) => ({type: 'LOGIN/SET-IS-LOGGED-IN', isLoggedIn} as const);
+
+export const login = (data: LoginType) => ({type: 'LOGIN/LOGIN-PROFILE', data} as const);
+
+export const logout = () => ({type: 'LOGIN/LOGOUT-PROFILE'} as const);
+
+export const updateUserData = (name: string, avatar: string) => ({
+    type: 'LOGIN/UPDATE-USER-DATA',
+    name,
+    avatar,
 } as const);
 
-export const setIsLoggedIn = (isLoggedIn: boolean) => ({
-    type: 'LOGIN/SET-IS-LOGGED-IN',
-    isLoggedIn,
-} as const);
-
-export function* loginSaga(action: ReturnType<typeof login>) {
+export function* loginSaga({data}: ReturnType<typeof login>) {
     yield put(setAppStatus('loading'));
 
     try {
-        const res: AxiosResponse<UserResponseType> = yield authAPI.login(action.data);
+        const res: AxiosResponse<UserResponseType> = yield authAPI.login(data);
         yield put(setLoginData(res.data));
         yield put(setIsLoggedIn(true));
     } catch (e) {
@@ -87,27 +89,13 @@ export function* updateUserDataSaga({name, avatar}: ReturnType<typeof updateUser
     }
 }
 
-export function* loginWatcherSaga() {
+export function* loginWatcher() {
     yield takeEvery('LOGIN/LOGOUT-PROFILE', logoutSaga);
     yield takeEvery('LOGIN/LOGIN-PROFILE', loginSaga);
     yield takeEvery('LOGIN/UPDATE-USER-DATA', updateUserDataSaga);
 }
 
-export const login = (data: LoginType) => ({type: 'LOGIN/LOGIN-PROFILE', data} as const);
-
-export const logout = () => ({type: 'LOGIN/LOGOUT-PROFILE'} as const);
-
-export const updateUserData = (name: string, avatar: string) => ({
-    type: 'LOGIN/UPDATE-USER-DATA',
-    name,
-    avatar,
-} as const);
-
-export type LoginActionsType =
-    | ReturnType<typeof setLoginData>
-    | ReturnType<typeof setIsLoggedIn>
-    | ReturnType<typeof logout>
-    | ReturnType<typeof login>
+export type LoginActionsType = ReturnType<typeof setLoginData> | ReturnType<typeof setIsLoggedIn>
 
 export type LoginDataUserType = UserResponseType & {
     isLoggedIn: boolean

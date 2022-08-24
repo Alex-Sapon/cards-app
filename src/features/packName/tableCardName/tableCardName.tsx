@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import styles from './tableCardName.module.css';
-import {fetchCardsTC} from '../reducer/packCardReducer';
+import {fetchCards} from '../reducer/packCardReducer';
 import {TableCard} from './TableCard';
 import {Navigate} from 'react-router-dom';
 import {PATH} from '../../../enums/path';
@@ -21,7 +21,7 @@ export const TableCardName = () => {
 
     useEffect(() => {
         if (cardsPackId) {
-            dispatch(fetchCardsTC());
+            dispatch(fetchCards());
         }
     }, [cardsPackId, page, pageCount, cardQuestion, cardAnswer, sortCards, min, max])
 

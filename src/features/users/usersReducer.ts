@@ -1,9 +1,10 @@
 import {socialAPI, UsersParamsType, UsersResponseType, UserProfileType} from './usersAPI';
 import {AppStateType, AppThunk} from '../../app/store';
 import {setAppError, setAppStatus} from '../../app/reducer/app-reducer';
-import axios, {AxiosError} from 'axios';
+import axios, {AxiosError, AxiosResponse} from 'axios';
+import {call, put, select, takeEvery} from 'redux-saga/effects';
 
-const initState: UsersStateType = {
+const initial: UsersStateType = {
     users: [] as UserProfileType[],
     user: {} as UserProfileType,
     maxPublicCardPacksCount: 0,
@@ -21,7 +22,9 @@ const initState: UsersStateType = {
     } as UsersParamsType,
 }
 
-export const usersReducer = (state: UsersStateType = initState, action: UsersActionsType): UsersStateType => {
+export const selectUsersParams = (state: AppStateType) => state.usersPage.usersParams;
+
+export const usersReducer = (state: UsersStateType = initial, action: UsersActionsType): UsersStateType => {
     switch (action.type) {
         case 'USERS/SET-USERS':
             return {...state, ...action.usersData};
@@ -38,70 +41,69 @@ export const usersReducer = (state: UsersStateType = initState, action: UsersAct
     }
 }
 
-export const setUsers = (usersData: UsersResponseType) => ({
-    type: 'USERS/SET-USERS',
-    usersData,
-} as const);
+export const setUsers = (usersData: UsersResponseType) => ({type: 'USERS/SET-USERS', usersData} as const);
 
-export const setUserProfile = (user: UserProfileType) => ({
-    type: 'USERS/SET-USER-PROFILE',
-    user,
-} as const);
+export const setUserProfile = (user: UserProfileType) => ({type: 'USERS/SET-USER-PROFILE', user} as const);
 
-export const setPageUsers = (page: number) => ({
-    type: 'USERS/SET-PAGE-USERS',
-    page,
-} as const);
+export const setPageUsers = (page: number) => ({type: 'USERS/SET-PAGE-USERS', page} as const);
 
-export const setPageCountUsers = (pageCount: number) => ({
-    type: 'USERS/SET-PAGE-COUNT-USERS',
-    pageCount,
-} as const);
+export const setPageCountUsers = (pageCount: number) => ({type: 'USERS/SET-PAGE-COUNT-USERS', pageCount} as const);
 
-export const setSearchName = (userName: string) => ({
-    type: 'USERS/SET-SEARCH-USER-NAME',
-    userName,
-} as const);
+export const setSearchName = (userName: string) => ({type: 'USERS/SET-SEARCH-USER-NAME', userName} as const);
 
-export const getUsers = (): AppThunk => async (dispatch, getState: () => AppStateType) => {
-    const {userName, min, max, sortUsers, page, pageCount} = getState().usersPage.usersParams;
+export const getUsers = () => ({type: 'USERS/FETCH-USERS'} as const);
 
-    const data = {userName, min, max, sortUsers, page, pageCount};
+export const getUser = (id: string) => ({type: 'USERS/FETCH-USER', id} as const);
 
-    dispatch(setAppStatus('loading'));
+export function* getUsersSaga() {
+    const {userName, min, max, sortUsers, page, pageCount}: UsersParamsType = yield select(selectUsersParams);
+
+    yield put(setAppStatus('loading'));
 
     try {
-        const res = await socialAPI.getUsers(data);
-        dispatch(setUsers(res.data));
+        const res: AxiosResponse<UsersResponseType> = yield call(socialAPI.getUsers, {
+            userName,
+            min,
+            max,
+            sortUsers,
+            page,
+            pageCount
+        });
+
+        yield put(setUsers(res.data));
     } catch (e) {
         const err = e as Error | AxiosError<{ error: string }>;
         if (axios.isAxiosError(err)) {
-            dispatch(setAppError(err.response ? err.response.data.error : err.message));
+            yield put(setAppError(err.response ? err.response.data.error : err.message));
         } else {
-            dispatch(setAppError(err.message));
+            yield put(setAppError(err.message));
         }
     } finally {
-        dispatch(setAppStatus('idle'));
+        yield put(setAppStatus('idle'));
     }
 }
 
-export const getUser = (id: string): AppThunk => async dispatch => {
-    dispatch(setAppStatus('loading'));
+export function* getUserSaga({id}: ReturnType<typeof getUser>) {
+    yield put(setAppStatus('loading'));
 
     try {
-        const res = await socialAPI.getUser(id);
-        dispatch(setUserProfile(res.data.user));
+        const res: AxiosResponse<{ user: UserProfileType }> = yield call(socialAPI.getUser, id);
+        yield put(setUserProfile(res.data.user));
     } catch (e) {
         const err = e as Error | AxiosError<{ error: string }>;
-
         if (axios.isAxiosError(err)) {
-            dispatch(setAppError(err.response ? err.response.data.error : err.message));
+            yield put(setAppError(err.response ? err.response.data.error : err.message));
         } else {
-            dispatch(setAppError(err.message));
+            yield put(setAppError(err.message));
         }
     } finally {
-        dispatch(setAppStatus('idle'));
+        yield put(setAppStatus('idle'));
     }
+}
+
+export function* usersWatcher() {
+    yield takeEvery('USERS/FETCH-USERS', getUsersSaga);
+    yield takeEvery('USERS/FETCH-USER', getUserSaga);
 }
 
 type UsersStateType = UsersResponseType & {

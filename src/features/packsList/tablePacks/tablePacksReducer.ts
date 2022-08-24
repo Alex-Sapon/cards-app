@@ -1,10 +1,10 @@
-import {AppThunk} from '../../../app/store';
 import {AxiosError} from 'axios';
 import {setAppError, setAppStatus} from '../../../app/reducer/app-reducer';
 import {fetchCardPacks} from '../packsListReducer';
-import {CreateCardsPackType, tablePacksAPI} from './tablePacks-api';
+import {tablePacksAPI} from './tablePacks-api';
+import {call, put, takeEvery} from 'redux-saga/effects';
 
-const initialState: TablePacksType = {
+const initial: TablePacksType = {
     packName: '',
     sortPacks: '',
     page: 1,
@@ -16,8 +16,8 @@ const initialState: TablePacksType = {
     name: '',
 };
 
-export const tablePacksReducer = (state: TablePacksType = initialState, action: TablePacksActionsType): TablePacksType => {
-  switch (action.type) {
+export const tablePacksReducer = (state: TablePacksType = initial, action: TablePacksActionsType): TablePacksType => {
+    switch (action.type) {
         case 'TABLE-PACKS/SET-PAGE':
             return {...state, page: action.page};
         case 'TABLE-PACKS/SET-PAGE-COUNT':
@@ -41,15 +41,9 @@ export const tablePacksReducer = (state: TablePacksType = initialState, action: 
     }
 };
 
-export const setPage = (page: number) => ({
-    type: 'TABLE-PACKS/SET-PAGE',
-    page,
-} as const);
+export const setPage = (page: number) => ({type: 'TABLE-PACKS/SET-PAGE', page} as const);
 
-export const setCardsPageCount = (pageCount: number) => ({
-    type: 'TABLE-PACKS/SET-PAGE-COUNT',
-    pageCount,
-} as const);
+export const setCardsPageCount = (pageCount: number) => ({type: 'TABLE-PACKS/SET-PAGE-COUNT', pageCount} as const);
 
 export const setSearchPackName = (searchPackName: string) => ({
     type: 'TABLE-PACKS/SET-SEARCH-PACK-NAME',
@@ -61,85 +55,79 @@ export const setSortPackName = (sortPackName: string) => ({
     sortPackName,
 } as const);
 
-export const setUserId = (user_id: string) => ({
-    type: 'TABLE-PACKS/SET-USER-ID',
-    user_id,
+export const setUserId = (user_id: string) => ({type: 'TABLE-PACKS/SET-USER-ID', user_id} as const);
+
+export const setMinNumberCards = (min: number) => ({type: 'TABLE-PACKS/SET-MIN-NUMBER-CARDS', min} as const);
+
+export const setMaxNumberCards = (max: number) => ({type: 'TABLE-PACKS/SET-MAX-NUMBER-CARDS', max} as const);
+
+export const setPackId = (id: string) => ({type: 'TABLE-PACKS/SET-PACK-ID', id} as const);
+
+export const setPackName = (name: string) => ({type: 'TABLE-PACKS/SET-PACK-NAME', name} as const);
+
+export function* createCardsPackSaga({name, cover, isPrivate}: ReturnType<typeof createCardsPack>) {
+    yield put(setAppStatus('loading'));
+
+    try {
+        yield call(tablePacksAPI.createPack, {cardsPack: {name: name, deckCover: cover, private: isPrivate}});
+        yield put(fetchCardPacks());
+    } catch (e) {
+        const err = e as AxiosError<{ error: string }>
+        yield put(setAppError(err.response ? err.response.data.error : err.message));
+        yield put(setAppStatus('idle'));
+    }
+}
+
+export function* deleteCardsPackSaga({id}: ReturnType<typeof deleteCardsPack>) {
+    yield put(setAppStatus('loading'));
+
+    try {
+        yield call(tablePacksAPI.deletePack, id);
+        yield put(fetchCardPacks());
+    } catch (e) {
+        const err = e as AxiosError<{ error: string }>;
+        yield put(setAppError(err.response ? err.response.data.error : err.message));
+        yield put(setAppStatus('idle'));
+    }
+}
+
+export function* updateCardsPackSaga({id, name, cover}: ReturnType<typeof updateCardsPack>) {
+    yield put(setAppStatus('loading'));
+
+    try {
+        yield call(tablePacksAPI.updatePack, {cardsPack: {_id: id, name: name, deckCover: cover}})
+        yield put(fetchCardPacks());
+    } catch (e) {
+        const err = e as AxiosError<{ error: string }>;
+        yield put(setAppError(err.response ? err.response.data.error : err.message));
+        yield put(setAppStatus('idle'));
+    }
+}
+
+export function* tablePacksWatcher() {
+    yield takeEvery('TABLE-PACKS/CREATE-CARDS-PACK', createCardsPackSaga);
+    yield takeEvery('TABLE-PACKS/DELETE-CARDS-PACK', deleteCardsPackSaga);
+    yield takeEvery('TABLE-PACKS/UPDATE-CARDS-PACK', updateCardsPackSaga);
+}
+
+export const createCardsPack = (name: string, cover: string, isPrivate: boolean) => ({
+    type: 'TABLE-PACKS/CREATE-CARDS-PACK',
+    name,
+    cover,
+    isPrivate,
 } as const);
 
-export const setMinNumberCards = (min: number) => ({
-    type: 'TABLE-PACKS/SET-MIN-NUMBER-CARDS',
-    min,
-} as const);
-
-export const setMaxNumberCards = (max: number) => ({
-    type: 'TABLE-PACKS/SET-MAX-NUMBER-CARDS',
-    max,
-} as const);
-
-export const setPackId = (id: string) => ({
-    type: 'TABLE-PACKS/SET-PACK-ID',
+export const deleteCardsPack = (id: string) => ({
+    type: 'TABLE-PACKS/DELETE-CARDS-PACK',
     id,
 } as const);
 
-export const setPackName = (name: string) => ({
-    type: 'TABLE-PACKS/SET-PACK-NAME',
+export const updateCardsPack = (id: string, name: string, cover: string) => ({
+    type: 'TABLE-PACKS/UPDATE-CARDS-PACK',
+    id,
     name,
+    cover,
 } as const);
-
-export const createCardsPack = (name: string, cover: string, isPrivate: boolean): AppThunk => dispatch => {
-    const data: CreateCardsPackType = {
-        cardsPack: {
-            name: name,
-            deckCover: cover,
-            private: isPrivate,
-        },
-    };
-
-    dispatch(setAppStatus('loading'));
-
-    tablePacksAPI.createPack(data)
-        .then(() => {
-            dispatch(fetchCardPacks());
-        })
-        .catch((e: AxiosError<{ error: string }>) => {
-            dispatch(setAppError(e.response ? e.response.data.error : e.message));
-            dispatch(setAppStatus('idle'));
-        })
-};
-
-export const deleteCardsPack = (id: string): AppThunk => dispatch => {
-    dispatch(setAppStatus('loading'));
-
-    tablePacksAPI.deletePack(id)
-        .then(() => {
-            dispatch(fetchCardPacks());
-        })
-        .catch((e: AxiosError<{ error: string }>) => {
-            dispatch(setAppError(e.response ? e.response.data.error : e.message));
-            dispatch(setAppStatus('idle'));
-        });
-};
-
-export const updateCardsPack = (id: string, name: string, cover: string): AppThunk => dispatch => {
-    dispatch(setAppStatus('loading'));
-
-    const data = {
-        cardsPack: {
-            _id: id,
-            name: name,
-            deckCover: cover,
-        }
-    }
-
-    tablePacksAPI.updatePack(data)
-        .then(() => {
-            dispatch(fetchCardPacks());
-        })
-        .catch((e: AxiosError<{ error: string }>) => {
-            dispatch(setAppError(e.response ? e.response.data.error : e.message));
-            dispatch(setAppStatus('idle'));
-        });
-};
 
 export type TablePacksActionsType =
     | ReturnType<typeof setPage>

@@ -1,15 +1,15 @@
 import {AnyAction, applyMiddleware, combineReducers, legacy_createStore as createStore} from 'redux';
 import thunkMiddleware, {ThunkAction, ThunkDispatch} from 'redux-thunk';
-import {loginReducer, loginWatcherSaga} from '../features/login/reducer/loginReducer';
-import {cardsNameReducer} from '../features/packName/reducer/packCardReducer';
-import {packsListReducer} from '../features/packsList/packsListReducer';
-import {tablePacksReducer} from '../features/packsList/tablePacks/tablePacksReducer';
+import {loginReducer, loginWatcher} from '../features/login/reducer/loginReducer';
+import {cardsNameReducer, packCardWatcher} from '../features/packName/reducer/packCardReducer';
+import {packsListReducer, packsListWatcher} from '../features/packsList/packsListReducer';
+import {tablePacksReducer, tablePacksWatcher} from '../features/packsList/tablePacks/tablePacksReducer';
 import {recoveryPasswordReducer} from '../features/recoveryPassword/reducer/recoveryPasswordReducer';
 import {registrationReducer} from '../features/registration/reducer/registrationReducer';
 import {setPasswordReducer} from '../features/setPassword/reducer/setPasswordReducer';
-import {appReducer, appWatcherSaga} from './reducer/app-reducer';
+import {appReducer, appWatcher} from './reducer/app-reducer';
 import {learnPackReducer} from '../features/packsList/learnPack/learnPackReducer';
-import {usersReducer} from '../features/users/usersReducer';
+import {usersReducer, usersWatcher} from '../features/users/usersReducer';
 import createSagaMiddleware from 'redux-saga';
 import {all} from 'redux-saga/effects';
 
@@ -34,8 +34,12 @@ sagaMiddleware.run(rootWatcher);
 
 function* rootWatcher() {
     yield all([
-        appWatcherSaga(),
-        loginWatcherSaga(),
+        appWatcher(),
+        loginWatcher(),
+        tablePacksWatcher(),
+        packsListWatcher(),
+        usersWatcher(),
+        packCardWatcher(),
     ])
 }
 

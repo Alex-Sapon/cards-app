@@ -3,13 +3,13 @@ import {AxiosError, AxiosResponse} from 'axios';
 import {authAPI, UserResponseType} from '../../api/authAPI';
 import {call, put, takeEvery} from 'redux-saga/effects';
 
-const initialState: AppStateType = {
+const initial: AppStateType = {
     isInitialized: false,
     status: 'idle',
     error: null,
 };
 
-export const appReducer = (state: AppStateType = initialState, action: AppActionsType): AppStateType => {
+export const appReducer = (state: AppStateType = initial, action: AppActionsType): AppStateType => {
     switch (action.type) {
         case 'APP/SET-INITIALIZE-APP':
             return {...state, isInitialized: action.isInitialized};
@@ -22,20 +22,13 @@ export const appReducer = (state: AppStateType = initialState, action: AppAction
     }
 };
 
-const setInitializeApp = (isInitialized: boolean) => ({
-    type: 'APP/SET-INITIALIZE-APP',
-    isInitialized,
-} as const);
+const setInitializeApp = (isInitialized: boolean) => ({type: 'APP/SET-INITIALIZE-APP', isInitialized} as const);
 
-export const setAppStatus = (status: RequestStatusType) => ({
-    type: 'APP/SET-APP-STATUS',
-    status,
-} as const);
+export const setAppStatus = (status: RequestStatusType) => ({type: 'APP/SET-APP-STATUS', status} as const);
 
-export const setAppError = (error: string | null) => ({
-    type: 'APP/SET-APP-ERROR',
-    error,
-} as const);
+export const setAppError = (error: string | null) => ({type: 'APP/SET-APP-ERROR', error} as const);
+
+export const initializeApp = () => ({type: 'APP/INITIALIZE-APP'} as const);
 
 export function* initializeAppSaga() {
     try {
@@ -52,11 +45,9 @@ export function* initializeAppSaga() {
     }
 }
 
-export function* appWatcherSaga() {
+export function* appWatcher() {
     yield takeEvery('APP/INITIALIZE-APP', initializeAppSaga);
 }
-
-export const initializeApp = () => ({type: 'APP/INITIALIZE-APP'} as const);
 
 type AppStateType = {
     isInitialized: boolean

@@ -3,7 +3,7 @@ import {instance} from '../../../api/instance';
 
 export const cardNameAPI = {
     getCards(data: CardParamsType) {
-        return instance.get<any, AxiosResponse<PackResponseType>, CardParamsType>('cards/card', {params: data});
+        return instance.get<PackResponseType, AxiosResponse<PackResponseType>, CardParamsType>('cards/card', {params: data});
     },
     createCard(data: CreateCardType) {
         return instance.post<any, AxiosResponse<PackResponseType>, { card: CreateCardType }>('cards/card', {card: data});

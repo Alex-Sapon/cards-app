@@ -1,9 +1,11 @@
 import {packsListApi, PacksParamsResponseType, PackType} from './packsList-api';
-import axios, {AxiosError} from 'axios';
+import axios, {AxiosError, AxiosResponse} from 'axios';
 import {setAppError, setAppStatus} from '../../app/reducer/app-reducer';
-import {AppStateType, AppThunk} from '../../app/store';
+import {AppStateType} from '../../app/store';
+import {call, put, select, takeEvery} from 'redux-saga/effects';
+import {TablePacksType} from './tablePacks/tablePacksReducer';
 
-const initialState: PacksListStateType = {
+const initial: PacksListStateType = {
     cardPacks: [] as PackType[],
     page: 1,
     pageCount: 0,
@@ -16,7 +18,9 @@ const initialState: PacksListStateType = {
     packId: '',
 }
 
-export const packsListReducer = (state: PacksListStateType = initialState, action: PacksListActionsType): PacksListStateType => {
+export const selectTablePacks = (state: AppStateType) => state.tablePacks;
+
+export const packsListReducer = (state: PacksListStateType = initial, action: PacksListActionsType): PacksListStateType => {
     switch (action.type) {
         case 'PACKS-LIST/SET-PACKS-LIST-PARAMS':
         case 'PACKS-LIST/SET-PACK-MODAL-PARAMS':
@@ -31,44 +35,47 @@ const setPacksListData = (data: PacksParamsResponseType) => ({
     data,
 } as const);
 
-export const setPackModalParams = (data: {packId: string, packName?: string}) => ({
+export const setPackModalParams = (data: { packId: string, packName?: string }) => ({
     type: 'PACKS-LIST/SET-PACK-MODAL-PARAMS',
     data,
 } as const);
 
-export const fetchCardPacks = (): AppThunk => async (dispatch, getState: () => AppStateType) => {
-    const {pageCount, page, packName, sortPacks, user_id, min, max} = getState().tablePacks;
+export const fetchCardPacks = () => ({type: 'PACKS-LIST/FETCH-CARD-PACKS'} as const);
 
-    const params = {
-        packName,
-        sortPacks,
-        page,
-        pageCount,
-        user_id,
-        min,
-        max,
-    }
+export function* fetchCardPacksSaga() {
+    const {pageCount, page, packName, sortPacks, user_id, min, max}: TablePacksType = yield select(selectTablePacks);
 
-    dispatch(setAppStatus('loading'));
+    yield put(setAppStatus('loading'));
 
     try {
-        const res = await packsListApi.getPacks(params);
-        dispatch(setPacksListData(res.data));
+        const res: AxiosResponse<PacksParamsResponseType> = yield call(packsListApi.getPacks, {
+            packName,
+            sortPacks,
+            page,
+            pageCount,
+            user_id,
+            min,
+            max,
+        });
+
+        yield put(setPacksListData(res.data));
     } catch (e) {
-        const error = e as Error | AxiosError<{error: string}>
-        if (axios.isAxiosError(error)) {
-            dispatch(setAppError(error.response ? error.response.data.error : error.message));
+        const err = e as Error | AxiosError<{ error: string }>
+        if (axios.isAxiosError(err)) {
+            yield put(setAppError(err.response ? err.response.data.error : err.message));
         } else {
-            dispatch(setAppError(error.message));
+            yield put(setAppError(err.message));
         }
     } finally {
-        dispatch(setAppStatus('idle'));
+        yield put(setAppStatus('idle'));
     }
 }
 
-export type PacksListActionsType =
-    | ReturnType<typeof setPacksListData>
-    | ReturnType<typeof setPackModalParams>
+export function* packsListWatcher() {
+    yield takeEvery('PACKS-LIST/FETCH-CARD-PACKS', fetchCardPacksSaga);
+}
+
+export type PacksListActionsType = ReturnType<typeof setPacksListData> | ReturnType<typeof setPackModalParams>
 
 type PacksListStateType = PacksParamsResponseType & {
     packName: string

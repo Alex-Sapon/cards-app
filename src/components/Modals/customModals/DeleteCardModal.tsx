@@ -4,7 +4,7 @@ import styles from './CustomModal.module.css';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import React from 'react';
-import {removeCardTC} from '../../../features/packName/reducer/packCardReducer';
+import {removeCard} from '../../../features/packName/reducer/packCardReducer';
 import Cover from '../../../assets/images/cover.jpg';
 import {useAppDispatch, useAppSelector} from '../../../assets/utils/hooks';
 
@@ -15,7 +15,7 @@ export const DeleteCardModal = ({onClose}: ModalPropsType) => {
     const card = useAppSelector(state => state.cardPack.cards.find(card => card._id === cardId));
 
     const deleteCard = () => {
-        dispatch(removeCardTC(cardId));
+        dispatch(removeCard(cardId));
         onClose();
     };
 
