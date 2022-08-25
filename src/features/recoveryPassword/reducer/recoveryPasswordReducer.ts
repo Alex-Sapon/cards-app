@@ -2,13 +2,14 @@ import {AppThunk} from '../../../app/store';
 import {authAPI, ForgotPasswordType} from '../../../api/authAPI';
 import {setAppError, setAppStatus} from '../../../app/reducer/app-reducer';
 import axios, {AxiosError} from 'axios';
+import {call, put, takeEvery} from 'redux-saga/effects';
 
-const initialState: RecoveryPasswordStateType = {
+const initial: RecoveryPasswordStateType = {
     email: 'example@mail.com',
     isSendEmail: false,
 }
 
-export const recoveryPasswordReducer = (state: RecoveryPasswordStateType = initialState, action: RecoveryPasswordActionsType): RecoveryPasswordStateType => {
+export const recoveryPasswordReducer = (state: RecoveryPasswordStateType = initial, action: RecoveryPasswordActionsType): RecoveryPasswordStateType => {
     switch (action.type) {
         case 'RECOVERY-PASSWORD/SET-IS-SEND-EMAIL':
             return {...state, isSendEmail: action.isSend};
@@ -29,7 +30,7 @@ export const setEmail = (email: string) => ({
     email,
 } as const);
 
-export const forgotPass = (email: string): AppThunk => async dispatch => {
+export function* forgotPasswordSaga({email}: ReturnType<typeof forgotPass>) {
     const data: ForgotPasswordType = {
         email: email,
         from: 'alexsapon@gmail.com',
@@ -40,23 +41,30 @@ export const forgotPass = (email: string): AppThunk => async dispatch => {
                 `,
     }
 
+    yield put(setAppStatus('loading'));
+
     try {
-        dispatch(setAppStatus('loading'));
-        await authAPI.forgotPassword(data);
-        dispatch(setIsSendEmail(true));
-        dispatch(setEmail(email));
+        yield call(authAPI.forgotPassword, data);
+        yield put(setIsSendEmail(true));
+        yield put(setEmail(email));
     } catch (e) {
         const err = e as Error | AxiosError<{ error: string }>;
 
         if (axios.isAxiosError(err)) {
-            dispatch(setAppError(err.response ? err.response.data.error : err.message));
+            yield put(setAppError(err.response ? err.response.data.error : err.message));
         } else {
-            dispatch(setAppError(err.message));
+            yield put(setAppError(err.message));
         }
     } finally {
-        dispatch(setAppStatus('idle'));
+        yield put(setAppStatus('idle'));
     }
-};
+}
+
+export function* recoveryPasswordWatcher() {
+    yield takeEvery('RECOVERY-PASSWORD/FORGOT-PASSWORD', forgotPasswordSaga);
+}
+
+export const forgotPass = (email: string) => ({type: 'RECOVERY-PASSWORD/FORGOT-PASSWORD', email} as const);
 
 export type RecoveryPasswordActionsType =
     | ReturnType<typeof setIsSendEmail>

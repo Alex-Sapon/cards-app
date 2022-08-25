@@ -4,7 +4,10 @@ import {loginReducer, loginWatcher} from '../features/login/reducer/loginReducer
 import {cardsNameReducer, packCardWatcher} from '../features/packName/reducer/packCardReducer';
 import {packsListReducer, packsListWatcher} from '../features/packsList/packsListReducer';
 import {tablePacksReducer, tablePacksWatcher} from '../features/packsList/tablePacks/tablePacksReducer';
-import {recoveryPasswordReducer} from '../features/recoveryPassword/reducer/recoveryPasswordReducer';
+import {
+    recoveryPasswordReducer,
+    recoveryPasswordWatcher
+} from '../features/recoveryPassword/reducer/recoveryPasswordReducer';
 import {registrationReducer} from '../features/registration/reducer/registrationReducer';
 import {setPasswordReducer} from '../features/setPassword/reducer/setPasswordReducer';
 import {appReducer, appWatcher} from './reducer/app-reducer';
@@ -41,6 +44,7 @@ function* rootWatcher() {
         usersWatcher(),
         packCardWatcher(),
         learnPackWatcher(),
+        recoveryPasswordWatcher(),
     ])
 }
 
