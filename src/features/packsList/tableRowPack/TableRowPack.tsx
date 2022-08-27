@@ -4,21 +4,19 @@ import {StyledTableCell, StyledTableRow} from './styledTablePack';
 import {shortWord} from '../../../assets/utils/shortWord';
 import {PATH} from '../../../enums/path';
 import {useNavigate} from 'react-router-dom';
-import Button from '../../../common/button/Button';
-import {RequestStatusType} from '../../../app/reducer/app-reducer';
+import {Button} from '../../../common/button';
+import {RequestStatusType} from '../../../app/reducer/appReducer';
 import styles from './TableRowPack.module.css';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
-import {setUserCardId, setUserCardName} from '../../packName/reducer/packCardReducer';
-import {DeletePackModal} from '../../../components/Modals/customModals/DeletePackModal';
-import {EditPackModal} from '../../../components/Modals/customModals/EditPackModal';
-import {ModalType} from '../../../components/Modals/BasicModal';
+import {setUserCardId, setUserCardName} from '../../cardsList/reducer/cardsListReducer';
+import {DeletePackModal, EditPackModal, ModalType} from '../../../components/modals';
 import {setPackModalParams} from '../packsListReducer';
 import {useAppDispatch, useAppSelector} from '../../../assets/utils/hooks';
 
 type TableRowPackType = {
-    _id: string
+    id: string
     name: string
     cardsCount: number
     updated: string
@@ -31,7 +29,7 @@ type TableRowPackType = {
 const selectLoginUserId = (state: AppStateType): string => state.login._id
 
 export const TableRowPack = memo((props: TableRowPackType) => {
-    const {_id, name, cardsCount, updated, user_id, user_name, status, cover} = props
+    const {id, name, cardsCount, updated, user_id, user_name, status, cover} = props
 
     const dispatch = useAppDispatch()
 
@@ -42,19 +40,19 @@ export const TableRowPack = memo((props: TableRowPackType) => {
     const userId = useAppSelector(selectLoginUserId)
 
     const handleDeletePack = () => {
-        dispatch(setPackModalParams({packId: _id, packName: name}));
+        dispatch(setPackModalParams({packId: id, packName: name}));
         setIsOpen('delete');
     }
 
     const handleEditPack = () => {
-        dispatch(setPackModalParams({packId: _id, packName: name}));
+        dispatch(setPackModalParams({packId: id, packName: name}));
         setIsOpen('edit');
     }
 
-    const handleLearnPack = () => navigate(`/packs/learn-pack/${_id}`);
+    const handleLearnPack = () => navigate(`/packs/learn-pack/${id}`);
 
     const handleSendPackId = () => {
-        dispatch(setUserCardId(_id));
+        dispatch(setUserCardId(id));
         dispatch(setUserCardName(name));
         navigate(PATH.PACKS + '/' + PATH.CARDS);
     }

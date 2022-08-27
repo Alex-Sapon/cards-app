@@ -1,5 +1,5 @@
 import {AxiosError} from 'axios';
-import {setAppError, setAppStatus} from '../../../app/reducer/app-reducer';
+import {setAppError, setAppStatus} from '../../../app';
 import {fetchCardPacks} from '../packsListReducer';
 import {tablePacksAPI} from './tablePacks-api';
 import {call, put, takeEvery} from 'redux-saga/effects';

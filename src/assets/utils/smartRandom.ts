@@ -1,4 +1,4 @@
-import { CardType } from "../../features/packName/apiCardName/apiPackName";
+import { CardType } from "../../features/cardsList/apiCardsList/apiCardsList";
 
 
 export const getCard = (cards: CardType[]): CardType => {

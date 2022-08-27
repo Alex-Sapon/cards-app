@@ -1,6 +1,6 @@
 import {AxiosError, AxiosResponse} from 'axios';
 import {authAPI, LoginType, UpdateProfileResponseType, UserResponseType} from '../../../api/authAPI';
-import {setAppError, setAppStatus} from '../../../app/reducer/app-reducer';
+import {setAppError, setAppStatus} from '../../../app';
 import {call, put, takeEvery} from 'redux-saga/effects';
 
 const initial: LoginDataUserType = {

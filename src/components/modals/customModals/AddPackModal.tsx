@@ -6,11 +6,11 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import {TextField} from '@mui/material';
-import Button from '../../../common/button/Button';
+import {Button} from '../../../common/button';
 import React, {ChangeEvent, useState} from 'react';
 import {createCardsPack} from '../../../features/packsList/tablePacks/tablePacksReducer';
 import {convertFileToBase64} from '../../../assets/utils/convertFileToBase64';
-import {setAppError} from '../../../app/reducer/app-reducer';
+import {setAppError} from '../../../app';
 import {useAppDispatch} from '../../../assets/utils/hooks';
 
 export const AddPackModal = ({onClose}: ModalPropsType) => {

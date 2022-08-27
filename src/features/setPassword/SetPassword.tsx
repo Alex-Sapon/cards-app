@@ -1,19 +1,18 @@
 import {useFormik} from 'formik';
-import Button from '../../common/button/Button';
-import {Form} from '../../common/form/Form';
+import {Button} from '../../common/button';
+import {Form} from '../../common/form';
 import {AppStateType} from '../../app/store';
 import {PATH} from '../../enums/path';
 import {FormControl, FormGroup, IconButton, InputAdornment, InputLabel} from '@mui/material';
 import Input from '@mui/material/Input';
 import FormHelperText from '@mui/material/FormHelperText';
-import {AlertBar} from '../login/AlertBar';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import React, {useEffect, useState} from 'react';
 import {Navigate, useParams} from 'react-router';
 import LoadingButton from '@mui/lab/LoadingButton/LoadingButton';
 import styles from './SetPassword.module.css';
-import {initializeApp, RequestStatusType, setAppError} from '../../app/reducer/app-reducer';
+import {initializeApp, RequestStatusType} from '../../app/reducer/appReducer';
 import {updateNewPassword} from './reducer/setPasswordReducer';
 import {useAppDispatch, useAppSelector} from '../../assets/utils/hooks';
 
@@ -23,7 +22,6 @@ type SetPasswordErrorType = {
 
 const selectIsUpdatePassword = (state: AppStateType): boolean => state.setPassword.isUpdatePassword;
 const selectStatus = (state: AppStateType): RequestStatusType => state.app.status;
-const selectResponseMessage = (state: AppStateType): string | null => state.app.error;
 
 export const SetPassword = () => {
     const dispatch = useAppDispatch();
@@ -34,7 +32,6 @@ export const SetPassword = () => {
 
     const isUpdatePassword = useAppSelector(selectIsUpdatePassword);
     const status = useAppSelector(selectStatus);
-    const responseMessage = useAppSelector(selectResponseMessage);
 
     const formik = useFormik({
         initialValues: {
@@ -67,7 +64,7 @@ export const SetPassword = () => {
 
     useEffect(() => {
         dispatch(initializeApp());
-    }, []);
+    }, [dispatch]);
 
     if (isUpdatePassword) {
         return <Navigate to={PATH.LOGIN} />
@@ -105,7 +102,6 @@ export const SetPassword = () => {
                 <div className={styles.title}>Create new password and we will send you further instructions to email</div>
                 <Button type="submit" className={styles.button} disabled={status === 'loading'}>Create new password</Button>
             </Form>
-            {responseMessage && <AlertBar message={responseMessage} closeAlert={() => setAppError(null)}/>}
         </>
     )
 }

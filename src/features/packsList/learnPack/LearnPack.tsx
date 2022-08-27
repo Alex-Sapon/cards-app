@@ -5,7 +5,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
-import Button from '../../../common/button/Button';
+import {Button} from '../../../common/button';
 import {useNavigate, useParams} from 'react-router-dom';
 import {PATH} from '../../../enums/path';
 import {ChangeEvent, useEffect, useState} from 'react';
@@ -22,10 +22,10 @@ const grades = [
 ];
 
 export const LearnPack = () => {
+    const dispatch = useAppDispatch();
+
     const [showAnswer, setShowAnswer] = useState(false);
     const [grade, setGrade] = useState(1);
-
-    const dispatch = useAppDispatch();
 
     const {id} = useParams<'id'>();
 
@@ -61,13 +61,13 @@ export const LearnPack = () => {
         if (id) {
             dispatch(getCardsPack(id));
         }
-    }, [id]);
+    }, [id, dispatch]);
 
     useEffect(() => {
         if (cards.length > 0) {
             dispatch(setCardPack(getCard(cards)));
         }
-    }, [cards]);
+    }, [cards, dispatch]);
 
     return (
         <div className={styles.wrapper}>

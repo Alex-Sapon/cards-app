@@ -1,5 +1,5 @@
-import Button from '../../common/button/Button';
-import {Form} from '../../common/form/Form';
+import {Button} from '../../common/button';
+import {Form} from '../../common/form';
 import styles from './Login.module.css';
 import {useFormik} from 'formik';
 import {Navigate, NavLink} from 'react-router-dom';
@@ -21,7 +21,7 @@ import {AppStateType} from '../../app/store';
 import {login} from './reducer/loginReducer';
 import FormHelperText from '@mui/material/FormHelperText';
 import LoadingButton from '@mui/lab/LoadingButton/LoadingButton';
-import {RequestStatusType} from '../../app/reducer/app-reducer';
+import {RequestStatusType} from '../../app/reducer/appReducer';
 import {useAppDispatch, useAppSelector} from '../../assets/utils/hooks';
 
 const selectIsLoggedIn = (state: AppStateType): boolean => state.login.isLoggedIn;
@@ -101,7 +101,7 @@ export const Login = () => {
 							endAdornment={
 								<InputAdornment position="end">
 									{status === 'loading'
-										? <LoadingButton loading variant="text" sx={{minWidth: '24px'}}></LoadingButton>
+										? <LoadingButton loading variant="text" sx={{minWidth: '24px'}}/>
 										: <IconButton
 											onClick={handleClickShowPassword}
 											onMouseDown={handleMouseDownPassword}

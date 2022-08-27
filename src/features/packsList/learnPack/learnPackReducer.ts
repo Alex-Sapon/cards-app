@@ -1,15 +1,15 @@
-import {CardType, PackResponseType} from '../../packName/apiCardName/apiPackName';
+import {CardType, PackResponseType} from '../../cardsList/apiCardsList/apiCardsList';
 import {learnPackAPI, UpdateGradeResponseType, UpdateGradeType} from './learnPack-api';
 import {AxiosError, AxiosResponse} from 'axios';
-import {setAppError, setAppStatus} from '../../../app/reducer/app-reducer';
+import {setAppError, setAppStatus} from '../../../app';
 import {call, put, takeEvery} from 'redux-saga/effects';
 
-const initial: LearnPackStateType = {
+const initial: StateType = {
     cards: [] as CardType[],
     card: {} as CardType,
 }
 
-export const learnPackReducer = (state: LearnPackStateType = initial, action: LearnPackActionsType): LearnPackStateType => {
+export const learnPackReducer = (state: StateType = initial, action: ActionsType): StateType => {
     switch (action.type) {
         case 'LEARN-PACK/SET-CARDS-PACK':
             return {...state, cards: action.cards};
@@ -45,9 +45,8 @@ export const getCardsPack = (id: string) => ({type: 'LEARN-PACK/GET-CARDS-PACK',
 export const updateGradePack = (data: UpdateGradeType) => ({type: 'LEARN-PACK/UPDATE-GRADE-PACK', data} as const);
 
 export function* getCardsPackSaga({id}: ReturnType<typeof getCardsPack>) {
-    yield put(setAppStatus('loading'));
-
     try {
+        yield put(setAppStatus('loading'));
         const res: AxiosResponse<PackResponseType> = yield call(learnPackAPI.getCards, id);
         yield put(setCards(res.data.cards));
     } catch (e) {
@@ -59,9 +58,8 @@ export function* getCardsPackSaga({id}: ReturnType<typeof getCardsPack>) {
 }
 
 export function* updateGradePackSaga({data}: ReturnType<typeof updateGradePack>) {
-    yield put(setAppStatus('loading'));
-
     try {
+        yield put(setAppStatus('loading'));
         const res: AxiosResponse<UpdateGradeResponseType> = yield call(learnPackAPI.updateGrade, data);
         yield put(updateCardsPack(res.data));
     } catch (e) {
@@ -77,12 +75,12 @@ export function* learnPackWatcher() {
     yield takeEvery('LEARN-PACK/UPDATE-GRADE-PACK', updateGradePackSaga);
 }
 
-export type LearnPackActionsType =
+export type ActionsType =
     | ReturnType<typeof setCards>
     | ReturnType<typeof updateCardsPack>
     | ReturnType<typeof setCardPack>
 
-type LearnPackStateType = {
+type StateType = {
     cards: CardType[]
     card: CardType
 }

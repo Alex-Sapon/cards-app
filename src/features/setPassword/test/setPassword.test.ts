@@ -1,18 +1,14 @@
-import {setNewPassword, setPasswordReducer, SetPasswordStateType} from '../reducer/setPasswordReducer';
+import {setNewPassword, setPasswordReducer, StateType} from '../reducer/setPasswordReducer';
 
+let startState: StateType;
 
-let startState: SetPasswordStateType;
-
-
-beforeEach( () => {
+beforeEach(() => {
     startState = {
-     isUpdatePassword: false
+        isUpdatePassword: false
     }
-} )
+})
 
-//test for SET-PASSWORD/UPDATE-PASSWORD
 test('correct isUpdatePassword should be set', () => {
-
     const action = setNewPassword(true);
 
     const endState = setPasswordReducer(startState, action)

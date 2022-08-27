@@ -3,11 +3,11 @@ import {ChangeEvent, useEffect, useState} from 'react';
 import {PaginationGroup} from '../paginationGroup/PaginationGroup';
 import {AppStateType} from '../../../app/store';
 import useDebounce from '../../../assets/utils/useDebounce';
-import {PackType} from '../packsList-api';
-import {RequestStatusType} from '../../../app/reducer/app-reducer';
+import {PackType} from '../apiPacksList';
+import {RequestStatusType} from '../../../app/reducer/appReducer';
 import {TableRowPack} from '../tableRowPack/TableRowPack';
 import {StyledTableCell} from '../tableRowPack/styledTablePack';
-import Button from '../../../common/button/Button';
+import {Button} from '../../../common/button';
 import styles from './TablePacks.module.css';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
@@ -20,8 +20,7 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import {TableCell, TextField} from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import {setCardsPageCount, setPage, setSearchPackName, setSortPackName} from './tablePacksReducer';
-import {AddPackModal} from '../../../components/Modals/customModals/AddPackModal';
-import {ModalType} from '../../../components/Modals/BasicModal';
+import {AddPackModal, ModalType} from '../../../components/modals';
 import {useAppDispatch, useAppSelector} from '../../../assets/utils/hooks';
 
 const selectCardPacks = (state: AppStateType): PackType[] => state.packList.cardPacks;
@@ -57,7 +56,7 @@ export const TablePacks = () => {
     useEffect(() => {
         dispatch(setSearchPackName(debouncedValue));
         dispatch(setPage(1));
-    }, [debouncedValue])
+    }, [debouncedValue, dispatch])
 
     const handleAddNewPack = () => setIsOpen('add');
 
@@ -160,7 +159,7 @@ export const TablePacks = () => {
                         {cardPacks.length ? cardPacks.map(({_id, name, cardsCount, updated, user_name, user_id, deckCover}) =>
                             <TableRowPack
                                 key={_id}
-                                _id={_id}
+                                id={_id}
                                 name={name}
                                 cover={deckCover}
                                 cardsCount={cardsCount}

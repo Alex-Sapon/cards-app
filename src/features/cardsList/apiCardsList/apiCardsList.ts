@@ -1,7 +1,7 @@
 import {AxiosResponse} from 'axios';
 import {instance} from '../../../api/instance';
 
-export const cardNameAPI = {
+export const cardsListAPI = {
     getCards(data: CardParamsType) {
         return instance.get<PackResponseType, AxiosResponse<PackResponseType>, CardParamsType>('cards/card', {params: data});
     },

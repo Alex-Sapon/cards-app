@@ -1,29 +1,25 @@
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import styles from './App.module.css';
-import {Login} from '../features/login/Login';
-import {Registration} from '../features/registration/Registration';
-import {Profile} from '../features/profile/Profile';
-import {SetPassword} from '../features/setPassword/SetPassword';
-import {RecoveryPassword} from '../features/recoveryPassword/RecoveryPassword';
-import {Error404} from '../components/error404/Error404';
+import {Login, selectIsLoggedIn} from '../features/login';
+import {Registration} from '../features/registration';
+import {Profile} from '../features/profile';
+import {SetPassword} from '../features/setPassword';
+import {RecoveryPassword} from '../features/recoveryPassword';
+import {Error404} from '../components/error404';
 import {PATH} from '../enums/path';
 import {useEffect} from 'react';
-import {AppStateType} from './store';
-import {initializeApp} from './reducer/app-reducer';
-import {Navbar} from '../components/navbar/Navbar';
-import {ErrorSnackbar} from '../components/errorSnackbar/ErrorSnackbar';
+import {initializeApp} from './reducer/appReducer';
+import {Navbar} from '../components/navbar';
+import {ErrorSnackbar} from '../components/errorSnackbar';
 import {Navigate, Outlet, Route, Routes} from 'react-router-dom';
-import {PacksList} from '../features/packsList/PacksList';
-import {TableCardName} from '../features/packName/tableCardName/tableCardName';
-import {LearnPack} from '../features/packsList/learnPack/LearnPack';
-import {UsersContainer} from '../features/users/UsersContainer';
-import {UserProfile} from '../features/users/user/User';
-import {UsersChat} from '../features/usersChat/UsersChat';
+import {PacksList} from '../features/packsList';
+import {CardsListContainer} from '../features/cardsList';
+import {LearnPack} from '../features/packsList/learnPack';
+import {UsersContainer, UserProfile} from '../features/users';
+import {UsersChat} from '../features/usersChat';
 import {useAppDispatch, useAppSelector} from '../assets/utils/hooks';
-
-const selectIsInitialized = (state: AppStateType): boolean => state.app.isInitialized;
-const selectIsLoggedIn = (state: AppStateType): boolean => state.login.isLoggedIn;
+import {selectIsInitialized} from './';
 
 export const App = () => {
     const dispatch = useAppDispatch();
@@ -56,7 +52,7 @@ export const App = () => {
                         <Route index element={<Navigate to={PATH.PACKS + '/' + PATH.PACKS_LIST}/>}/>
                         <Route path={PATH.PACKS_LIST} element={<PacksList/>}/>
                         <Route path={PATH.LEARN_PACK} element={<LearnPack/>}/>
-                        <Route path={PATH.CARDS} element={<TableCardName/>}/>
+                        <Route path={PATH.CARDS} element={<CardsListContainer/>}/>
                     </Route>
                     <Route path={PATH.USERS} element={<UsersContainer/>}/>
                     <Route path={PATH.USER} element={<UserProfile/>}/>

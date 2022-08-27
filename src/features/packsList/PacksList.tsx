@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import styles from './PacksList.module.css';
-import {ShowPacks} from './showPacks/ShowPacks';
+import {ShowPacks} from './showPacks';
 import {TablePacks} from './tablePacks/TablePacks';
 import {PATH} from '../../enums/path';
 import {Navigate} from 'react-router-dom';
@@ -21,7 +21,7 @@ export const PacksList = () => {
 
     useEffect(() => {
         dispatch(fetchCardPacks());
-    }, [page, pageCount, sortPackName, searchPackName, userId, min, max]);
+    }, [page, pageCount, sortPackName, searchPackName, userId, min, max, dispatch]);
 
     if (!isLoggedIn) return <Navigate to={PATH.LOGIN}/>
 

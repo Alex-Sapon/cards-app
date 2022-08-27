@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useState} from 'react';
-import {createCard} from '../../../features/packName/reducer/packCardReducer';
-import Button from '../../../common/button/Button';
+import {createCard} from '../../../features/cardsList/reducer/cardsListReducer';
+import {Button} from '../../../common/button';
 import {BasicModal, ModalPropsType} from '../BasicModal';
 import TextField from '@mui/material/TextField';
 import styles from './CustomModal.module.css';
@@ -10,14 +10,14 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import {setAppError} from '../../../app/reducer/app-reducer';
+import {setAppError} from '../../../app';
 import {convertFileToBase64} from '../../../assets/utils/convertFileToBase64';
 import {useAppDispatch, useAppSelector} from '../../../assets/utils/hooks';
 
 export const AddCardModal = ({onClose}: ModalPropsType) => {
     const dispatch = useAppDispatch();
 
-    const packId = useAppSelector(state => state.cardPack.cardsPack_id);
+    const packId = useAppSelector(state => state.cardList.cardsPack_id);
     const error = useAppSelector(state => state.app.error);
 
     const [question, setQuestion] = useState('');

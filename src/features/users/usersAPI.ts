@@ -40,4 +40,12 @@ export type UserProfileType = {
     _id: string
 }
 
+export type ErrorData = {
+    error:
+        string
+    errorObject: boolean
+    in: string
+    info: string
+}
+
 

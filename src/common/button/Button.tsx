@@ -8,7 +8,7 @@ type ButtonPropsType = DefaultButtonPropsType & {
     remove?: boolean
 };
 
-const Button: React.FC<ButtonPropsType> = props => {
+export const Button: React.FC<ButtonPropsType> = props => {
     const {red, remove, className, ...restProps} = props;
 
     const finalClassName = `${styles.button} ${red ? styles.red : ''} ${remove ? styles.remove : ''} ${className ? className : ''}`
@@ -20,5 +20,3 @@ const Button: React.FC<ButtonPropsType> = props => {
         />
     )
 };
-
-export default Button;

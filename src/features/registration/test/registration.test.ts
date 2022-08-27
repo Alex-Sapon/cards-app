@@ -1,7 +1,6 @@
-import {registrationReducer, RegistrationStateType, setRegisterMessageAC} from '../reducer/registrationReducer';
+import {registrationReducer, StateType, setRegisterMessage} from '../reducer/registrationReducer';
 
-let startState: RegistrationStateType;
-
+let startState: StateType;
 
 beforeEach( () => {
     startState = {
@@ -9,10 +8,8 @@ beforeEach( () => {
     }
 } )
 
-//test for REGISTRATION/SET-MESSAGE
 test('correct message should be set to SnackBar', () => {
-
-    const action = setRegisterMessageAC('You have successfully registered');
+    const action = setRegisterMessage('You have successfully registered');
 
     const endState = registrationReducer(startState, action)
 

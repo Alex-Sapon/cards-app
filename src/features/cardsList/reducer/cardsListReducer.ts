@@ -1,10 +1,10 @@
-import {AppStateType} from '../../../app/store';
-import {setAppError, setAppStatus} from '../../../app/reducer/app-reducer';
+import {setAppError, setAppStatus} from '../../../app';
 import axios, {AxiosError, AxiosResponse} from 'axios';
-import {cardNameAPI, CardType, CreateCardType, PackResponseType, UpdateCardType} from '../apiCardName/apiPackName';
+import {cardsListAPI, CardType, CreateCardType, PackResponseType, UpdateCardType} from '../apiCardsList/apiCardsList';
 import {call, put, select, takeEvery} from 'redux-saga/effects';
+import {selectCardPack} from '../selectors';
 
-const initial: CardsNameStateType = {
+const initial: StateType = {
     cards: [] as CardType[],
     cardsTotalCount: 0,
     maxGrade: 0,
@@ -24,9 +24,7 @@ const initial: CardsNameStateType = {
     max: 0,
 }
 
-export const selectCardPack = (state: AppStateType) => state.cardPack;
-
-export const cardsNameReducer = (state: CardsNameStateType = initial, action: CardsNameActionsType): CardsNameStateType => {
+export const cardsListReducer = (state: StateType = initial, action: ActionsType): StateType => {
     switch (action.type) {
         case 'CARDS-NAME/SET-CARDS-PARAMS':
             return {...state, ...action.data};
@@ -56,15 +54,30 @@ export const setSearchQuestion = (searchCardQuestion: string) => ({
     searchCardQuestion,
 } as const);
 
-export const setUserCardId = (userId: string) => ({type: 'CARDS-NAME/SET-USER-ID', userId} as const);
+export const setUserCardId = (userId: string) => ({
+    type: 'CARDS-NAME/SET-USER-ID',
+    userId
+} as const);
 
-export const setUserCardName = (packName: string) => ({type: 'CARDS-NAME/SET-USER-PACK-NAME', packName} as const);
+export const setUserCardName = (packName: string) => ({
+    type: 'CARDS-NAME/SET-USER-PACK-NAME',
+    packName
+} as const);
 
-export const setCardsNameData = (data: PackResponseType) => ({type: 'CARDS-NAME/SET-CARDS-PARAMS', data} as const);
+export const setCardsNameData = (data: PackResponseType) => ({
+    type: 'CARDS-NAME/SET-CARDS-PARAMS',
+    data
+} as const);
 
-export const setCardsPage = (page: number) => ({type: 'CARDS-NAME/SET-CARDS-PAGE', page} as const);
+export const setCardsPage = (page: number) => ({
+    type: 'CARDS-NAME/SET-CARDS-PAGE',
+    page
+} as const);
 
-export const setCardsPageCount = (pageCount: number) => ({type: 'CARDS-NAME/SET-CARDS-PAGE-COUNT', pageCount} as const);
+export const setCardsPageCount = (pageCount: number) => ({
+    type: 'CARDS-NAME/SET-CARDS-PAGE-COUNT',
+    pageCount
+} as const);
 
 export const setCardsTotalCount = (cardsTotalCount: number) => ({
     type: 'CARDS-NAME/SET-CARDS-TOTAL-COUNT',
@@ -93,12 +106,12 @@ export function* fetchCardsSaga() {
         min,
         max,
         sortCards
-    }: CardsNameStateType = yield select(selectCardPack);
+    }: StateType = yield select(selectCardPack);
 
     yield put(setAppStatus('loading'));
 
     try {
-        const res: AxiosResponse<PackResponseType> = yield call(cardNameAPI.getCards, {
+        const res: AxiosResponse<PackResponseType> = yield call(cardsListAPI.getCards, {
             cardsPack_id,
             page,
             pageCount,
@@ -126,7 +139,7 @@ export function* createCardSaga({data}: ReturnType<typeof createCard>) {
     yield put(setAppStatus('loading'));
 
     try {
-        yield call(cardNameAPI.createCard, data);
+        yield call(cardsListAPI.createCard, data);
         yield put(fetchCards());
     } catch (e) {
         const err = e as Error | AxiosError<{ error: string }>
@@ -141,7 +154,7 @@ export function* removeCardSaga({id}: ReturnType<typeof removeCard>) {
     yield put(setAppStatus('loading'));
 
     try {
-        yield call(cardNameAPI.deleteCard, id);
+        yield call(cardsListAPI.deleteCard, id);
         yield put(fetchCards());
     } catch (e) {
         const err = e as Error | AxiosError<{ error: string }>
@@ -156,7 +169,7 @@ export function* updateCardSaga({data}: ReturnType<typeof updateCard>) {
     yield put(setAppStatus('loading'));
 
     try {
-        yield call(cardNameAPI.updateCard, data);
+        yield call(cardsListAPI.updateCard, data);
         yield put(fetchCards());
     } catch (e) {
         const err = e as Error | AxiosError<{ error: string }>
@@ -167,14 +180,14 @@ export function* updateCardSaga({data}: ReturnType<typeof updateCard>) {
     }
 }
 
-export function* packCardWatcher() {
+export function* cardsListWatcher() {
     yield takeEvery('PACK-CARD/FETCH-PACK-CARDS', fetchCardsSaga);
     yield takeEvery('PACK-CARD/CREATE-CARD', createCardSaga);
     yield takeEvery('PACK-CARD/REMOVE-CARD', removeCardSaga);
     yield takeEvery('PACK-CARD/UPDATE-CARD', updateCardSaga);
 }
 
-export type CardsNameStateType = PackResponseType & {
+export type StateType = PackResponseType & {
     cardsPack_id: string
     cardQuestion?: string
     packName: string
@@ -185,7 +198,7 @@ export type CardsNameStateType = PackResponseType & {
     max: number
 }
 
-export type CardsNameActionsType =
+export type ActionsType =
     | ReturnType<typeof setCardsNameData>
     | ReturnType<typeof setSearchQuestion>
     | ReturnType<typeof setCardsPage>

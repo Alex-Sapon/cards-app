@@ -6,15 +6,21 @@ import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {FormGroup} from '@mui/material';
-import Button from '../../common/button/Button';
-import {Form} from '../../common/form/Form';
+import {Button} from '../../common/button';
+import {Form} from '../../common/form';
 import styles from './Registration.module.css';
 import * as React from 'react';
 import {PATH} from '../../enums/path';
 import {useFormik} from 'formik';
 import {Navigate, NavLink} from 'react-router-dom';
-import {userRegisterTC} from './reducer/registrationReducer';
+import {userRegister} from './reducer/registrationReducer';
 import {useAppDispatch, useAppSelector} from '../../assets/utils/hooks';
+
+type FormikErrorType = {
+    email?: string
+    password?: string
+    confirmPassword?: string
+}
 
 export const Registration = () => {
     const dispatch = useAppDispatch();
@@ -30,25 +36,29 @@ export const Registration = () => {
         },
         validate: (values) => {
             const errors: FormikErrorType = {};
+
             if (!values.email) {
                 errors.email = 'Email is required';
             } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
                 errors.email = 'Invalid email address';
             }
+
             if (!values.password) {
                 errors.password = 'Password is required';
             } else if (values.password.length <= 7) {
                 errors.password = 'Must be 8 characters or more symbols in password';
             }
+
             if (!values.confirmPassword) {
                 errors.confirmPassword = 'Please, confirm your password';
             } else if (values.password !== values.confirmPassword) {
                 errors.confirmPassword = 'Password is incorrect';
             }
+
             return errors;
         },
         onSubmit: values => {
-            dispatch(userRegisterTC(values.email, values.password));
+            dispatch(userRegister(values.email, values.password));
             formik.resetForm({values: {email: values.email, password: '', confirmPassword: ''}});
         },
     });
@@ -68,7 +78,7 @@ export const Registration = () => {
     }
     return (
         <>
-            <Form onSubmit={formik.handleSubmit} title={'Registration'}>
+            <Form onSubmit={formik.handleSubmit} title="Registration">
                 <FormGroup sx={{width: '80%'}}>
                     <FormControl sx={{height: '71px', mb: '0.5rem', width: '100%'}} variant="standard">
                         <InputLabel htmlFor="email">Email</InputLabel>
@@ -103,14 +113,12 @@ export const Registration = () => {
                     <FormControl sx={{height: '71px', mb: '0.5rem'}} variant="standard">
                         <InputLabel htmlFor="confirmPassword">Confirm password</InputLabel>
                         <Input
-                            {...formik.getFieldProps('confirmPassword')}
                             id="confirmPassword"
                             type={showConfirmPassword ? 'text' : 'password'}
+                            {...formik.getFieldProps('confirmPassword')}
                             endAdornment={
                                 <InputAdornment position="end">
-                                    <IconButton
-                                        onClick={handleClickShowConfirmPassword}
-                                    >
+                                    <IconButton onClick={handleClickShowConfirmPassword}>
                                         {showConfirmPassword ? <VisibilityOff/> : <Visibility/>}
                                     </IconButton>
                                 </InputAdornment>
@@ -124,20 +132,16 @@ export const Registration = () => {
                         <Button type={'submit'} disabled={status === 'loading'}>Registration</Button>
                     </div>
                 </FormGroup>
-                <NavLink style={{pointerEvents: status === 'loading' ? 'none' : undefined}} className={styles.login}
-                         to={PATH.LOGIN}>Are you already registered?</NavLink>
+                <NavLink
+                    style={{pointerEvents: status === 'loading' ? 'none' : undefined}}
+                    className={styles.login}
+                    to={PATH.LOGIN}
+                >Are you already registered?</NavLink>
             </Form>
 
         </>
     );
 };
-
-//types
-type FormikErrorType = {
-    email?: string
-    password?: string
-    confirmPassword?: string
-}
 
 
 

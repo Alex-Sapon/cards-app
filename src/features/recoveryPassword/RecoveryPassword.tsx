@@ -4,16 +4,15 @@ import FormHelperText from '@mui/material/FormHelperText';
 import LoadingButton from '@mui/lab/LoadingButton/LoadingButton';
 import {useFormik} from 'formik';
 import {NavLink} from 'react-router-dom';
-import Button from '../../common/button/Button';
-import {Form} from '../../common/form/Form';
+import {Button} from '../../common/button';
+import {Form} from '../../common/form';
 import {AppStateType} from '../../app/store';
 import {PATH} from '../../enums/path';
 import styles from './RecoveryPass.module.css';
-import {AlertBar} from '../login/AlertBar';
 import {forgotPass} from './reducer/recoveryPasswordReducer';
 import React from 'react';
-import {SendEmail} from './sendEmail/SendEmail';
-import {RequestStatusType, setAppError} from '../../app/reducer/app-reducer';
+import {SendEmail} from './sendEmail';
+import {RequestStatusType} from '../../app/reducer/appReducer';
 import {useAppDispatch, useAppSelector} from '../../assets/utils/hooks';
 
 type RecoveryPasswordErrorType = {
@@ -21,14 +20,12 @@ type RecoveryPasswordErrorType = {
 }
 
 const selectIsSendEmail = (state: AppStateType): boolean => state.recoveryPassword.isSendEmail;
-const selectResponseMessage = (state: AppStateType): string | null => state.app.error;
 const selectStatus = (state: AppStateType): RequestStatusType => state.app.status;
 
 export const RecoveryPassword = () => {
     const dispatch = useAppDispatch();
 
     const isSendEmail = useAppSelector(selectIsSendEmail);
-    const responseMessage = useAppSelector(selectResponseMessage);
     const status = useAppSelector(selectStatus);
 
     const handleDisableClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
@@ -91,7 +88,6 @@ export const RecoveryPassword = () => {
                 <div className={styles.subtitle}>Did you remember your password?</div>
                 <NavLink className={styles.link} to={PATH.LOGIN} onClick={handleDisableClick}>Try logging in</NavLink>
             </Form>
-            {responseMessage && <AlertBar message={responseMessage} closeAlert={() => setAppError(null)}/>}
         </>
     )
 };

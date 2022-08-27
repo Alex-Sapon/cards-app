@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import ClearIcon from '@mui/icons-material/Clear';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import Button from '../../common/button/Button';
+import {Button} from '../../common/button';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Tooltip from '@mui/material/Tooltip';
@@ -16,7 +16,7 @@ import {logout, updateUserData} from '../login/reducer/loginReducer';
 import IconButton from '@mui/material/IconButton';
 import LoadingButton from '@mui/lab/LoadingButton';
 import {convertFileToBase64} from '../../assets/utils/convertFileToBase64';
-import {setAppError} from '../../app/reducer/app-reducer';
+import {setAppError} from '../../app';
 import {useAppDispatch, useAppSelector} from '../../assets/utils/hooks';
 
 export const Profile = () => {

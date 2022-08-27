@@ -1,22 +1,21 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
-import styles from './tableCardName.module.css';
+import styles from './CardsList.module.css';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
 import {TextField} from '@mui/material';
-import {PaginationGroup} from '../../packsList/paginationGroup/PaginationGroup';
+import {PaginationGroup} from '../packsList/paginationGroup/PaginationGroup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import IconButton from '@mui/material/IconButton';
-import Button from '../../../common/button/Button';
-import {setCardsPage, setCardsPageCount, setSearchQuestion} from '../reducer/packCardReducer';
+import {Button} from '../../common/button';
+import {setCardsPage, setCardsPageCount, setSearchQuestion} from './reducer/cardsListReducer';
 import {useNavigate} from 'react-router-dom';
-import useDebounce from '../../../assets/utils/useDebounce';
-import {AddCardModal} from '../../../components/Modals/customModals/AddCardModal';
-import {TableContainerCards} from './tableContainerCards/TableContainerCards';
-import {shortWord} from '../../../assets/utils/shortWord';
-import {ModalType} from '../../../components/Modals/BasicModal';
-import {useAppDispatch, useAppSelector} from '../../../assets/utils/hooks';
+import useDebounce from '../../assets/utils/useDebounce';
+import {AddCardModal, ModalType} from '../../components/modals';
+import {TableContainerCards} from './tableCardName/tableContainerCards/TableContainerCards';
+import {shortWord} from '../../assets/utils/shortWord';
+import {useAppDispatch, useAppSelector} from '../../assets/utils/hooks';
 
-export const TableCard = () => {
+export const CardsList = () => {
     const dispatch = useAppDispatch();
 
     const [value, setValue] = useState('');
@@ -26,18 +25,18 @@ export const TableCard = () => {
 
     const debouncedValue = useDebounce<string>(value, 500);
 
-    const page = useAppSelector(state => state.cardPack.page);
-    const cardsTotalCount = useAppSelector(state => state.cardPack.cardsTotalCount);
-    const pageCount = useAppSelector(state => state.cardPack.pageCount);
-    const packName = useAppSelector(state => state.cardPack.packName);
+    const page = useAppSelector(state => state.cardList.page);
+    const cardsTotalCount = useAppSelector(state => state.cardList.cardsTotalCount);
+    const pageCount = useAppSelector(state => state.cardList.pageCount);
+    const packName = useAppSelector(state => state.cardList.packName);
     const userId = useAppSelector(state => state.login._id);
-    const user_id = useAppSelector(state => state.cardPack.packUserId);
+    const user_id = useAppSelector(state => state.cardList.packUserId);
     const status = useAppSelector(state => state.app.status);
 
     useEffect(() => {
         dispatch(setSearchQuestion(debouncedValue));
         dispatch(setCardsPage(1));
-    }, [debouncedValue])
+    }, [debouncedValue, dispatch])
 
     const addNewCard = () => setIsOpen('add');
 

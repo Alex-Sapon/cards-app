@@ -4,19 +4,19 @@ import styles from './CustomModal.module.css';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import {TextField} from '@mui/material';
-import Button from '../../../common/button/Button';
-import {updateCard} from '../../../features/packName/reducer/packCardReducer';
+import {Button} from '../../../common/button';
+import {updateCard} from '../../../features/cardsList/reducer/cardsListReducer';
 import Cover from '../../../assets/images/cover.jpg';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import {setAppError} from '../../../app/reducer/app-reducer';
+import {setAppError} from '../../../app';
 import {convertFileToBase64} from '../../../assets/utils/convertFileToBase64';
 import {useAppDispatch, useAppSelector} from '../../../assets/utils/hooks';
 
 export const EditCardModal = ({onClose}: ModalPropsType) => {
     const dispatch = useAppDispatch();
 
-    const cardId = useAppSelector(state => state.cardPack.cardId);
-    const card = useAppSelector(state => state.cardPack.cards.find(card => card._id === cardId));
+    const cardId = useAppSelector(state => state.cardList.cardId);
+    const card = useAppSelector(state => state.cardList.cards.find(card => card._id === cardId));
     const error = useAppSelector(state => state.app.error);
 
     const [question, setQuestion] = useState('');
@@ -92,7 +92,7 @@ export const EditCardModal = ({onClose}: ModalPropsType) => {
             setAnswer(card.answerImg);
         }
 
-    }, [])
+    }, [card?.question, card?.answer, card?.answerImg, card?.questionImg])
 
     return (
         <BasicModal onClose={onClose}>

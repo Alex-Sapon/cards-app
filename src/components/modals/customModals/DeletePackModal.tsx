@@ -1,38 +1,38 @@
+import React from 'react';
 import {BasicModal, ModalPropsType} from '../BasicModal';
-import Button from '../../../common/button/Button';
 import styles from './CustomModal.module.css';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import React from 'react';
-import {removeCard} from '../../../features/packName/reducer/packCardReducer';
+import {Button} from '../../../common/button';
+import {deleteCardsPack} from '../../../features/packsList/tablePacks/tablePacksReducer';
 import Cover from '../../../assets/images/cover.jpg';
 import {useAppDispatch, useAppSelector} from '../../../assets/utils/hooks';
 
-export const DeleteCardModal = ({onClose}: ModalPropsType) => {
+export const DeletePackModal = ({onClose}: ModalPropsType) => {
     const dispatch = useAppDispatch();
 
-    const cardId = useAppSelector(state => state.cardPack.cardId);
-    const card = useAppSelector(state => state.cardPack.cards.find(card => card._id === cardId));
+    const {packId, packName} = useAppSelector(state => state.packList);
+    const pack = useAppSelector(state => state.packList.cardPacks.find(pack => pack._id === packId));
 
-    const deleteCard = () => {
-        dispatch(removeCard(cardId));
+    const handleDeletePack = () => {
+        dispatch(deleteCardsPack(packId));
         onClose();
-    };
+    }
 
     return (
         <BasicModal onClose={onClose}>
             <div className={styles.header}>
-                <h3>Delete card</h3>
+                <h3>Delete pack</h3>
                 <IconButton onClick={onClose}><CloseIcon/></IconButton>
             </div>
             <div className={styles.divider}/>
-            <img src={card?.questionImg ? card?.questionImg : Cover} alt="Cover" className={styles.image}/>
+            <img src={pack?.deckCover ? pack?.deckCover : Cover} alt="Cover" className={styles.image}/>
             <p className={styles.description}>
-                Do you really want to remove Card Name - <b>{card?.question}</b>? All cards will be excluded from this course.
+                Do you really want to remove Pack Name - <b>{packName}</b>? All cards will be excluded from this course.
             </p>
             <div className={styles.buttons}>
                 <Button onClick={onClose}>Cancel</Button>
-                <Button onClick={deleteCard}>Delete</Button>
+                <Button onClick={handleDeletePack}>Delete</Button>
             </div>
         </BasicModal>
     )

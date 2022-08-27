@@ -1,6 +1,6 @@
 import {instance} from '../../../api/instance';
 import {AxiosResponse} from 'axios';
-import { PackResponseType } from '../../packName/apiCardName/apiPackName';
+import { PackResponseType } from '../../cardsList/apiCardsList/apiCardsList';
 
 export const learnPackAPI = {
     getCards(cardsPack_id: string) {

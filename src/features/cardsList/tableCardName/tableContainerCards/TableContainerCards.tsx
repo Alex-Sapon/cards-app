@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {StyledTableCell, StyledTableRow} from '../styledTableCard/styledTableCard';
-import {setSortCards,} from '../../reducer/packCardReducer';
-import styles from '../tableCardName.module.css';
+import {setSortCards,} from '../../reducer/cardsListReducer';
+import styles from '../../CardsList.module.css';
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
 import TableHead from '@mui/material/TableHead';
@@ -21,7 +21,7 @@ export const TableContainerCards = () => {
     const [grade, setGrade] = useState<'0grade' | '1grade'>('0grade');
 
     const userId = useAppSelector(state => state.login._id);
-    const cards = useAppSelector(state => state.cardPack.cards);
+    const cards = useAppSelector(state => state.cardList.cards);
     const status = useAppSelector(state => state.app.status);
 
     const handleSortQuestion = () => {

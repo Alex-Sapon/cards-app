@@ -1,15 +1,14 @@
-import {AppThunk} from '../../../app/store';
 import {authAPI, ForgotPasswordType} from '../../../api/authAPI';
-import {setAppError, setAppStatus} from '../../../app/reducer/app-reducer';
+import {setAppError, setAppStatus} from '../../../app';
 import axios, {AxiosError} from 'axios';
 import {call, put, takeEvery} from 'redux-saga/effects';
 
-const initial: RecoveryPasswordStateType = {
+const initial: StateType = {
     email: 'example@mail.com',
     isSendEmail: false,
 }
 
-export const recoveryPasswordReducer = (state: RecoveryPasswordStateType = initial, action: RecoveryPasswordActionsType): RecoveryPasswordStateType => {
+export const recoveryPasswordReducer = (state: StateType = initial, action: ActionsType): StateType => {
     switch (action.type) {
         case 'RECOVERY-PASSWORD/SET-IS-SEND-EMAIL':
             return {...state, isSendEmail: action.isSend};
@@ -30,6 +29,8 @@ export const setEmail = (email: string) => ({
     email,
 } as const);
 
+export const forgotPass = (email: string) => ({type: 'RECOVERY-PASSWORD/FORGOT-PASSWORD', email} as const);
+
 export function* forgotPasswordSaga({email}: ReturnType<typeof forgotPass>) {
     const data: ForgotPasswordType = {
         email: email,
@@ -41,9 +42,8 @@ export function* forgotPasswordSaga({email}: ReturnType<typeof forgotPass>) {
                 `,
     }
 
-    yield put(setAppStatus('loading'));
-
     try {
+        yield put(setAppStatus('loading'));
         yield call(authAPI.forgotPassword, data);
         yield put(setIsSendEmail(true));
         yield put(setEmail(email));
@@ -64,13 +64,9 @@ export function* recoveryPasswordWatcher() {
     yield takeEvery('RECOVERY-PASSWORD/FORGOT-PASSWORD', forgotPasswordSaga);
 }
 
-export const forgotPass = (email: string) => ({type: 'RECOVERY-PASSWORD/FORGOT-PASSWORD', email} as const);
+export type ActionsType = ReturnType<typeof setIsSendEmail> | ReturnType<typeof setEmail>
 
-export type RecoveryPasswordActionsType =
-    | ReturnType<typeof setIsSendEmail>
-    | ReturnType<typeof setEmail>
-
-export type RecoveryPasswordStateType = {
+export type StateType = {
     email: string
     isSendEmail: boolean
 }

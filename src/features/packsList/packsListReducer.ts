@@ -1,9 +1,10 @@
-import {packsListApi, PacksParamsResponseType, PackType} from './packsList-api';
+import {apiPacksList, PacksParamsResponseType, PackType} from './apiPacksList';
 import axios, {AxiosError, AxiosResponse} from 'axios';
-import {setAppError, setAppStatus} from '../../app/reducer/app-reducer';
+import {setAppError, setAppStatus} from '../../app';
 import {AppStateType} from '../../app/store';
 import {call, put, select, takeEvery} from 'redux-saga/effects';
 import {TablePacksType} from './tablePacks/tablePacksReducer';
+import {ErrorData} from '../users/usersAPI';
 
 const initial: PacksListStateType = {
     cardPacks: [] as PackType[],
@@ -48,7 +49,7 @@ export function* fetchCardPacksSaga() {
     yield put(setAppStatus('loading'));
 
     try {
-        const res: AxiosResponse<PacksParamsResponseType> = yield call(packsListApi.getPacks, {
+        const res: AxiosResponse<PacksParamsResponseType> = yield call(apiPacksList.getPacks, {
             packName,
             sortPacks,
             page,
@@ -60,7 +61,7 @@ export function* fetchCardPacksSaga() {
 
         yield put(setPacksListData(res.data));
     } catch (e) {
-        const err = e as Error | AxiosError<{ error: string }>
+        const err = e as Error | AxiosError<ErrorData>
         if (axios.isAxiosError(err)) {
             yield put(setAppError(err.response ? err.response.data.error : err.message));
         } else {

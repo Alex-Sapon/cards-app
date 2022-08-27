@@ -1,13 +1,13 @@
-import {AppThunk} from '../../../app/store';
-import {AxiosError} from 'axios';
+import axios, {AxiosError} from 'axios';
 import {authAPI} from '../../../api/authAPI';
-import {setAppError, setAppStatus} from '../../../app/reducer/app-reducer';
+import {setAppError, setAppStatus} from '../../../app';
+import {call, put, takeEvery} from 'redux-saga/effects';
 
-const initialState: RegistrationStateType = {
+const initial: StateType = {
     message: null,
 };
 
-export const registrationReducer = (state: RegistrationStateType = initialState, action: RegistrationActionsType): RegistrationStateType => {
+export const registrationReducer = (state: StateType = initial, action: ActionsType): StateType => {
     switch (action.type) {
         case 'REGISTRATION/SET-MESSAGE':
             return {...state, message: action.message};
@@ -16,39 +16,41 @@ export const registrationReducer = (state: RegistrationStateType = initialState,
     }
 };
 
-export const setRegisterMessageAC = (message: string | null) => ({type: 'REGISTRATION/SET-MESSAGE', message} as const);
+export const setRegisterMessage = (message: string | null) => ({
+    type: 'REGISTRATION/SET-MESSAGE',
+    message,
+}as const);
 
-export const userRegisterTC = (email: string, password: string): AppThunk => (dispatch) => {
-    dispatch(setAppStatus('loading'));
+export const userRegister = (email: string, password: string) => ({
+    type: 'REGISTRATION/SET-REGISTRATION',
+    email,
+    password,
+} as const);
 
-    authAPI.registration({email, password})
-        .then((res) => {
-            if (res.data.addedUser) {
-                dispatch(setRegisterMessageAC('You have successfully registered'));
-            } else if (res.data.error) {
-                dispatch(setAppError(res.data.error));
-            } else {
-                dispatch(setRegisterMessageAC('Some error occurred'));
-            }
-        })
-        .catch((error: AxiosError<{ error: string }>) => {
-            if (error.response) {
-                if (error.response.data === undefined) {
-                    dispatch(setAppError(error.message));
-                } else {
-                    dispatch(setAppError(error.response.data.error));
-                }
-            }
-        })
-        .finally(() => {
-            dispatch(setAppStatus('idle'));
-        });
-};
+export function* userRegisterSaga({email, password}: ReturnType<typeof userRegister>) {
+    try {
+        yield put(setAppStatus('loading'));
+        yield call(authAPI.registration, {email, password});
+    } catch (e) {
+        const err = e as Error | AxiosError<{ error: string }>
+        if (axios.isAxiosError(err)) {
+            yield put(setAppError(err.response ? err.response.data.error : err.message));
+        } else {
+            yield put(setAppError(err.message));
+        }
+    } finally {
+        yield put(setAppStatus('idle'));
+    }
+}
 
-export type RegistrationStateType = {
+export function* userRegisterWatcher() {
+    yield takeEvery('REGISTRATION/SET-REGISTRATION', userRegisterSaga);
+}
+
+export type StateType = {
     message: string | null
 }
-export type RegistrationActionsType = | ReturnType<typeof setRegisterMessageAC>
+export type ActionsType = ReturnType<typeof setRegisterMessage>
 
 
 
