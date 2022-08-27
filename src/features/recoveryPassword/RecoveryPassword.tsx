@@ -28,7 +28,7 @@ export const RecoveryPassword = () => {
     const isSendEmail = useAppSelector(selectIsSendEmail);
     const status = useAppSelector(selectStatus);
 
-    const handleDisableClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    const onDisableClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         if (status === 'loading') {
             e.preventDefault();
         }
@@ -86,7 +86,7 @@ export const RecoveryPassword = () => {
                 <Button type="submit" className={styles.button} disabled={status === 'loading'}>Send
                     instructions</Button>
                 <div className={styles.subtitle}>Did you remember your password?</div>
-                <NavLink className={styles.link} to={PATH.LOGIN} onClick={handleDisableClick}>Try logging in</NavLink>
+                <NavLink className={styles.link} to={PATH.LOGIN} onClick={onDisableClick}>Try logging in</NavLink>
             </Form>
         </>
     )

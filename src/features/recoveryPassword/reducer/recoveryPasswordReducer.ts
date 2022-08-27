@@ -49,7 +49,6 @@ export function* forgotPasswordSaga({email}: ReturnType<typeof forgotPass>) {
         yield put(setEmail(email));
     } catch (e) {
         const err = e as Error | AxiosError<{ error: string }>;
-
         if (axios.isAxiosError(err)) {
             yield put(setAppError(err.response ? err.response.data.error : err.message));
         } else {

@@ -1,0 +1,1 @@
+export {MAX_LENGTH_PASSWORD} from './maxLengthPassword';

@@ -1,7 +1,7 @@
 import {AxiosResponse} from 'axios';
 import {instance} from '../../../api/instance';
 
-export const tablePacksAPI = {
+export const apiTablePacks = {
     createPack(data: CreateCardsPackType) {
         return instance.post<any, AxiosResponse<{ newCardsPack: PackType }>, CreateCardsPackType>(`cards/pack`, data);
     },

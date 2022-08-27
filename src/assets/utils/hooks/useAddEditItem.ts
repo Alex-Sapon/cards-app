@@ -1,5 +1,5 @@
 import {ChangeEvent, useState} from 'react';
-import {AppThunk} from '../../app/store';
+import {AppThunk} from '../../../app/store';
 import {useAppDispatch} from './hooks';
 
 type AddEditProps = [

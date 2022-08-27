@@ -16,13 +16,14 @@ import {
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Input from '@mui/material/Input';
-import React, {useState} from 'react';
+import React from 'react';
 import {AppStateType} from '../../app/store';
 import {login} from './reducer/loginReducer';
 import FormHelperText from '@mui/material/FormHelperText';
 import LoadingButton from '@mui/lab/LoadingButton/LoadingButton';
 import {RequestStatusType} from '../../app/reducer/appReducer';
-import {useAppDispatch, useAppSelector} from '../../assets/utils/hooks';
+import {useAppDispatch, useAppSelector, useShowPassword} from '../../assets/utils/hooks';
+import {MAX_LENGTH_PASSWORD} from '../../constants';
 
 const selectIsLoggedIn = (state: AppStateType): boolean => state.login.isLoggedIn;
 const selectStatus = (state: AppStateType): RequestStatusType => state.app.status;
@@ -33,7 +34,9 @@ export const Login = () => {
 	const isLoggedIn = useAppSelector(selectIsLoggedIn);
 	const status = useAppSelector(selectStatus);
 
-	const [showPassword, setShowPassword] = useState(false);
+	const {isShow, setShowPassword} = useShowPassword();
+
+	const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => event.preventDefault();
 
 	const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
 		if (status === 'loading') {
@@ -58,8 +61,8 @@ export const Login = () => {
 
 			if (!values.password) {
 				errors.password = 'Required';
-			} else if (values.password.length <= 8) {
-				errors.password = 'Password should be more than 8 symbols';
+			} else if (values.password.length <= MAX_LENGTH_PASSWORD) {
+				errors.password = `Password should be more than ${MAX_LENGTH_PASSWORD} symbols`;
 			}
 
 			return errors;
@@ -69,10 +72,6 @@ export const Login = () => {
 			formik.resetForm({values: {email: values.email, password: '', rememberMe: false}});
 		}
 	});
-
-	const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => event.preventDefault();
-
-	const handleClickShowPassword = () => setShowPassword(!showPassword);
 
 	if (isLoggedIn) return <Navigate to={PATH.PROFILE}/>
 
@@ -96,18 +95,18 @@ export const Login = () => {
 						<InputLabel htmlFor="password">Password</InputLabel>
 						<Input
 							id="password"
-							type={showPassword ? 'text' : 'password'}
+							type={isShow ? 'text' : 'password'}
 							disabled={status === 'loading'}
 							endAdornment={
 								<InputAdornment position="end">
 									{status === 'loading'
 										? <LoadingButton loading variant="text" sx={{minWidth: '24px'}}/>
 										: <IconButton
-											onClick={handleClickShowPassword}
+											onClick={setShowPassword}
 											onMouseDown={handleMouseDownPassword}
 											className={styles.view}
 										>
-											{showPassword ? <Visibility/> : <VisibilityOff/>}
+											{isShow ? <Visibility/> : <VisibilityOff/>}
 										</IconButton>}
 								</InputAdornment>
 							}

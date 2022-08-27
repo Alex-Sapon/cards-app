@@ -47,9 +47,8 @@ export const updateUserData = (name: string, avatar: string) => ({
 } as const);
 
 export function* loginSaga({data}: ReturnType<typeof login>) {
-    yield put(setAppStatus('loading'));
-
     try {
+        yield put(setAppStatus('loading'));
         const res: AxiosResponse<UserResponseType> = yield authAPI.login(data);
         yield put(setLoginData(res.data));
         yield put(setIsLoggedIn(true));
@@ -62,9 +61,8 @@ export function* loginSaga({data}: ReturnType<typeof login>) {
 }
 
 export function* logoutSaga() {
-    yield put(setAppStatus('loading'));
-
     try {
+        yield put(setAppStatus('loading'));
         yield call(authAPI.logout);
         yield put(setIsLoggedIn(false));
     } catch (e) {
@@ -76,9 +74,8 @@ export function* logoutSaga() {
 }
 
 export function* updateUserDataSaga({name, avatar}: ReturnType<typeof updateUserData>) {
-    yield put(setAppStatus('loading'));
-
     try {
+        yield put(setAppStatus('loading'));
         const res: AxiosResponse<UpdateProfileResponseType> = yield call(authAPI.updateProfile, {name, avatar});
         yield put(setLoginData(res.data.updatedUser));
     } catch (e) {

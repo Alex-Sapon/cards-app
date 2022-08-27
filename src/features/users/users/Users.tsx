@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -9,21 +9,20 @@ import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import styles from './Users.module.css';
-import {PaginationGroup} from '../../packsList/paginationGroup/PaginationGroup';
+import {PaginationGroup} from '../../packsList/paginationGroup';
 import {setPageCountUsers, setPageUsers, setSearchName} from '../usersReducer';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
-import useDebounce from '../../../assets/utils/useDebounce';
 import {useNavigate} from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import ContactPageIcon from '@mui/icons-material/ContactPage';
 import Tooltip from '@mui/material/Tooltip';
-import {useAppDispatch, useAppSelector} from '../../../assets/utils/hooks';
+import {useAppDispatch, useAppSelector, useDebounce, useInputChange} from '../../../assets/utils/hooks';
 
 export const Users = () => {
     const dispatch = useAppDispatch();
 
-    const [value, setValue] = useState('');
+    const {value, onInputChange} = useInputChange();
 
     const navigate = useNavigate();
 
@@ -35,15 +34,13 @@ export const Users = () => {
 
     const debouncedValue = useDebounce<string>(value, 500);
 
-    const changePageHandler = (page: number) => dispatch(setPageUsers(page));
+    const handleSetPage = (page: number) => dispatch(setPageUsers(page));
 
-    const changePageCountHandler = (value: number) => dispatch(setPageCountUsers(value));
-
-    const changeSearchValue = (e: ChangeEvent<HTMLInputElement>) => setValue(e.currentTarget.value);
+    const handleSetPageCount = (value: number) => dispatch(setPageCountUsers(value));
 
     useEffect(() => {
-        dispatch(setSearchName(debouncedValue))
-    }, [debouncedValue])
+        dispatch(setSearchName(debouncedValue));
+    }, [debouncedValue, dispatch])
 
     return (
         <Box className={styles.wrapper}>
@@ -55,14 +52,14 @@ export const Users = () => {
                     placeholder="Search"
                     disabled={status === 'loading'}
                     value={value}
-                    onChange={changeSearchValue}
+                    onChange={onInputChange}
                     InputProps={{startAdornment: <InputAdornment position="start"><SearchIcon/></InputAdornment>}}
                 />
             </div>
             <div className={styles.pagination}>
                 <PaginationGroup
-                    onChangePage={changePageHandler}
-                    onChangeValue={changePageCountHandler}
+                    onPageChange={handleSetPage}
+                    onValueChange={handleSetPageCount}
                     page={page}
                     pageCount={pageCount}
                     cardsTotalCount={usersTotalCount}

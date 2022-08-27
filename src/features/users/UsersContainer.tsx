@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {Navigate} from 'react-router-dom';
 import {getUsers} from './usersReducer';
 import {PATH} from '../../enums/path';
-import {Users} from './users/Users';
+import {Users} from './users';
 import {useAppDispatch, useAppSelector} from '../../assets/utils/hooks';
 import {selectIsLoggedIn} from '../login';
 import {selectUserName, selectUsersPage, selectUsersPageCount} from './selectors';

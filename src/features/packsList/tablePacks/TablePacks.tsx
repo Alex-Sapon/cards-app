@@ -1,8 +1,6 @@
-import React from 'react';
-import {ChangeEvent, useEffect, useState} from 'react';
-import {PaginationGroup} from '../paginationGroup/PaginationGroup';
+import React, {useEffect, useState} from 'react';
+import {PaginationGroup} from '../paginationGroup';
 import {AppStateType} from '../../../app/store';
-import useDebounce from '../../../assets/utils/useDebounce';
 import {PackType} from '../apiPacksList';
 import {RequestStatusType} from '../../../app/reducer/appReducer';
 import {TableRowPack} from '../tableRowPack/TableRowPack';
@@ -21,7 +19,7 @@ import {TableCell, TextField} from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import {setCardsPageCount, setPage, setSearchPackName, setSortPackName} from './tablePacksReducer';
 import {AddPackModal, ModalType} from '../../../components/modals';
-import {useAppDispatch, useAppSelector} from '../../../assets/utils/hooks';
+import {useAppDispatch, useAppSelector, useDebounce, useInputChange} from '../../../assets/utils/hooks';
 
 const selectCardPacks = (state: AppStateType): PackType[] => state.packList.cardPacks;
 const selectCardPacksTotalCount = (state: AppStateType): number => state.packList.cardPacksTotalCount;
@@ -31,7 +29,10 @@ const selectStatus = (state: AppStateType): RequestStatusType => state.app.statu
 
 
 export const TablePacks = () => {
-    const [value, setValue] = useState('');
+    const dispatch = useAppDispatch();
+
+    const {value, onInputChange} = useInputChange();
+
     const [isOpen, setIsOpen] = useState<ModalType>('close');
 
     const [name, setName] = useState<'0name' | '1name'>('0name');
@@ -39,7 +40,7 @@ export const TablePacks = () => {
     const [updated, setUpdated] = useState<'0updated' | '1updated'>('0updated');
     const [userName, setUserName] = useState<'0user_name' | '1user_name'>('0user_name');
 
-    const dispatch = useAppDispatch();
+
 
     const debouncedValue = useDebounce<string>(value, 500);
 
@@ -48,10 +49,6 @@ export const TablePacks = () => {
     const pageCount = useAppSelector(selectPageCount);
     const page = useAppSelector(selectPage);
     const status = useAppSelector(selectStatus);
-
-    const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
-        setValue(e.currentTarget.value);
-    }
 
     useEffect(() => {
         dispatch(setSearchPackName(debouncedValue));
@@ -99,7 +96,7 @@ export const TablePacks = () => {
                     placeholder="Search"
                     disabled={status === 'loading'}
                     value={value}
-                    onChange={handleChangeValue}
+                    onChange={onInputChange}
                     InputProps={{startAdornment: <InputAdornment position="start"><SearchIcon/></InputAdornment>}}
                 />
                 {status === 'loading'
@@ -180,8 +177,8 @@ export const TablePacks = () => {
                 page={page}
                 title="Cards per Page"
                 disable={status === 'loading'}
-                onChangePage={handleChangePage}
-                onChangeValue={handleChangeValueSelect}
+                onPageChange={handleChangePage}
+                onValueChange={handleChangeValueSelect}
             />
             {isOpen === 'add' && <AddPackModal onClose={() => setIsOpen('close')}/>}
         </div>

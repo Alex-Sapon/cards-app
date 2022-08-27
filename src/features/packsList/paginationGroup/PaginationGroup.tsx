@@ -12,21 +12,21 @@ type PaginationGroupType = {
 	page?: number
 	title?: string
 	disable?: boolean
-	onChangePage: (page: number) => void
-	onChangeValue: (value: number) => void
+	onPageChange: (page: number) => void
+	onValueChange: (value: number) => void
 }
 
 export const PaginationGroup = memo((props: PaginationGroupType) => {
-	const {cardsTotalCount, pageCount, page, title, disable, onChangeValue, onChangePage} = props;
+	const {cardsTotalCount, pageCount, page, title, disable, onValueChange, onPageChange} = props;
 
 	const handleChangePageCount = (e: SelectChangeEvent) => {
 		if (pageCount && Number(e.target.value) !== pageCount) {
-			onChangeValue(Number(e.target.value));
+			onValueChange(Number(e.target.value));
 		}
 	}
 
 	const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
-		onChangePage(value);
+		onPageChange(value);
 	}
 
 	const totalPageCount = cardsTotalCount && pageCount && Math.ceil(cardsTotalCount / pageCount);

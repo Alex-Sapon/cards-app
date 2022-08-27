@@ -8,13 +8,14 @@ import Input from '@mui/material/Input';
 import FormHelperText from '@mui/material/FormHelperText';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Navigate, useParams} from 'react-router';
 import LoadingButton from '@mui/lab/LoadingButton/LoadingButton';
 import styles from './SetPassword.module.css';
 import {initializeApp, RequestStatusType} from '../../app/reducer/appReducer';
 import {updateNewPassword} from './reducer/setPasswordReducer';
-import {useAppDispatch, useAppSelector} from '../../assets/utils/hooks';
+import {useAppDispatch, useAppSelector, useShowPassword} from '../../assets/utils/hooks';
+import {MAX_LENGTH_PASSWORD} from '../../constants';
 
 type SetPasswordErrorType = {
     password?: string
@@ -26,9 +27,9 @@ const selectStatus = (state: AppStateType): RequestStatusType => state.app.statu
 export const SetPassword = () => {
     const dispatch = useAppDispatch();
 
-    const {token} = useParams<'token'>();
+    const {isShow, setShowPassword} = useShowPassword();
 
-    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const {token} = useParams<'token'>();
 
     const isUpdatePassword = useAppSelector(selectIsUpdatePassword);
     const status = useAppSelector(selectStatus);
@@ -42,8 +43,8 @@ export const SetPassword = () => {
 
             if (!values.password) {
                 errors.password = 'Required';
-            } else if (values.password.length <= 8) {
-                errors.password = 'Password should be more than 8 symbols';
+            } else if (values.password.length <= MAX_LENGTH_PASSWORD) {
+                errors.password = `Password should be more than ${MAX_LENGTH_PASSWORD} symbols`;
             }
 
             return errors;
@@ -60,14 +61,12 @@ export const SetPassword = () => {
 
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => event.preventDefault();
 
-    const handleClickShowPassword = () => setShowPassword(!showPassword);
-
     useEffect(() => {
         dispatch(initializeApp());
     }, [dispatch]);
 
     if (isUpdatePassword) {
-        return <Navigate to={PATH.LOGIN} />
+        return <Navigate to={PATH.LOGIN}/>
     }
 
     return (
@@ -78,18 +77,18 @@ export const SetPassword = () => {
                         <InputLabel htmlFor="password">Password</InputLabel>
                         <Input
                             id="password"
-                            type={showPassword ? 'text' : 'password'}
+                            type={isShow ? 'text' : 'password'}
                             disabled={status === 'loading'}
                             endAdornment={
                                 <InputAdornment position="end">
                                     {status === 'loading'
                                         ? <LoadingButton loading variant="text" sx={{minWidth: '24px'}}/>
                                         :<IconButton
-                                            onClick={handleClickShowPassword}
+                                            onClick={setShowPassword}
                                             onMouseDown={handleMouseDownPassword}
                                             className={styles.view}
                                         >
-                                            {showPassword ? <Visibility/> : <VisibilityOff/>}
+                                            {isShow ? <Visibility/> : <VisibilityOff/>}
                                         </IconButton>}
                                 </InputAdornment>}
                             {...formik.getFieldProps('password')}

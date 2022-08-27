@@ -1,4 +1,4 @@
-import {ErrorData, socialAPI, UserProfileType, UsersParamsType, UsersResponseType} from './usersAPI';
+import {ErrorData, socialAPI, UserProfileType, UsersParamsType, UsersResponseType} from './apiUsers';
 import {setAppError, setAppStatus} from '../../app';
 import axios, {AxiosError, AxiosResponse} from 'axios';
 import {call, put, select, takeEvery} from 'redux-saga/effects';

@@ -1,10 +1,10 @@
 import {AxiosError} from 'axios';
 import {setAppError, setAppStatus} from '../../../app';
 import {fetchCardPacks} from '../packsListReducer';
-import {tablePacksAPI} from './tablePacks-api';
+import {apiTablePacks} from './apiTablePacks';
 import {call, put, takeEvery} from 'redux-saga/effects';
 
-const initial: TablePacksType = {
+const initial: StateType = {
     packName: '',
     sortPacks: '',
     page: 1,
@@ -16,7 +16,7 @@ const initial: TablePacksType = {
     name: '',
 };
 
-export const tablePacksReducer = (state: TablePacksType = initial, action: TablePacksActionsType): TablePacksType => {
+export const tablePacksReducer = (state: StateType = initial, action: ActionsType): StateType => {
     switch (action.type) {
         case 'TABLE-PACKS/SET-PAGE':
             return {...state, page: action.page};
@@ -65,51 +65,6 @@ export const setPackId = (id: string) => ({type: 'TABLE-PACKS/SET-PACK-ID', id} 
 
 export const setPackName = (name: string) => ({type: 'TABLE-PACKS/SET-PACK-NAME', name} as const);
 
-export function* createCardsPackSaga({name, cover, isPrivate}: ReturnType<typeof createCardsPack>) {
-    yield put(setAppStatus('loading'));
-
-    try {
-        yield call(tablePacksAPI.createPack, {cardsPack: {name: name, deckCover: cover, private: isPrivate}});
-        yield put(fetchCardPacks());
-    } catch (e) {
-        const err = e as AxiosError<{ error: string }>
-        yield put(setAppError(err.response ? err.response.data.error : err.message));
-        yield put(setAppStatus('idle'));
-    }
-}
-
-export function* deleteCardsPackSaga({id}: ReturnType<typeof deleteCardsPack>) {
-    yield put(setAppStatus('loading'));
-
-    try {
-        yield call(tablePacksAPI.deletePack, id);
-        yield put(fetchCardPacks());
-    } catch (e) {
-        const err = e as AxiosError<{ error: string }>;
-        yield put(setAppError(err.response ? err.response.data.error : err.message));
-        yield put(setAppStatus('idle'));
-    }
-}
-
-export function* updateCardsPackSaga({id, name, cover}: ReturnType<typeof updateCardsPack>) {
-    yield put(setAppStatus('loading'));
-
-    try {
-        yield call(tablePacksAPI.updatePack, {cardsPack: {_id: id, name: name, deckCover: cover}})
-        yield put(fetchCardPacks());
-    } catch (e) {
-        const err = e as AxiosError<{ error: string }>;
-        yield put(setAppError(err.response ? err.response.data.error : err.message));
-        yield put(setAppStatus('idle'));
-    }
-}
-
-export function* tablePacksWatcher() {
-    yield takeEvery('TABLE-PACKS/CREATE-CARDS-PACK', createCardsPackSaga);
-    yield takeEvery('TABLE-PACKS/DELETE-CARDS-PACK', deleteCardsPackSaga);
-    yield takeEvery('TABLE-PACKS/UPDATE-CARDS-PACK', updateCardsPackSaga);
-}
-
 export const createCardsPack = (name: string, cover: string, isPrivate: boolean) => ({
     type: 'TABLE-PACKS/CREATE-CARDS-PACK',
     name,
@@ -129,7 +84,49 @@ export const updateCardsPack = (id: string, name: string, cover: string) => ({
     cover,
 } as const);
 
-export type TablePacksActionsType =
+export function* createCardsPackSaga({name, cover, isPrivate}: ReturnType<typeof createCardsPack>) {
+    try {
+        yield put(setAppStatus('loading'));
+        yield call(apiTablePacks.createPack, {cardsPack: {name: name, deckCover: cover, private: isPrivate}});
+        yield put(fetchCardPacks());
+    } catch (e) {
+        const err = e as AxiosError<{ error: string }>
+        yield put(setAppError(err.response ? err.response.data.error : err.message));
+        yield put(setAppStatus('idle'));
+    }
+}
+
+export function* deleteCardsPackSaga({id}: ReturnType<typeof deleteCardsPack>) {
+    try {
+        yield put(setAppStatus('loading'));
+        yield call(apiTablePacks.deletePack, id);
+        yield put(fetchCardPacks());
+    } catch (e) {
+        const err = e as AxiosError<{ error: string }>;
+        yield put(setAppError(err.response ? err.response.data.error : err.message));
+        yield put(setAppStatus('idle'));
+    }
+}
+
+export function* updateCardsPackSaga({id, name, cover}: ReturnType<typeof updateCardsPack>) {
+    try {
+        yield put(setAppStatus('loading'));
+        yield call(apiTablePacks.updatePack, {cardsPack: {_id: id, name: name, deckCover: cover}})
+        yield put(fetchCardPacks());
+    } catch (e) {
+        const err = e as AxiosError<{ error: string }>;
+        yield put(setAppError(err.response ? err.response.data.error : err.message));
+        yield put(setAppStatus('idle'));
+    }
+}
+
+export function* tablePacksWatcher() {
+    yield takeEvery('TABLE-PACKS/CREATE-CARDS-PACK', createCardsPackSaga);
+    yield takeEvery('TABLE-PACKS/DELETE-CARDS-PACK', deleteCardsPackSaga);
+    yield takeEvery('TABLE-PACKS/UPDATE-CARDS-PACK', updateCardsPackSaga);
+}
+
+export type ActionsType =
     | ReturnType<typeof setPage>
     | ReturnType<typeof setCardsPageCount>
     | ReturnType<typeof setSearchPackName>
@@ -140,7 +137,7 @@ export type TablePacksActionsType =
     | ReturnType<typeof setPackId>
     | ReturnType<typeof setPackName>
 
-export type TablePacksType = {
+export type StateType = {
     packName: string
     sortPacks: string
     page: number

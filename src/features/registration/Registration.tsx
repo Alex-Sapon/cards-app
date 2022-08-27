@@ -14,7 +14,8 @@ import {PATH} from '../../enums/path';
 import {useFormik} from 'formik';
 import {Navigate, NavLink} from 'react-router-dom';
 import {userRegister} from './reducer/registrationReducer';
-import {useAppDispatch, useAppSelector} from '../../assets/utils/hooks';
+import {useAppDispatch, useAppSelector, useShowPassword} from '../../assets/utils/hooks';
+import {MAX_LENGTH_PASSWORD} from '../../constants';
 
 type FormikErrorType = {
     email?: string
@@ -26,7 +27,10 @@ export const Registration = () => {
     const dispatch = useAppDispatch();
 
     const status = useAppSelector(state => state.app.status);
-    const isLoggedIn = useAppSelector(state => state.login.isLoggedIn)
+    const isLoggedIn = useAppSelector(state => state.login.isLoggedIn);
+
+    const {isShow: isShowPassword, setShowPassword: showPass} = useShowPassword();
+    const {isShow: isShowConfirmPassword, setShowPassword: showConfirmPass} = useShowPassword();
 
     const formik = useFormik({
         initialValues: {
@@ -45,8 +49,8 @@ export const Registration = () => {
 
             if (!values.password) {
                 errors.password = 'Password is required';
-            } else if (values.password.length <= 7) {
-                errors.password = 'Must be 8 characters or more symbols in password';
+            } else if (values.password.length <= MAX_LENGTH_PASSWORD) {
+                errors.password = `Password should be more than ${MAX_LENGTH_PASSWORD} symbols`;
             }
 
             if (!values.confirmPassword) {
@@ -62,16 +66,6 @@ export const Registration = () => {
             formik.resetForm({values: {email: values.email, password: '', confirmPassword: ''}});
         },
     });
-
-    const [showPassword, setShowPassword] = React.useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
-
-    const handleClickShowPassword = () => {
-        setShowPassword(!showPassword);
-    };
-    const handleClickShowConfirmPassword = () => {
-        setShowConfirmPassword(!showConfirmPassword);
-    };
 
     if (isLoggedIn) {
         return <Navigate to={PATH.PROFILE}/>
@@ -96,13 +90,13 @@ export const Registration = () => {
                         <Input
                             {...formik.getFieldProps('password')}
                             id="password"
-                            type={showPassword ? 'text' : 'password'}
+                            type={isShowPassword ? 'text' : 'password'}
                             endAdornment={
                                 <InputAdornment position="end">
                                     <IconButton
-                                        onClick={handleClickShowPassword}
+                                        onClick={showPass}
                                     >
-                                        {showPassword ? <VisibilityOff/> : <Visibility/>}
+                                        {isShowPassword ? <Visibility/> : <VisibilityOff/>}
                                     </IconButton>
                                 </InputAdornment>
                             }
@@ -114,12 +108,12 @@ export const Registration = () => {
                         <InputLabel htmlFor="confirmPassword">Confirm password</InputLabel>
                         <Input
                             id="confirmPassword"
-                            type={showConfirmPassword ? 'text' : 'password'}
+                            type={isShowConfirmPassword ? 'text' : 'password'}
                             {...formik.getFieldProps('confirmPassword')}
                             endAdornment={
                                 <InputAdornment position="end">
-                                    <IconButton onClick={handleClickShowConfirmPassword}>
-                                        {showConfirmPassword ? <VisibilityOff/> : <Visibility/>}
+                                    <IconButton onClick={showConfirmPass}>
+                                        {isShowConfirmPassword ? <Visibility/> : <VisibilityOff/>}
                                     </IconButton>
                                 </InputAdornment>
                             }

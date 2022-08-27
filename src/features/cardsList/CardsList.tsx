@@ -1,27 +1,27 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './CardsList.module.css';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
 import {TextField} from '@mui/material';
-import {PaginationGroup} from '../packsList/paginationGroup/PaginationGroup';
+import {PaginationGroup} from '../packsList/paginationGroup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import IconButton from '@mui/material/IconButton';
 import {Button} from '../../common/button';
 import {setCardsPage, setCardsPageCount, setSearchQuestion} from './reducer/cardsListReducer';
 import {useNavigate} from 'react-router-dom';
-import useDebounce from '../../assets/utils/useDebounce';
 import {AddCardModal, ModalType} from '../../components/modals';
 import {TableContainerCards} from './tableCardName/tableContainerCards/TableContainerCards';
 import {shortWord} from '../../assets/utils/shortWord';
-import {useAppDispatch, useAppSelector} from '../../assets/utils/hooks';
+import {useAppDispatch, useAppSelector, useDebounce, useInputChange} from '../../assets/utils/hooks';
 
 export const CardsList = () => {
     const dispatch = useAppDispatch();
 
-    const [value, setValue] = useState('');
     const [isOpen, setIsOpen] = useState<ModalType>('close');
 
     const navigate = useNavigate();
+
+    const {value, onInputChange} = useInputChange();
 
     const debouncedValue = useDebounce<string>(value, 500);
 
@@ -38,13 +38,9 @@ export const CardsList = () => {
         dispatch(setCardsPage(1));
     }, [debouncedValue, dispatch])
 
-    const addNewCard = () => setIsOpen('add');
+    const handleSetPage = (page: number) => dispatch(setCardsPage(page));
 
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => setValue(e.currentTarget.value);
-
-    const onChangePageHandler = (page: number) => dispatch(setCardsPage(page));
-
-    const onChangePageCountHandler = (value: number) => {
+    const handleSetPageCount = (value: number) => {
         dispatch(setCardsPageCount(value));
         dispatch(setCardsPage(1));
     }
@@ -59,7 +55,7 @@ export const CardsList = () => {
             </div>
             <div className={styles.inputContainer}>
                 <TextField
-                    onChange={onChangeHandler}
+                    onChange={onInputChange}
                     fullWidth
                     sx={{backgroundColor: '#ECECF9'}}
                     size="small"
@@ -67,8 +63,8 @@ export const CardsList = () => {
                     disabled={status === 'loading'}
                     InputProps={{startAdornment: <InputAdornment position="start"><SearchIcon/></InputAdornment>}}
                 />
-                {userId === user_id
-                    && <Button className={styles.button} disabled={status === 'loading'} onClick={addNewCard}>
+                {userId === user_id &&
+                    <Button className={styles.button} disabled={status === 'loading'} onClick={() => setIsOpen('add')}>
                         Add new card
                     </Button>}
             </div>
@@ -78,8 +74,8 @@ export const CardsList = () => {
                     page={page}
                     pageCount={pageCount}
                     cardsTotalCount={cardsTotalCount}
-                    onChangePage={onChangePageHandler}
-                    onChangeValue={onChangePageCountHandler}
+                    onPageChange={handleSetPage}
+                    onValueChange={handleSetPageCount}
                     disable={status === 'loading'}
                     title="Cards per Page"
                 />

@@ -1,10 +1,10 @@
 import {apiPacksList, PacksParamsResponseType, PackType} from './apiPacksList';
 import axios, {AxiosError, AxiosResponse} from 'axios';
 import {setAppError, setAppStatus} from '../../app';
-import {AppStateType} from '../../app/store';
 import {call, put, select, takeEvery} from 'redux-saga/effects';
-import {TablePacksType} from './tablePacks/tablePacksReducer';
-import {ErrorData} from '../users/usersAPI';
+import {StateType as TablePacksType} from './tablePacks/tablePacksReducer';
+import {ErrorData} from '../users/apiUsers';
+import {selectTablePacks} from './tablePacks';
 
 const initial: PacksListStateType = {
     cardPacks: [] as PackType[],
@@ -18,8 +18,6 @@ const initial: PacksListStateType = {
     packName: '',
     packId: '',
 }
-
-export const selectTablePacks = (state: AppStateType) => state.tablePacks;
 
 export const packsListReducer = (state: PacksListStateType = initial, action: PacksListActionsType): PacksListStateType => {
     switch (action.type) {
