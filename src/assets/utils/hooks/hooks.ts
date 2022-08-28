@@ -13,6 +13,6 @@ export const useAppSelector: TypedUseSelectorHook<AppStateType> = useSelector;
 
 export function useActions<T extends ActionCreatorsMapObject<any>>(actions: T) {
     const dispatch = useAppDispatch();
-    
+
     return useMemo(() => bindActionCreators(actions, dispatch), [actions, dispatch]);
 }

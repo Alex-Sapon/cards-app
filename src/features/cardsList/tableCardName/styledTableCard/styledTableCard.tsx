@@ -2,7 +2,7 @@ import {styled} from "@mui/material/styles";
 import TableCell, {tableCellClasses} from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 
-export const StyledTableCell = styled(TableCell)(({theme}) => ({
+export const StyledTableCell = styled(TableCell)(() => ({
 	[`&.${tableCellClasses.head}`]: {
 		backgroundColor: '#ECECF9',
 		color: '#2D2E46',
@@ -12,7 +12,7 @@ export const StyledTableCell = styled(TableCell)(({theme}) => ({
 	},
 }));
 
-export const StyledTableRow = styled(TableRow)(({theme}) => ({
+export const StyledTableRow = styled(TableRow)(() => ({
 	'&:nth-of-type(even)': {
 		backgroundColor: '#F8F7FD',
 	},

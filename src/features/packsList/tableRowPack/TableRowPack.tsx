@@ -29,15 +29,15 @@ type TableRowPackType = {
 const selectLoginUserId = (state: AppStateType): string => state.login._id
 
 export const TableRowPack = memo((props: TableRowPackType) => {
-    const {id, name, cardsCount, updated, user_id, user_name, status, cover} = props
+    const {id, name, cardsCount, updated, user_id, user_name, status, cover} = props;
 
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
 
-    const [isOpen, setIsOpen] = useState<ModalType>('close')
+    const [isOpen, setIsOpen] = useState<ModalType>('close');
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
-    const userId = useAppSelector(selectLoginUserId)
+    const userId = useAppSelector(selectLoginUserId);
 
     const handleDeletePack = () => {
         dispatch(setPackModalParams({packId: id, packName: name}));
