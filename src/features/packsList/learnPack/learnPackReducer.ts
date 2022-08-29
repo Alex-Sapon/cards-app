@@ -3,6 +3,7 @@ import {learnPackAPI, UpdateGradeResponseType, UpdateGradeType} from './learnPac
 import {AxiosError, AxiosResponse} from 'axios';
 import {setAppError, setAppStatus} from '../../../app';
 import {call, put, takeEvery} from 'redux-saga/effects';
+import {ErrorData} from '../../users/apiUsers';
 
 const initial: StateType = {
     cards: [] as CardType[],
@@ -50,7 +51,7 @@ export function* getCardsPackSaga({id}: ReturnType<typeof getCardsPack>) {
         const res: AxiosResponse<PackResponseType> = yield call(learnPackAPI.getCards, id);
         yield put(setCards(res.data.cards));
     } catch (e) {
-        const err = e as AxiosError<{ error: string }>;
+        const err = e as AxiosError<ErrorData>;
         yield put(setAppError(err.response ? err.response.data.error : err.message));
     } finally {
         yield put(setAppStatus('idle'));
@@ -63,7 +64,7 @@ export function* updateGradePackSaga({data}: ReturnType<typeof updateGradePack>)
         const res: AxiosResponse<UpdateGradeResponseType> = yield call(learnPackAPI.updateGrade, data);
         yield put(updateCardsPack(res.data));
     } catch (e) {
-        const err = e as AxiosError<{ error: string }>;
+        const err = e as AxiosError<ErrorData>;
         yield put(setAppError(err.response ? err.response.data.error : err.message));
     } finally {
         yield put(setAppStatus('idle'));

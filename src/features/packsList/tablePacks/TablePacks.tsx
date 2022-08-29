@@ -1,8 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {PaginationGroup} from '../paginationGroup';
-import {AppStateType} from '../../../app/store';
-import {PackType} from '../apiPacksList';
-import {RequestStatusType} from '../../../app/reducer/appReducer';
 import {TableRowPack} from '../tableRowPack/TableRowPack';
 import {StyledTableCell} from '../tableRowPack/styledTablePack';
 import {Button} from '../../../common/button';
@@ -20,13 +17,8 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import {setCardsPageCount, setPage, setSearchPackName, setSortPackName} from './tablePacksReducer';
 import {AddPackModal, ModalType} from '../../../components/modals';
 import {useAppDispatch, useAppSelector, useDebounce, useInputChange} from '../../../assets/utils/hooks';
-
-const selectCardPacks = (state: AppStateType): PackType[] => state.packList.cardPacks;
-const selectCardPacksTotalCount = (state: AppStateType): number => state.packList.cardPacksTotalCount;
-const selectPageCount = (state: AppStateType): number => state.tablePacks.pageCount;
-const selectPage = (state: AppStateType): number => state.tablePacks.page;
-const selectStatus = (state: AppStateType): RequestStatusType => state.app.status;
-
+import {selectAppStatus} from '../../../app';
+import {selectCardPacks, selectCardPacksTotalCount, selectPage, selectPageCount} from './selectors';
 
 export const TablePacks = () => {
     const dispatch = useAppDispatch();
@@ -40,15 +32,13 @@ export const TablePacks = () => {
     const [updated, setUpdated] = useState<'0updated' | '1updated'>('0updated');
     const [userName, setUserName] = useState<'0user_name' | '1user_name'>('0user_name');
 
-
-
     const debouncedValue = useDebounce<string>(value, 500);
 
     const cardPacks = useAppSelector(selectCardPacks);
     const cardPacksTotalCount = useAppSelector(selectCardPacksTotalCount);
     const pageCount = useAppSelector(selectPageCount);
     const page = useAppSelector(selectPage);
-    const status = useAppSelector(selectStatus);
+    const status = useAppSelector(selectAppStatus);
 
     useEffect(() => {
         dispatch(setSearchPackName(debouncedValue));

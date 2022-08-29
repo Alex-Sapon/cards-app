@@ -1,4 +1,4 @@
-import {AnyAction, applyMiddleware, combineReducers, legacy_createStore as createStore} from 'redux';
+ import {AnyAction, applyMiddleware, combineReducers, legacy_createStore as createStore} from 'redux';
 import thunkMiddleware, {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {loginReducer, loginWatcher} from '../features/login';
 import {cardsListReducer, cardsListWatcher} from '../features/cardsList';

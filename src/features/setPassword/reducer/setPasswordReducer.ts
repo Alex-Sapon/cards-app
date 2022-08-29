@@ -2,6 +2,7 @@ import {authAPI, UpdatePasswordType} from '../../../api/authAPI';
 import {setAppError, setAppStatus} from '../../../app';
 import axios, {AxiosError} from 'axios';
 import {call, put, takeEvery} from 'redux-saga/effects';
+import {ErrorData} from '../../users/apiUsers';
 
 const initial: StateType = {
     isUpdatePassword: false,
@@ -26,7 +27,7 @@ export function* updateNewPasswordSaga({data}: ReturnType<typeof updateNewPasswo
         yield call(authAPI.updatePassword, data);
         yield put(setNewPassword(true));
     } catch (e) {
-        const err = e as Error | AxiosError<{ error: string }>;
+        const err = e as Error | AxiosError<ErrorData>;
         if (axios.isAxiosError(err)) {
             yield put(setAppError(err.response ? err.response.data.error : err.message));
         } else {

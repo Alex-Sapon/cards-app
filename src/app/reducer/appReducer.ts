@@ -2,6 +2,7 @@ import {setIsLoggedIn, setLoginData} from '../../features/login/reducer/loginRed
 import axios, {AxiosError, AxiosResponse} from 'axios';
 import {authAPI, UserResponseType} from '../../api/authAPI';
 import {call, put, takeEvery} from 'redux-saga/effects';
+import {ErrorData} from '../../features/users/apiUsers';
 
 const initial: StateType = {
     isInitialized: false,
@@ -36,7 +37,7 @@ export function* initializeAppSaga() {
         yield put(setLoginData(res.data));
         yield put(setIsLoggedIn(true));
     } catch (e) {
-        const err = e as Error | AxiosError<{ error: string }>;
+        const err = e as Error | AxiosError<ErrorData>;
         if (axios.isAxiosError(err)) {
             yield put(setAppError(err.response ? err.response.data.error : err.message));
         } else {

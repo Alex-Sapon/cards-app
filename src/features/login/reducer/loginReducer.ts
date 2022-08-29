@@ -2,6 +2,7 @@ import {AxiosError, AxiosResponse} from 'axios';
 import {authAPI, LoginType, UpdateProfileResponseType, UserResponseType} from '../../../api/authAPI';
 import {setAppError, setAppStatus} from '../../../app';
 import {call, put, takeEvery} from 'redux-saga/effects';
+import {ErrorData} from '../../users/apiUsers';
 
 const initial: LoginDataUserType = {
     _id: '',
@@ -53,7 +54,7 @@ export function* loginSaga({data}: ReturnType<typeof login>) {
         yield put(setLoginData(res.data));
         yield put(setIsLoggedIn(true));
     } catch (e) {
-        const err = e as AxiosError<{ error: string }>;
+        const err = e as AxiosError<ErrorData>;
         yield put(setAppError(err.response ? err.response.data.error : err.message))
     } finally {
         yield put(setAppStatus('idle'));
@@ -66,7 +67,7 @@ export function* logoutSaga() {
         yield call(authAPI.logout);
         yield put(setIsLoggedIn(false));
     } catch (e) {
-        const err = e as AxiosError<{ error: string }>
+        const err = e as AxiosError<ErrorData>;
         yield put(setAppError(err.response ? err.response.data.error : err.message));
     } finally {
         yield put(setAppStatus('idle'));
@@ -79,7 +80,7 @@ export function* updateUserDataSaga({name, avatar}: ReturnType<typeof updateUser
         const res: AxiosResponse<UpdateProfileResponseType> = yield call(authAPI.updateProfile, {name, avatar});
         yield put(setLoginData(res.data.updatedUser));
     } catch (e) {
-        const err = e as AxiosError<{ error: string }>;
+        const err = e as AxiosError<ErrorData>;
         yield put(setAppError(err.response ? err.response.data.error : err.message));
     } finally {
         yield put(setAppStatus('idle'));

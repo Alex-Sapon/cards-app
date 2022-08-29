@@ -6,18 +6,22 @@ import {PATH} from '../../enums/path';
 import {Navigate} from 'react-router-dom';
 import {fetchCardPacks} from './packsListReducer';
 import {useAppDispatch, useAppSelector} from '../../assets/utils/hooks';
+import {selectIsLoggedIn} from '../login';
+import {
+    selectMaxGrade, selectMinGrade, selectPackName, selectPage, selectPageCount, selectSortPackName, selectUserId
+} from './tablePacks';
 
 export const PacksList = () => {
     const dispatch = useAppDispatch();
 
-    const isLoggedIn = useAppSelector(state => state.login.isLoggedIn);
-    const page = useAppSelector(state => state.tablePacks.page);
-    const pageCount = useAppSelector(state => state.tablePacks.pageCount);
-    const searchPackName = useAppSelector(state => state.tablePacks.packName);
-    const sortPackName = useAppSelector(state => state.tablePacks.sortPacks);
-    const userId = useAppSelector(state => state.tablePacks.user_id);
-    const min = useAppSelector(state => state.tablePacks.min);
-    const max = useAppSelector(state => state.tablePacks.max);
+    const isLoggedIn = useAppSelector(selectIsLoggedIn);
+    const page = useAppSelector(selectPage);
+    const pageCount = useAppSelector(selectPageCount);
+    const searchPackName = useAppSelector(selectPackName);
+    const sortPackName = useAppSelector(selectSortPackName);
+    const userId = useAppSelector(selectUserId);
+    const min = useAppSelector(selectMinGrade);
+    const max = useAppSelector(selectMaxGrade);
 
     useEffect(() => {
         dispatch(fetchCardPacks());

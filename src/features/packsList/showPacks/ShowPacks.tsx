@@ -4,43 +4,45 @@ import styles from './ShowPacks.module.css';
 import {Button} from '../../../common/button';
 import {setMaxNumberCards, setMinNumberCards, setUserId} from '../tablePacks/tablePacksReducer';
 import {useAppDispatch, useAppSelector} from '../../../assets/utils/hooks';
+import {selectAppStatus} from '../../../app';
+import {selectMaxGrade, selectMinGrade, selectUserId} from '../tablePacks';
+import {selectLoginId} from '../../login';
 
 export const ShowPacks = () => {
     const dispatch = useAppDispatch();
 
-    const status = useAppSelector(state => state.app.status);
-    const user_id = useAppSelector(state => state.tablePacks.user_id);
-    const loginUserId = useAppSelector(state => state.login._id);
-    const min = useAppSelector(state => state.tablePacks.min);
-    const max = useAppSelector(state => state.tablePacks.max);
+    const status = useAppSelector(selectAppStatus);
+    const user_id = useAppSelector(selectUserId);
+    const loginUserId = useAppSelector(selectLoginId);
+    const min = useAppSelector(selectMinGrade);
+    const max = useAppSelector(selectMaxGrade);
 
     const [value, setValue] = React.useState<number[]>([min, max]);
 
     const handleSliderChange = (event: Event, newValue: number | number[])  => setValue(newValue as number[]);
 
-    const showMyPacksClickHandler = () => dispatch(setUserId(loginUserId));
+    const onShowMyPacksClick = () => dispatch(setUserId(loginUserId));
 
-    const showAllPacksClickHandler = () => dispatch(setUserId(''));
+    const onShowAllPacksClick = () => dispatch(setUserId(''));
 
-    const handleClick = () => {
+    const onSliderClick = () => {
         dispatch(setMinNumberCards(value[0]));
         dispatch(setMaxNumberCards(value[1]));
     }
+
+    const styleMyButton = user_id ? styles.btn_active : '';
+    const styleAllButton = !user_id ? styles.btn_active: '';
 
     return (
         <div className={styles.left_bar}>
             <h3 className={styles.left_bar_title}>Show packs cards</h3>
             <div className={styles.button_group}>
-                <Button
-                    onClick={showMyPacksClickHandler}
-                    disabled={status === 'loading'}
-                    className={user_id ? styles.btn_active : ''}
-                    >My</Button>
-                <Button
-                    onClick={showAllPacksClickHandler}
-                    disabled={status === 'loading'}
-                    className={!user_id ? styles.btn_active: ''}
-                >All</Button>
+                <Button onClick={onShowMyPacksClick} disabled={status === 'loading'} className={styleMyButton}>
+                    My
+                </Button>
+                <Button onClick={onShowAllPacksClick} disabled={status === 'loading'} className={styleAllButton}>
+                    All
+                </Button>
             </div>
             <h3 className={styles.left_bar_subtitle}>Number of cards</h3>
             <div className={styles.slider}>
@@ -51,7 +53,7 @@ export const ShowPacks = () => {
                     valueLabelDisplay="on"
                     max={110}
                     disabled={status === 'loading'}
-                    onChangeCommitted={handleClick}
+                    onChangeCommitted={onSliderClick}
                 />
             </div>
         </div>

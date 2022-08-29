@@ -2,6 +2,7 @@ import axios, {AxiosError} from 'axios';
 import {authAPI} from '../../../api/authAPI';
 import {setAppError, setAppStatus} from '../../../app';
 import {call, put, takeEvery} from 'redux-saga/effects';
+import {ErrorData} from '../../users/apiUsers';
 
 const initial: StateType = {
     message: null,
@@ -32,7 +33,7 @@ export function* userRegisterSaga({email, password}: ReturnType<typeof userRegis
         yield put(setAppStatus('loading'));
         yield call(authAPI.registration, {email, password});
     } catch (e) {
-        const err = e as Error | AxiosError<{ error: string }>
+        const err = e as Error | AxiosError<ErrorData>
         if (axios.isAxiosError(err)) {
             yield put(setAppError(err.response ? err.response.data.error : err.message));
         } else {

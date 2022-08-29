@@ -2,6 +2,7 @@ import {authAPI, ForgotPasswordType} from '../../../api/authAPI';
 import {setAppError, setAppStatus} from '../../../app';
 import axios, {AxiosError} from 'axios';
 import {call, put, takeEvery} from 'redux-saga/effects';
+import {ErrorData} from '../../users/apiUsers';
 
 const initial: StateType = {
     email: 'example@mail.com',
@@ -48,7 +49,7 @@ export function* forgotPasswordSaga({email}: ReturnType<typeof forgotPass>) {
         yield put(setIsSendEmail(true));
         yield put(setEmail(email));
     } catch (e) {
-        const err = e as Error | AxiosError<{ error: string }>;
+        const err = e as Error | AxiosError<ErrorData>;
         if (axios.isAxiosError(err)) {
             yield put(setAppError(err.response ? err.response.data.error : err.message));
         } else {

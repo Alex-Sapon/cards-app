@@ -44,9 +44,8 @@ export const fetchCardPacks = () => ({type: 'PACKS-LIST/FETCH-CARD-PACKS'} as co
 export function* fetchCardPacksSaga() {
     const {pageCount, page, packName, sortPacks, user_id, min, max}: TablePacksType = yield select(selectTablePacks);
 
-    yield put(setAppStatus('loading'));
-
     try {
+        yield put(setAppStatus('loading'));
         const res: AxiosResponse<PacksParamsResponseType> = yield call(apiPacksList.getPacks, {
             packName,
             sortPacks,
