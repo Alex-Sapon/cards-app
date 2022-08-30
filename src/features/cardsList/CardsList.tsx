@@ -3,7 +3,7 @@ import styles from './CardsList.module.css';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
 import {TextField} from '@mui/material';
-import {PaginationGroup} from '../packsList/paginationGroup';
+import {PaginationGroup} from '../../components/paginationGroup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import IconButton from '@mui/material/IconButton';
 import {Button} from '../../common/button';
@@ -11,7 +11,7 @@ import {setCardsPage, setCardsPageCount, setSearchQuestion} from './reducer/card
 import {useNavigate} from 'react-router-dom';
 import {AddCardModal, ModalType} from '../../components/modals';
 import {TableContainerCards} from './tableCardName/tableContainerCards/TableContainerCards';
-import {shortWord} from '../../assets/utils/shortWord';
+import {shortWord} from '../../assets/utils';
 import {useAppDispatch, useAppSelector, useDebounce, useInputChange} from '../../assets/utils/hooks';
 
 export const CardsList = () => {

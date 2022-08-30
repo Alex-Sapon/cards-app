@@ -6,10 +6,10 @@ import {useInputChange} from '../../assets/utils/hooks';
 import IconButton from '@mui/material/IconButton';
 
 type MessageType = {
-    _id: string
+    id: string
     message: string
     user: {
-        _id: string
+        id: string
         name: string
     }
 }

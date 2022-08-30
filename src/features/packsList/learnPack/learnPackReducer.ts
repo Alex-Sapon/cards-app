@@ -1,5 +1,5 @@
 import {CardType, PackResponseType} from '../../cardsList/apiCardsList/apiCardsList';
-import {learnPackAPI, UpdateGradeResponseType, UpdateGradeType} from './learnPack-api';
+import {apiLearnPack, UpdateGradeResponseType, UpdateGradeType} from './apiLearnPack';
 import {AxiosError, AxiosResponse} from 'axios';
 import {setAppError, setAppStatus} from '../../../app';
 import {call, put, takeEvery} from 'redux-saga/effects';
@@ -48,7 +48,7 @@ export const updateGradePack = (data: UpdateGradeType) => ({type: 'LEARN-PACK/UP
 export function* getCardsPackSaga({id}: ReturnType<typeof getCardsPack>) {
     try {
         yield put(setAppStatus('loading'));
-        const res: AxiosResponse<PackResponseType> = yield call(learnPackAPI.getCards, id);
+        const res: AxiosResponse<PackResponseType> = yield call(apiLearnPack.getCards, id);
         yield put(setCards(res.data.cards));
     } catch (e) {
         const err = e as AxiosError<ErrorData>;
@@ -61,7 +61,7 @@ export function* getCardsPackSaga({id}: ReturnType<typeof getCardsPack>) {
 export function* updateGradePackSaga({data}: ReturnType<typeof updateGradePack>) {
     try {
         yield put(setAppStatus('loading'));
-        const res: AxiosResponse<UpdateGradeResponseType> = yield call(learnPackAPI.updateGrade, data);
+        const res: AxiosResponse<UpdateGradeResponseType> = yield call(apiLearnPack.updateGrade, data);
         yield put(updateCardsPack(res.data));
     } catch (e) {
         const err = e as AxiosError<ErrorData>;

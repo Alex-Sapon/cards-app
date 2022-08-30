@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {PaginationGroup} from '../paginationGroup';
+import {PaginationGroup} from '../../../components/paginationGroup';
 import {TableRowPack} from '../tableRowPack/TableRowPack';
 import {StyledTableCell} from '../tableRowPack/styledTablePack';
 import {Button} from '../../../common/button';
@@ -45,32 +45,32 @@ export const TablePacks = () => {
         dispatch(setPage(1));
     }, [debouncedValue, dispatch])
 
-    const handleAddNewPack = () => setIsOpen('add');
+    const onAddPackClick = () => setIsOpen('add');
 
-    const handleChangePage = (page: number) => {
+    const onChangePageClick = (page: number) => {
         dispatch(setPage(page));
     }
 
-    const handleChangeValueSelect = (value: number) => {
+    const onChangeSelectClick = (value: number) => {
         dispatch(setCardsPageCount(value));
     }
 
-    const handleNameSort = () => {
+    const onNameSortClick = () => {
         setName(name === '0name' ? '1name' : '0name');
         dispatch(setSortPackName(name));
     }
 
-    const handleCardsCount = () => {
+    const onCardsCountClick = () => {
         setCardsCount(cardsCount === '0cardsCount' ? '1cardsCount' : '0cardsCount');
         dispatch(setSortPackName(cardsCount));
     }
 
-    const handleSortUpdated = () => {
+    const onSortUpdatedClick = () => {
         setUpdated(updated === '0updated' ? '1updated' : '0updated');
         dispatch(setSortPackName(updated));
     }
 
-    const handleSortUserName = () => {
+    const onSortUserNameClick = () => {
         setUserName(userName === '0user_name' ? '1user_name' : '0user_name');
         dispatch(setSortPackName(userName));
     }
@@ -91,7 +91,7 @@ export const TablePacks = () => {
                 />
                 {status === 'loading'
                     ? <LoadingButton sx={{padding: '19px 61px', borderRadius: '30px'}} variant="outlined" loading/>
-                    : <Button onClick={handleAddNewPack}>Add new pack</Button>}
+                    : <Button onClick={onAddPackClick}>Add new pack</Button>}
             </div>
             <TableContainer className={styles.table_container}>
                 <Table>
@@ -102,7 +102,7 @@ export const TablePacks = () => {
                                     active={true}
                                     disabled={status === 'loading'}
                                     direction={name === '1name' ? 'asc' : 'desc'}
-                                    onClick={handleNameSort}
+                                    onClick={onNameSortClick}
                                 >
                                 </TableSortLabel>
                                 <b>Name</b>
@@ -112,7 +112,7 @@ export const TablePacks = () => {
                                     active={true}
                                     disabled={status === 'loading'}
                                     direction={cardsCount === '1cardsCount' ? 'asc' : 'desc'}
-                                    onClick={handleCardsCount}
+                                    onClick={onCardsCountClick}
                                 >
                                 </TableSortLabel>
                                 <b>Cards</b>
@@ -122,7 +122,7 @@ export const TablePacks = () => {
                                     active={true}
                                     disabled={status === 'loading'}
                                     direction={updated === '1updated' ? 'asc' : 'desc'}
-                                    onClick={handleSortUpdated}
+                                    onClick={onSortUpdatedClick}
                                 >
                                 </TableSortLabel>
                                 <b>Updated</b>
@@ -132,7 +132,7 @@ export const TablePacks = () => {
                                     active={true}
                                     disabled={status === 'loading'}
                                     direction={userName === '1user_name' ? 'asc' : 'desc'}
-                                    onClick={handleSortUserName}
+                                    onClick={onSortUserNameClick}
                                 >
                                 </TableSortLabel>
                                 <b>Created by</b>
@@ -167,8 +167,8 @@ export const TablePacks = () => {
                 page={page}
                 title="Cards per Page"
                 disable={status === 'loading'}
-                onPageChange={handleChangePage}
-                onValueChange={handleChangeValueSelect}
+                onPageChange={onChangePageClick}
+                onValueChange={onChangeSelectClick}
             />
             {isOpen === 'add' && <AddPackModal onClose={() => setIsOpen('close')}/>}
         </div>

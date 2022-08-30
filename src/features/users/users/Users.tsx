@@ -9,7 +9,7 @@ import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import styles from './Users.module.css';
-import {PaginationGroup} from '../../packsList/paginationGroup';
+import {PaginationGroup} from '../../../components/paginationGroup';
 import {setPageCountUsers, setPageUsers, setSearchName} from '../usersReducer';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';

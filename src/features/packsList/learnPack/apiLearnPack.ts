@@ -1,10 +1,10 @@
 import {instance} from '../../../api/instance';
 import {AxiosResponse} from 'axios';
-import { PackResponseType } from '../../cardsList/apiCardsList/apiCardsList';
+import {PackResponseType} from '../../cardsList/apiCardsList/apiCardsList';
 
-export const learnPackAPI = {
+export const apiLearnPack = {
     getCards(cardsPack_id: string) {
-        return instance.get<any, AxiosResponse<PackResponseType>, {cardsPack_id: string}>('cards/card', {
+        return instance.get<any, AxiosResponse<PackResponseType>, { cardsPack_id: string }>('cards/card', {
             params: {cardsPack_id, pageCount: 1000}
         });
     },

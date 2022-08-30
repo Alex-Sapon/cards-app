@@ -10,8 +10,10 @@ import {useNavigate, useParams} from 'react-router-dom';
 import {PATH} from '../../../enums/path';
 import {ChangeEvent, useEffect, useState} from 'react';
 import {getCardsPack, setCardPack, updateGradePack} from './learnPackReducer';
-import {getCard} from '../../../assets/utils/smartRandom';
+import {getCard} from '../../../assets/utils';
 import {useAppDispatch, useAppSelector} from '../../../assets/utils/hooks';
+import {selectAppStatus} from '../../../app';
+import {selectLearnCard, selectLearnCards} from './selectors';
 
 const grades = [
     {value: 1, label: 'Did not know'},
@@ -29,26 +31,26 @@ export const LearnPack = () => {
 
     const {id} = useParams<'id'>();
 
-    const status = useAppSelector(state => state.app.status);
-    const cards = useAppSelector(state => state.learnPack.cards);
-    const card = useAppSelector(state => state.learnPack.card);
+    const status = useAppSelector(selectAppStatus);
+    const cards = useAppSelector(selectLearnCards);
+    const card = useAppSelector(selectLearnCard);
 
     const navigate = useNavigate();
 
-    const handleToggleShowAnswer = () => {
+    const onToggleShowAnswerClick = () => {
         setShowAnswer(true);
     }
 
-    const handleCancel = () => {
+    const onCancelClick = () => {
         navigate(PATH.PACKS + '/' + PATH.PACKS_LIST);
     }
 
-    const handleNext = () => {
+    const onNextClick = () => {
         dispatch(updateGradePack({grade: grade, card_id: card._id}));
         setShowAnswer(false);
     }
 
-    const handleChangeGrade = (e: ChangeEvent<HTMLInputElement>) => {
+    const onGradeChange = (e: ChangeEvent<HTMLInputElement>) => {
         const gradeNumbers = [1, 2, 3, 4, 5];
         const value = Number(e.currentTarget.value);
 
@@ -81,25 +83,24 @@ export const LearnPack = () => {
                                 <div className={styles.label}>Rate yourself:</div>
                                 <FormControl>
                                     <RadioGroup defaultValue={1}>
-                                        {grades.map(({value, label}, i) => (
+                                        {grades.map(({value, label}) => (
                                             <FormControlLabel
-                                                key={value + i}
+                                                key={value}
                                                 value={value}
                                                 control={<Radio size="small" value={value}
-                                                                onChange={handleChangeGrade}/>}
-                                                label={label}
+                                                                onChange={onGradeChange}/>} label={label}
                                             />))}
                                     </RadioGroup>
                                 </FormControl>
                             </div>
                             <div className={styles.buttons_answer}>
-                                <Button onClick={handleCancel}>Cancel</Button>
-                                <Button onClick={handleNext}>Next</Button>
+                                <Button onClick={onCancelClick}>Cancel</Button>
+                                <Button onClick={onNextClick}>Next</Button>
                             </div>
                         </>
                         : <div className={styles.buttons_question}>
-                            <Button onClick={handleCancel}>Cancel</Button>
-                            <Button onClick={handleToggleShowAnswer}>Show answer</Button>
+                            <Button onClick={onCancelClick}>Cancel</Button>
+                            <Button onClick={onToggleShowAnswerClick}>Show answer</Button>
                         </div>}
                 </>}
         </div>
