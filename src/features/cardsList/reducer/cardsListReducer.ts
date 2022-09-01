@@ -2,7 +2,7 @@ import {setAppStatus} from '../../../app';
 import {AxiosError, AxiosResponse} from 'axios';
 import {cardsListAPI, CardType, CreateCardType, PackResponseType, UpdateCardType} from '../api/apiCardsList';
 import {call, put, select, takeEvery} from 'redux-saga/effects';
-import {selectCardPack} from '../selectors/selectors';
+import {selectCardPack} from '../selectors';
 import {handleAppError} from '../../../assets/utils';
 
 const initial: StateType = {

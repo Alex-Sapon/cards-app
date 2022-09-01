@@ -118,9 +118,8 @@ export const Registration = () => {
                                 </InputAdornment>
                             }
                         />
-                        {formik.touched.confirmPassword &&
-                        formik.errors.confirmPassword ?
-                            <div style={{color: 'red'}}>{formik.errors.confirmPassword}</div> : null}
+                        {formik.touched.confirmPassword && formik.errors.confirmPassword
+                            ? <div style={{color: 'red'}}>{formik.errors.confirmPassword}</div> : null}
                     </FormControl>
                     <div className={styles.button_group}>
                         <Button type={'submit'} disabled={status === 'loading'}>Registration</Button>

@@ -12,7 +12,7 @@ import styles from './RecoveryPass.module.css';
 import {forgotPass} from './reducer/recoveryPasswordReducer';
 import React from 'react';
 import {SendEmail} from './sendEmail';
-import {RequestStatusType} from '../../app/reducer/appReducer';
+import {RequestStatusType} from '../../app';
 import {useAppDispatch, useAppSelector} from '../../assets/utils/hooks';
 
 type RecoveryPasswordErrorType = {

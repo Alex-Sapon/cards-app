@@ -5,7 +5,7 @@ import {PATH} from '../../enums/path';
 import {Users} from './users';
 import {useAppDispatch, useAppSelector} from '../../assets/utils/hooks';
 import {selectIsLoggedIn} from '../login';
-import {selectUserName, selectUsersPage, selectUsersPageCount} from './selectors/selectors';
+import {selectUserName, selectUsersPage, selectUsersPageCount} from './selectors';
 
 export const UsersContainer = () => {
     const dispatch = useAppDispatch();

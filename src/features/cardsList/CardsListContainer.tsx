@@ -9,7 +9,7 @@ import {selectIsLoggedIn} from '../login';
 import {
     selectCardPage, selectCardPageCount, selectCardQuestion, selectCardPackId,
     selectCardAnswer, selectSortCards, selectCardMin, selectCardMax
-} from './selectors/selectors';
+} from './selectors';
 
 export const CardsListContainer = () => {
     const dispatch = useAppDispatch();

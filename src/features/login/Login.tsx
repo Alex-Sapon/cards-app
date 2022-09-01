@@ -21,7 +21,7 @@ import {AppStateType} from '../../app/store';
 import {login} from './reducer/loginReducer';
 import FormHelperText from '@mui/material/FormHelperText';
 import LoadingButton from '@mui/lab/LoadingButton/LoadingButton';
-import {RequestStatusType} from '../../app/reducer/appReducer';
+import {RequestStatusType} from '../../app';
 import {useAppDispatch, useAppSelector, useShowPassword} from '../../assets/utils/hooks';
 import {MAX_LENGTH_PASSWORD} from '../../constants';
 

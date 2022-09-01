@@ -1,5 +1,5 @@
 import React, {ChangeEvent, KeyboardEvent, useEffect, useState} from 'react';
-import {updateCardsPack} from '../../../features/packsList/tablePacks/reducer/tablePacksReducer';
+import {updateCardsPack} from '../../../features/packsList/tablePacks';
 import {setAppError} from '../../../app';
 import {BasicModal, ModalPropsType} from '../BasicModal';
 import {Button} from '../../../common/button';

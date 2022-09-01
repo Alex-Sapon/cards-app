@@ -18,7 +18,7 @@ import {setCardsPageCount, setPage, setSearchPackName, setSortPackName} from './
 import {AddPackModal, ModalType} from '../../../components/modals';
 import {useAppDispatch, useAppSelector, useDebounce, useInputChange} from '../../../assets/utils/hooks';
 import {selectAppStatus} from '../../../app';
-import {selectCardPacks, selectCardPacksTotalCount, selectPage, selectPageCount} from './selectors/selectors';
+import {selectCardPacks, selectCardPacksTotalCount, selectPage, selectPageCount} from './selectors';
 
 export const TablePacks = () => {
     const dispatch = useAppDispatch();

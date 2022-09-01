@@ -12,7 +12,7 @@ import React, {useEffect} from 'react';
 import {Navigate, useParams} from 'react-router';
 import LoadingButton from '@mui/lab/LoadingButton/LoadingButton';
 import styles from './SetPassword.module.css';
-import {initializeApp, RequestStatusType} from '../../app/reducer/appReducer';
+import {initializeApp, RequestStatusType} from '../../app';
 import {updateNewPassword} from './reducer/setPasswordReducer';
 import {useAppDispatch, useAppSelector, useShowPassword} from '../../assets/utils/hooks';
 import {MAX_LENGTH_PASSWORD} from '../../constants';

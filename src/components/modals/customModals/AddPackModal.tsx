@@ -8,7 +8,7 @@ import Checkbox from '@mui/material/Checkbox';
 import {TextField} from '@mui/material';
 import {Button} from '../../../common/button';
 import React, {ChangeEvent, useState} from 'react';
-import {createCardsPack} from '../../../features/packsList/tablePacks/reducer/tablePacksReducer';
+import {createCardsPack} from '../../../features/packsList/tablePacks';
 import {convertFileToBase64} from '../../../assets/utils';
 import {setAppError} from '../../../app';
 import {useAppDispatch} from '../../../assets/utils/hooks';

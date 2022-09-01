@@ -12,7 +12,7 @@ import Tooltip from '@mui/material/Tooltip';
 import {useStyles} from './styles';
 import {PATH} from '../../enums/path';
 import Badge from '@mui/material/Badge';
-import {logout, updateUserData} from '../login/reducer/loginReducer';
+import {logout, updateUserData} from '../login';
 import IconButton from '@mui/material/IconButton';
 import LoadingButton from '@mui/lab/LoadingButton';
 import {convertFileToBase64} from '../../assets/utils';
