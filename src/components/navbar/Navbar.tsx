@@ -12,7 +12,6 @@ export const Navbar = () => {
             <nav className={styles.navbar_list}>
                 <NavLink to={PATH.PACKS} className={setActiveClass}>Packs List</NavLink>
                 <NavLink to={PATH.USERS} className={setActiveClass}>Users</NavLink>
-                <NavLink to={PATH.USER_CHAT} className={setActiveClass}>Users chat</NavLink>
                 <NavLink to={PATH.PROFILE} className={setActiveClass}>Profile</NavLink>
             </nav>
         </div>

@@ -1,7 +1,7 @@
 import {AxiosResponse} from 'axios';
-import {instance} from './instance';
+import {instance} from '../../../api/instance';
 
-export const authAPI = {
+export const apiAuth = {
     me() {
         return instance.post<UserResponseType>('auth/me');
     },

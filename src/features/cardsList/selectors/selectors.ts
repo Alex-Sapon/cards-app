@@ -1,4 +1,4 @@
-import {AppStateType} from '../../app/store';
+import {AppStateType} from '../../../app/store';
 
 export const selectCardPack = (state: AppStateType) => state.cardList;
 export const selectCardPackId = (state: AppStateType) => state.cardList.cardsPack_id;

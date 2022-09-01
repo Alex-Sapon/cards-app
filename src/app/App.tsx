@@ -17,7 +17,6 @@ import {PacksList} from '../features/packsList';
 import {CardsListContainer} from '../features/cardsList';
 import {LearnPack} from '../features/packsList/learnPack';
 import {UsersContainer, UserProfile} from '../features/users';
-import {UsersChat} from '../features/usersChat';
 import {useAppDispatch, useAppSelector} from '../assets/utils/hooks';
 import {selectIsInitialized} from './';
 
@@ -56,7 +55,6 @@ export const App = () => {
                     </Route>
                     <Route path={PATH.USERS} element={<UsersContainer/>}/>
                     <Route path={PATH.USER} element={<UserProfile/>}/>
-                    <Route path={PATH.USER_CHAT} element={<UsersChat/>}/>
                     <Route path={PATH.PROFILE} element={<Profile/>}/>
                     <Route path={PATH.SET_PASS} element={<SetPassword/>}/>
                     <Route path={PATH.RECOVERY_PASS} element={<RecoveryPassword/>}/>

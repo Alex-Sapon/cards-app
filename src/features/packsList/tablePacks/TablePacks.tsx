@@ -14,11 +14,11 @@ import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import {TableCell, TextField} from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
-import {setCardsPageCount, setPage, setSearchPackName, setSortPackName} from './tablePacksReducer';
+import {setCardsPageCount, setPage, setSearchPackName, setSortPackName} from './reducer/tablePacksReducer';
 import {AddPackModal, ModalType} from '../../../components/modals';
 import {useAppDispatch, useAppSelector, useDebounce, useInputChange} from '../../../assets/utils/hooks';
 import {selectAppStatus} from '../../../app';
-import {selectCardPacks, selectCardPacksTotalCount, selectPage, selectPageCount} from './selectors';
+import {selectCardPacks, selectCardPacksTotalCount, selectPage, selectPageCount} from './selectors/selectors';
 
 export const TablePacks = () => {
     const dispatch = useAppDispatch();

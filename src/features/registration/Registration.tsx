@@ -16,6 +16,8 @@ import {Navigate, NavLink} from 'react-router-dom';
 import {userRegister} from './reducer/registrationReducer';
 import {useAppDispatch, useAppSelector, useShowPassword} from '../../assets/utils/hooks';
 import {MAX_LENGTH_PASSWORD} from '../../constants';
+import {selectAppStatus} from 'app';
+import {selectIsLoggedIn} from '../login';
 
 type FormikErrorType = {
     email?: string
@@ -26,8 +28,8 @@ type FormikErrorType = {
 export const Registration = () => {
     const dispatch = useAppDispatch();
 
-    const status = useAppSelector(state => state.app.status);
-    const isLoggedIn = useAppSelector(state => state.login.isLoggedIn);
+    const status = useAppSelector(selectAppStatus);
+    const isLoggedIn = useAppSelector(selectIsLoggedIn);
 
     const {isShow: isShowPassword, setShowPassword: showPass} = useShowPassword();
     const {isShow: isShowConfirmPassword, setShowPassword: showConfirmPass} = useShowPassword();
@@ -93,9 +95,7 @@ export const Registration = () => {
                             type={isShowPassword ? 'text' : 'password'}
                             endAdornment={
                                 <InputAdornment position="end">
-                                    <IconButton
-                                        onClick={showPass}
-                                    >
+                                    <IconButton onClick={showPass}>
                                         {isShowPassword ? <Visibility/> : <VisibilityOff/>}
                                     </IconButton>
                                 </InputAdornment>

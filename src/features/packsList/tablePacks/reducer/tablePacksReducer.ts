@@ -1,9 +1,9 @@
 import {AxiosError} from 'axios';
-import {setAppError, setAppStatus} from '../../../app';
-import {fetchCardPacks} from '../packsListReducer';
-import {apiTablePacks} from './apiTablePacks';
+import {setAppStatus} from '../../../../app';
+import {fetchCardPacks} from '../../reducer/packsListReducer';
+import {apiTablePacks} from '../api/apiTablePacks';
 import {call, put, takeEvery} from 'redux-saga/effects';
-import {ErrorData} from '../../users/apiUsers';
+import {handleAppError} from '../../../../assets/utils';
 
 const initial: StateType = {
     packName: '',
@@ -91,8 +91,7 @@ export function* createCardsPackSaga({name, cover, isPrivate}: ReturnType<typeof
         yield call(apiTablePacks.createPack, {cardsPack: {name: name, deckCover: cover, private: isPrivate}});
         yield put(fetchCardPacks());
     } catch (e) {
-        const err = e as AxiosError<ErrorData>
-        yield put(setAppError(err.response ? err.response.data.error : err.message));
+        yield handleAppError(e as AxiosError);
         yield put(setAppStatus('idle'));
     }
 }
@@ -103,8 +102,7 @@ export function* deleteCardsPackSaga({id}: ReturnType<typeof deleteCardsPack>) {
         yield call(apiTablePacks.deletePack, id);
         yield put(fetchCardPacks());
     } catch (e) {
-        const err = e as AxiosError<ErrorData>;
-        yield put(setAppError(err.response ? err.response.data.error : err.message));
+        yield handleAppError(e as AxiosError);
         yield put(setAppStatus('idle'));
     }
 }
@@ -115,8 +113,7 @@ export function* updateCardsPackSaga({id, name, cover}: ReturnType<typeof update
         yield call(apiTablePacks.updatePack, {cardsPack: {_id: id, name: name, deckCover: cover}})
         yield put(fetchCardPacks());
     } catch (e) {
-        const err = e as AxiosError<ErrorData>;
-        yield put(setAppError(err.response ? err.response.data.error : err.message));
+        yield handleAppError(e as AxiosError);
         yield put(setAppStatus('idle'));
     }
 }

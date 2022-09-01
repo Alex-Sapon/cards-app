@@ -1,8 +1,8 @@
-import axios, {AxiosError} from 'axios';
-import {authAPI} from '../../../api/authAPI';
-import {setAppError, setAppStatus} from '../../../app';
+import {AxiosError} from 'axios';
+import {apiAuth} from '../../login/api/apiAuth';
+import {setAppStatus} from '../../../app';
 import {call, put, takeEvery} from 'redux-saga/effects';
-import {ErrorData} from '../../users/apiUsers';
+import {handleAppError} from '../../../assets/utils';
 
 const initial: StateType = {
     message: null,
@@ -31,14 +31,9 @@ export const userRegister = (email: string, password: string) => ({
 export function* userRegisterSaga({email, password}: ReturnType<typeof userRegister>) {
     try {
         yield put(setAppStatus('loading'));
-        yield call(authAPI.registration, {email, password});
+        yield call(apiAuth.registration, {email, password});
     } catch (e) {
-        const err = e as Error | AxiosError<ErrorData>
-        if (axios.isAxiosError(err)) {
-            yield put(setAppError(err.response ? err.response.data.error : err.message));
-        } else {
-            yield put(setAppError(err.message));
-        }
+        yield handleAppError(e as AxiosError)
     } finally {
         yield put(setAppStatus('idle'));
     }

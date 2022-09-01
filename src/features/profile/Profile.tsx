@@ -15,7 +15,7 @@ import Badge from '@mui/material/Badge';
 import {logout, updateUserData} from '../login/reducer/loginReducer';
 import IconButton from '@mui/material/IconButton';
 import LoadingButton from '@mui/lab/LoadingButton';
-import {convertFileToBase64} from '../../assets/utils/convertFileToBase64';
+import {convertFileToBase64} from '../../assets/utils';
 import {setAppError} from '../../app';
 import {useAppDispatch, useAppSelector} from '../../assets/utils/hooks';
 

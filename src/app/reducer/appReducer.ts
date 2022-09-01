@@ -1,8 +1,8 @@
 import {setIsLoggedIn, setLoginData} from '../../features/login/reducer/loginReducer';
-import axios, {AxiosError, AxiosResponse} from 'axios';
-import {authAPI, UserResponseType} from '../../api/authAPI';
+import {AxiosError, AxiosResponse} from 'axios';
+import {apiAuth, UserResponseType} from '../../features/login/api/apiAuth';
 import {call, put, takeEvery} from 'redux-saga/effects';
-import {ErrorData} from '../../features/users/apiUsers';
+import {handleAppError} from '../../assets/utils';
 
 const initial: StateType = {
     isInitialized: false,
@@ -33,16 +33,11 @@ export const initializeApp = () => ({type: 'APP/INITIALIZE-APP'} as const);
 
 export function* initializeAppSaga() {
     try {
-        const res: AxiosResponse<UserResponseType> = yield call(authAPI.me);
+        const res: AxiosResponse<UserResponseType> = yield call(apiAuth.me);
         yield put(setLoginData(res.data));
         yield put(setIsLoggedIn(true));
     } catch (e) {
-        const err = e as Error | AxiosError<ErrorData>;
-        if (axios.isAxiosError(err)) {
-            yield put(setAppError(err.response ? err.response.data.error : err.message));
-        } else {
-            yield put(setAppError(err.message));
-        }
+        yield handleAppError(e as AxiosError)
     } finally {
         yield put(setInitializeApp(true));
     }

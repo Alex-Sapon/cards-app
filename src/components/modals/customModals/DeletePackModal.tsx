@@ -4,7 +4,7 @@ import styles from './CustomModal.module.css';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import {Button} from '../../../common/button';
-import {deleteCardsPack} from '../../../features/packsList/tablePacks/tablePacksReducer';
+import {deleteCardsPack} from '../../../features/packsList/tablePacks/reducer/tablePacksReducer';
 import Cover from '../../../assets/images/cover.jpg';
 import {useAppDispatch, useAppSelector} from '../../../assets/utils/hooks';
 

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyledTableCell, StyledTableRow} from '../styledTableCard/styledTableCard';
+import {StyledTableCell, StyledTableRow} from '../styledTableCard';
 import {setSortCards,} from '../../reducer/cardsListReducer';
 import styles from '../../CardsList.module.css';
 import TableContainer from '@mui/material/TableContainer';
@@ -9,10 +9,10 @@ import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import TableBody from '@mui/material/TableBody';
 import Paper from '@mui/material/Paper';
-import {StyledTableRowComponent} from '../styledTableRow/StyledTableRowComponent';
+import {StyledTableRowComponent} from '../styledTableRow';
 import {useAppDispatch, useAppSelector} from '../../../../assets/utils/hooks';
 
-export const TableContainerCards = () => {
+export const TableCardsContainer = () => {
     const dispatch = useAppDispatch();
 
     const [question, setQuestion] = useState<'0question' | '1question'>('0question');

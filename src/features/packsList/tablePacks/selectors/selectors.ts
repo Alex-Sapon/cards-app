@@ -1,6 +1,6 @@
-import {AppStateType} from '../../../app/store';
-import {StateType as TablePacksType} from './tablePacksReducer';
-import {PackType} from '../apiPacksList';
+import {AppStateType} from '../../../../app/store';
+import {StateType as TablePacksType} from '../reducer/tablePacksReducer';
+import {PackType} from '../../api/apiPacksList';
 
 export const selectTablePacks = (state: AppStateType): TablePacksType => state.tablePacks;
 export const selectCardPacks = (state: AppStateType): PackType[] => state.packList.cardPacks;

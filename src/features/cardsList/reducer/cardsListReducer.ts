@@ -1,9 +1,9 @@
-import {setAppError, setAppStatus} from '../../../app';
-import axios, {AxiosError, AxiosResponse} from 'axios';
-import {cardsListAPI, CardType, CreateCardType, PackResponseType, UpdateCardType} from '../apiCardsList/apiCardsList';
+import {setAppStatus} from '../../../app';
+import {AxiosError, AxiosResponse} from 'axios';
+import {cardsListAPI, CardType, CreateCardType, PackResponseType, UpdateCardType} from '../api/apiCardsList';
 import {call, put, select, takeEvery} from 'redux-saga/effects';
-import {selectCardPack} from '../selectors';
-import {ErrorData} from '../../users/apiUsers';
+import {selectCardPack} from '../selectors/selectors';
+import {handleAppError} from '../../../assets/utils';
 
 const initial: StateType = {
     cards: [] as CardType[],
@@ -124,12 +124,7 @@ export function* fetchCardsSaga() {
 
         yield put(setCardsNameData(res.data));
     } catch (e) {
-        const err = e as Error | AxiosError<ErrorData>
-        if (axios.isAxiosError(err)) {
-            yield put(setAppError(err.response ? err.response.data.error : err.message));
-        } else {
-            yield put(setAppError(err.message));
-        }
+        yield handleAppError(e as AxiosError)
     } finally {
         yield put(setAppStatus('idle'));
     }
@@ -141,11 +136,8 @@ export function* createCardSaga({data}: ReturnType<typeof createCard>) {
         yield call(cardsListAPI.createCard, data);
         yield put(fetchCards());
     } catch (e) {
-        const err = e as Error | AxiosError<ErrorData>
-        if (axios.isAxiosError(err)) {
-            yield put(setAppError(err.response ? err.response.data.error : err.message));
-            yield put(setAppStatus('idle'));
-        }
+        yield handleAppError(e as AxiosError);
+        yield put(setAppStatus('idle'));
     }
 }
 
@@ -155,11 +147,8 @@ export function* removeCardSaga({id}: ReturnType<typeof removeCard>) {
         yield call(cardsListAPI.deleteCard, id);
         yield put(fetchCards());
     } catch (e) {
-        const err = e as Error | AxiosError<ErrorData>
-        if (axios.isAxiosError(err)) {
-            yield put(setAppError(err.response ? err.response.data.error : err.message))
-            yield put(setAppStatus('idle'));
-        }
+        yield handleAppError(e as AxiosError);
+        yield put(setAppStatus('idle'));
     }
 }
 
@@ -169,12 +158,7 @@ export function* updateCardSaga({data}: ReturnType<typeof updateCard>) {
         yield call(cardsListAPI.updateCard, data);
         yield put(fetchCards());
     } catch (e) {
-        const err = e as Error | AxiosError<ErrorData>
-        if (axios.isAxiosError(err)) {
-            yield put(setAppError(err.response ? err.response.data.error : err.message));
-        } else {
-            yield put(setAppError(err.message));
-        }
+        yield handleAppError(e as AxiosError);
         yield put(setAppStatus('idle'));
     }
 }

@@ -10,7 +10,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import styles from './Users.module.css';
 import {PaginationGroup} from '../../../components/paginationGroup';
-import {setPageCountUsers, setPageUsers, setSearchName} from '../usersReducer';
+import {setPageCountUsers, setPageUsers, setSearchName} from '../reducer/usersReducer';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
 import {useNavigate} from 'react-router-dom';

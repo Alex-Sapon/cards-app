@@ -1,8 +1,8 @@
-import {authAPI, UpdatePasswordType} from '../../../api/authAPI';
-import {setAppError, setAppStatus} from '../../../app';
-import axios, {AxiosError} from 'axios';
+import {apiAuth, UpdatePasswordType} from '../../login/api/apiAuth';
+import {setAppStatus} from '../../../app';
+import {AxiosError} from 'axios';
 import {call, put, takeEvery} from 'redux-saga/effects';
-import {ErrorData} from '../../users/apiUsers';
+import {handleAppError} from '../../../assets/utils';
 
 const initial: StateType = {
     isUpdatePassword: false,
@@ -24,15 +24,11 @@ export const updateNewPassword = (data: UpdatePasswordType) => ({type: 'SET-PASS
 export function* updateNewPasswordSaga({data}: ReturnType<typeof updateNewPassword>) {
     try {
         yield put(setAppStatus('loading'));
-        yield call(authAPI.updatePassword, data);
+        yield call(apiAuth.updatePassword, data);
         yield put(setNewPassword(true));
     } catch (e) {
-        const err = e as Error | AxiosError<ErrorData>;
-        if (axios.isAxiosError(err)) {
-            yield put(setAppError(err.response ? err.response.data.error : err.message));
-        } else {
-            yield put(setAppError(err.message));
-        }
+        yield handleAppError(e as AxiosError);
+        yield put(setAppStatus('idle'));
     } finally {
         yield put(setAppStatus('idle'));
     }

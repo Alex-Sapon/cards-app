@@ -1,7 +1,7 @@
 import React, {memo, useState} from 'react';
 import {AppStateType} from '../../../app/store';
 import {StyledTableCell, StyledTableRow} from './styledTablePack';
-import {shortWord} from '../../../assets/utils/shortWord';
+import {shortWord} from '../../../assets/utils';
 import {PATH} from '../../../enums/path';
 import {useNavigate} from 'react-router-dom';
 import {Button} from '../../../common/button';
@@ -12,7 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
 import {setUserCardId, setUserCardName} from '../../cardsList/reducer/cardsListReducer';
 import {DeletePackModal, EditPackModal, ModalType} from '../../../components/modals';
-import {setPackModalParams} from '../packsListReducer';
+import {setPackModalParams} from '../reducer/packsListReducer';
 import {useAppDispatch, useAppSelector} from '../../../assets/utils/hooks';
 
 type TableRowPackType = {

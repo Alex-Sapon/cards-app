@@ -4,7 +4,7 @@ import {ShowPacks} from './showPacks';
 import {TablePacks} from './tablePacks/TablePacks';
 import {PATH} from '../../enums/path';
 import {Navigate} from 'react-router-dom';
-import {fetchCardPacks} from './packsListReducer';
+import {fetchCardPacks} from './reducer/packsListReducer';
 import {useAppDispatch, useAppSelector} from '../../assets/utils/hooks';
 import {selectIsLoggedIn} from '../login';
 import {

@@ -1,10 +1,10 @@
-import {apiPacksList, PacksParamsResponseType, PackType} from './apiPacksList';
-import axios, {AxiosError, AxiosResponse} from 'axios';
-import {setAppError, setAppStatus} from '../../app';
+import {apiPacksList, PacksParamsResponseType, PackType} from '../api/apiPacksList';
+import {AxiosError, AxiosResponse} from 'axios';
+import {setAppStatus} from '../../../app';
 import {call, put, select, takeEvery} from 'redux-saga/effects';
-import {StateType as TablePacksType} from './tablePacks/tablePacksReducer';
-import {ErrorData} from '../users/apiUsers';
-import {selectTablePacks} from './tablePacks';
+import {StateType as TablePacksType} from '../tablePacks/reducer/tablePacksReducer';
+import {selectTablePacks} from '../tablePacks';
+import {handleAppError} from '../../../assets/utils';
 
 const initial: PacksListStateType = {
     cardPacks: [] as PackType[],
@@ -58,12 +58,7 @@ export function* fetchCardPacksSaga() {
 
         yield put(setPacksListData(res.data));
     } catch (e) {
-        const err = e as Error | AxiosError<ErrorData>
-        if (axios.isAxiosError(err)) {
-            yield put(setAppError(err.response ? err.response.data.error : err.message));
-        } else {
-            yield put(setAppError(err.message));
-        }
+        yield handleAppError(e as AxiosError)
     } finally {
         yield put(setAppStatus('idle'));
     }

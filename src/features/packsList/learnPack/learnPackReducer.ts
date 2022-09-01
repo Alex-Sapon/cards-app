@@ -1,9 +1,9 @@
-import {CardType, PackResponseType} from '../../cardsList/apiCardsList/apiCardsList';
+import {CardType, PackResponseType} from '../../cardsList/api/apiCardsList';
 import {apiLearnPack, UpdateGradeResponseType, UpdateGradeType} from './apiLearnPack';
 import {AxiosError, AxiosResponse} from 'axios';
 import {setAppError, setAppStatus} from '../../../app';
 import {call, put, takeEvery} from 'redux-saga/effects';
-import {ErrorData} from '../../users/apiUsers';
+import {ErrorData} from '../../users/api/apiUsers';
 
 const initial: StateType = {
     cards: [] as CardType[],

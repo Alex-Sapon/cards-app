@@ -10,7 +10,7 @@ import {Button} from '../../common/button';
 import {setCardsPage, setCardsPageCount, setSearchQuestion} from './reducer/cardsListReducer';
 import {useNavigate} from 'react-router-dom';
 import {AddCardModal, ModalType} from '../../components/modals';
-import {TableContainerCards} from './tableCardName/tableContainerCards/TableContainerCards';
+import {TableCardsContainer} from './tableCardName/tableCardsContainer';
 import {shortWord} from '../../assets/utils';
 import {useAppDispatch, useAppSelector, useDebounce, useInputChange} from '../../assets/utils/hooks';
 
@@ -68,7 +68,7 @@ export const CardsList = () => {
                         Add new card
                     </Button>}
             </div>
-            <TableContainerCards/>
+            <TableCardsContainer/>
             <div className={styles.paginationContainer}>
                 <PaginationGroup
                     page={page}

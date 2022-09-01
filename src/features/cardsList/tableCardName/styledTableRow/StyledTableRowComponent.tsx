@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {StyledTableCell, StyledTableRow} from '../styledTableCard/styledTableCard';
-import {shortWord} from '../../../../assets/utils/shortWord';
+import {StyledTableCell, StyledTableRow} from '../styledTableCard';
+import {shortWord} from '../../../../assets/utils';
 import Rating from '@mui/material/Rating';
 import FavoriteIcon from '@mui/icons-material/Grade';
 import FavoriteBorderIcon from '@mui/icons-material/Grade';

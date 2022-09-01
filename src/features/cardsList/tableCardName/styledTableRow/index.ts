@@ -1,0 +1,1 @@
+export {StyledTableRowComponent} from './StyledTableRowComponent';

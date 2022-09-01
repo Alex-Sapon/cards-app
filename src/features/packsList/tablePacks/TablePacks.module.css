@@ -1,6 +1,11 @@
 .table_container {
-    height: fit-content;
+    /*height: fit-content;*/
+    height: 421px;
     box-shadow: 4px 4px 24px 1px rgba(34, 60, 80, 0.14);
+}
+
+.table_container::-webkit-scrollbar {
+    display: none;
 }
 
 .table_title {

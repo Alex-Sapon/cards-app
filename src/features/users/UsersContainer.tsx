@@ -1,11 +1,11 @@
 import React, {useEffect} from 'react';
 import {Navigate} from 'react-router-dom';
-import {getUsers} from './usersReducer';
+import {getUsers} from './reducer/usersReducer';
 import {PATH} from '../../enums/path';
 import {Users} from './users';
 import {useAppDispatch, useAppSelector} from '../../assets/utils/hooks';
 import {selectIsLoggedIn} from '../login';
-import {selectUserName, selectUsersPage, selectUsersPageCount} from './selectors';
+import {selectUserName, selectUsersPage, selectUsersPageCount} from './selectors/selectors';
 
 export const UsersContainer = () => {
     const dispatch = useAppDispatch();

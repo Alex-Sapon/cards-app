@@ -2,7 +2,7 @@ import React from 'react';
 import Slider from '@mui/material/Slider';
 import styles from './ShowPacks.module.css';
 import {Button} from '../../../common/button';
-import {setMaxNumberCards, setMinNumberCards, setUserId} from '../tablePacks/tablePacksReducer';
+import {setMaxNumberCards, setMinNumberCards, setUserId} from '../tablePacks/reducer/tablePacksReducer';
 import {useAppDispatch, useAppSelector} from '../../../assets/utils/hooks';
 import {selectAppStatus} from '../../../app';
 import {selectMaxGrade, selectMinGrade, selectUserId} from '../tablePacks';

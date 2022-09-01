@@ -1,9 +1,9 @@
 import React, {ChangeEvent, KeyboardEvent, useEffect, useState} from 'react';
-import {updateCardsPack} from '../../../features/packsList/tablePacks/tablePacksReducer';
+import {updateCardsPack} from '../../../features/packsList/tablePacks/reducer/tablePacksReducer';
 import {setAppError} from '../../../app';
 import {BasicModal, ModalPropsType} from '../BasicModal';
 import {Button} from '../../../common/button';
-import {convertFileToBase64} from '../../../assets/utils/convertFileToBase64';
+import {convertFileToBase64} from '../../../assets/utils';
 import styles from './CustomModal.module.css';
 import {TextField} from '@mui/material';
 import IconButton from '@mui/material/IconButton';

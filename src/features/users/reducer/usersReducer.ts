@@ -1,8 +1,9 @@
-import {ErrorData, socialAPI, UserProfileType, UsersParamsType, UsersResponseType} from './apiUsers';
-import {setAppError, setAppStatus} from '../../app';
-import axios, {AxiosError, AxiosResponse} from 'axios';
+import {socialAPI, UserProfileType, UsersParamsType, UsersResponseType} from '../api/apiUsers';
+import {setAppStatus} from '../../../app';
+import {AxiosError, AxiosResponse} from 'axios';
 import {call, put, select, takeEvery} from 'redux-saga/effects';
-import {selectUsersParams} from './';
+import {selectUsersParams} from '../index';
+import {handleAppError} from '../../../assets/utils';
 
 const initial: StateType = {
     users: [] as UserProfileType[],
@@ -69,12 +70,7 @@ export function* getUsersSaga() {
 
         yield put(setUsers(res.data));
     } catch (e) {
-        const err = e as Error | AxiosError<ErrorData>;
-        if (axios.isAxiosError(err)) {
-            yield put(setAppError(err.response ? err.response.data.info : err.message));
-        } else {
-            yield put(setAppError(err.message));
-        }
+        yield handleAppError(e as AxiosError);
     } finally {
         yield put(setAppStatus('idle'));
     }
@@ -86,12 +82,7 @@ export function* getUserSaga({id}: ReturnType<typeof getUser>) {
         const res: AxiosResponse<{ user: UserProfileType }> = yield call(socialAPI.getUser, id);
         yield put(setUserProfile(res.data.user));
     } catch (e) {
-        const err = e as Error | AxiosError<ErrorData>;
-        if (axios.isAxiosError(err)) {
-            yield put(setAppError(err.response ? err.response.data.info : err.message));
-        } else {
-            yield put(setAppError(err.message));
-        }
+        yield handleAppError(e as AxiosError);
     } finally {
         yield put(setAppStatus('idle'));
     }

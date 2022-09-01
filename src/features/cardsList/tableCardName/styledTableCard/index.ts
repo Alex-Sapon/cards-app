@@ -1,0 +1,1 @@
+export {StyledTableRow, StyledTableCell} from './styledTableCard';

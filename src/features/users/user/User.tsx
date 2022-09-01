@@ -5,7 +5,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import {getUser} from '../usersReducer';
+import {getUser} from '../reducer/usersReducer';
 import {Navigate, useNavigate, useParams} from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import DefaultAvatar from '../../../assets/images/avatar.png';
@@ -36,7 +36,7 @@ export const UserProfile = () => {
 
     useEffect(() => {
         if (id) dispatch(getUser(id));
-    }, [id])
+    }, [id, dispatch])
 
     if (!isLoggedIn) return <Navigate to={PATH.LOGIN}/>
 
